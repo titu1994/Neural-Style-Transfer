@@ -50,6 +50,9 @@ It is a C# program written to more easily generate the arguments for the python 
 <br> DeepArt.io result <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.png" width=600 height=300>
 
+# Network.py in action
+![Alt Text](https://raw.githubusercontent.com/titu1994/Neural-Style-Transfer/master/images/Blue%20Moon%20Lake.gif)
+
 # Requirements 
 - Theano 8.0+
 - Keras 
