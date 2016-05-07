@@ -58,6 +58,8 @@ It is a C# program written to more easily generate the arguments for the python 
 - Keras 
 - CUDA (GPU)
 - CUDNN (GPU)
+- Scipy
+- Numpy
 
 # Speed
 On a 980M GPU, the time required for each epoch depends on mainly image size (gram matrix size) :
