@@ -62,6 +62,7 @@ parser.add_argument("--rescale_image", dest="rescale_image", default="True", typ
 parser.add_argument("--rescale_method", dest="rescale_method", default="bilinear", type=str, help="Rescale image algorithm")
 parser.add_argument("--maintain_aspect_ratio", dest="maintain_aspect_ratio", default="True", type=str, help="Maintain aspect ratio of image")
 parser.add_argument("--content_layer", dest="content_layer", default="conv5_2", type=str, help="Optional 'conv4_2'")
+parser.add_argument("--init_image", dest="init_image", default="content", type=str, help="Initial image used to generate the final image. Options are 'content' or 'noise")
 
 args = parser.parse_args()
 base_image_path = args.base_image_path
@@ -284,7 +285,12 @@ evaluator = Evaluator()
 
 # run scipy-based optimization (L-BFGS) over the pixels of the generated image
 # so as to minimize the neural style loss
-x = preprocess_image(base_image_path, True)
+
+assert args.init_image in ["content", "noise"] , "init_image must be one of ['original', 'noise']"
+if "content" in args.init_image:
+    x = preprocess_image(base_image_path, True)
+else:
+    x = np.random.uniform(0, 255, (1, 3, img_width, img_height))
 
 num_iter = args.num_iter
 for i in range(num_iter):
