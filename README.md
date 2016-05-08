@@ -39,9 +39,9 @@ It is a C# program written to more easily generate the arguments for the python 
 
 ### Benefits 
 - Automatically executes the script based on the arguments.
-- Eary selection of images 
-- Easy parameter alteration
-- Easily generate argument list if command line execution is preferred. 
+- Easy selection of images (Content, Style, Output Prefix)
+- Easy parameter selection
+- Easily generate argument list, if command line execution is preferred. 
 
 # Examples
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=400 height=300> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=400 height=300>
@@ -54,7 +54,7 @@ It is a C# program written to more easily generate the arguments for the python 
 ![Alt Text](https://raw.githubusercontent.com/titu1994/Neural-Style-Transfer/master/images/Blue%20Moon%20Lake.gif)
 
 # Requirements 
-- Theano 8.0+
+- Theano
 - Keras 
 - CUDA (GPU)
 - CUDNN (GPU)
@@ -69,9 +69,9 @@ For a 512x512 gram matrix, each epoch takes approximately 18-22 seconds. <br>
 For a 600x600 gram matrix, each epoch takes approximately 28-30 seconds. <br>
   
 # Issues
-- Due to usage of content image as initial image, output depends heavily on parameter tuning. <br> Test to see if the image is appropriate in the first 10 epochs, and if it is correct, add the number of iterations to smothen and improve the quality of the output.
+- Due to usage of content image as initial image, output depends heavily on parameter tuning. <br> Test to see if the image is appropriate in the first 10 epochs, and if it is correct, increase the number of iterations to smoothen and improve the quality of the output.
 - Generated image is seen to be visually better if a small image size is used.
 - Due to small gram sizes, the output image is usually small. 
-<br> To correct this, use the implementations of this paper "Image Super-Resolution Using Deep Convolutional Networks" http://arxiv.org/abs/1501.00092 
-<br> Some implementations for Windows of the above paper. : https://github.com/tanakamura/waifu2x-converter-cpp 
+<br> To correct this, use the implementations of this paper "Image Super-Resolution Using Deep Convolutional Networks" http://arxiv.org/abs/1501.00092 to upscale the images with minimal loss.
+<br> <br> <br> Some implementations of the above paper for Windows : https://github.com/tanakamura/waifu2x-converter-cpp
 
