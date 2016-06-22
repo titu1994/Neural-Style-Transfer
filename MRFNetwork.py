@@ -10,6 +10,11 @@ import os
 import argparse
 import h5py
 
+import theano
+theano.config.dnn.conv.algo_fwd='small'
+theano.config.dnn.conv.algo_bwd_filter='none'
+theano.config.dnn.conv.algo_bwd_data='none'
+
 from keras.models import Sequential
 from keras.layers.convolutional import Convolution2D, ZeroPadding2D, AveragePooling2D
 from keras import backend as K
