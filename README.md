@@ -67,9 +67,9 @@ It is a C# program written to more easily generate the arguments for the python 
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=45% height=300> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=45% height=300>
 <br> Result after 50 iterations (Average Pooling) <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Blue_Moon_Lake_iteration_50.jpg" width=90% height=450>
-<br> For comparison, same image using MaxPooling for 100 iterations.<br>
-<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Tsukiyomi_at_iteration_100-Max-Pooling.jpg" width=45% height=300>
-<br> DeepArt.io result <br>
+<br> For comparison, results after 50 iterations (Max Pooling) <br>
+<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Tsukiyomi_at_iteration_100-Max-Pooling.jpg" width=90% height=450>
+<br> DeepArt.io result (1000 iterations) <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.png" width=90% height=450>
 
 
