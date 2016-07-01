@@ -714,13 +714,13 @@ combination_image = K.placeholder((1, 3, img_width, img_height))
 
 # combine the 3 images into a single Keras tensor
 input_tensor = K.concatenate([style_image_tensor,
-                              #style_image_mask_tensor,
+                              style_image_mask_tensor,
                               content_image_tensor,
                               combination_image], axis=0)
 
 # build the VGG16 network with our 3 images as input
 first_layer = ZeroPadding2D((1, 1), )
-first_layer.set_input(input_tensor, shape=(3, 3, img_width, img_height))
+first_layer.set_input(input_tensor, shape=(4, 3, img_width, img_height))
 
 model = Sequential()
 model.add(first_layer)
@@ -869,15 +869,12 @@ class NNFState(object):
         for i in range(num_steps):
             self.matcher.update_with_patches(x_normed, reverse_propagation=bool(i % 2))
 
-feature_layers = ['conv1_1', 'conv2_1', 'conv3_1', 'conv4_1', 'conv5_1']
-
-"""
 
 # combine these loss functions into a single scalar
 loss = K.variable(0.)
 layer_features = outputs_dict[args.content_layer] # 'conv5_2' or 'conv4_2'
 base_image_features = layer_features[0, :, :, :]
-combination_features = layer_features[2, :, :, :]
+combination_features = layer_features[3, :, :, :]
 loss += content_weight * content_loss(base_image_features,
                                       combination_features)
 
@@ -885,7 +882,7 @@ feature_layers = ['conv1_1', 'conv2_1', 'conv3_1', 'conv4_1', 'conv5_1']
 for layer_name in feature_layers:
     layer_features = outputs_dict[layer_name]
     style_reference_features = layer_features[1, :, :, :]
-    combination_features = layer_features[2, :, :, :]
+    combination_features = layer_features[3, :, :, :]
     sl = style_loss(style_reference_features, combination_features)
     loss += (style_weight / len(feature_layers)) * sl
 loss += total_variation_weight * total_variation_loss(combination_image)
@@ -909,7 +906,7 @@ def eval_loss_and_grads(x):
     else:
         grad_values = np.array(outs[1:]).flatten().astype('float64')
     return loss_value, grad_values
-
+"""
 """
 # this Evaluator class makes it possible
 # to compute loss and gradients in one pass

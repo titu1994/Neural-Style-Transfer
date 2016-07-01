@@ -13,7 +13,7 @@ theano.config.dnn.conv.algo_bwd_filter='none'
 theano.config.dnn.conv.algo_bwd_data='none'
 
 from keras.models import Sequential
-from keras.layers.convolutional import Convolution2D, ZeroPadding2D, AveragePooling2D
+from keras.layers.convolutional import Convolution2D, ZeroPadding2D, AveragePooling2D, MaxPooling2D
 from keras import backend as K
 
 """
@@ -61,13 +61,15 @@ parser.add_argument("--image_size", dest="img_size", default=512, type=int, help
 parser.add_argument("--content_weight", dest="content_weight", default=0.025, type=float, help="Weight of content") # 0.025
 parser.add_argument("--style_weight", dest="style_weight", default=1, type=float, help="Weight of content") # 1.0
 parser.add_argument("--style_scale", dest="style_scale", default=1.0, type=float, help="Scale the weightage of the style") # 1, 0.5, 2
-parser.add_argument("--total_variation_weight", dest="tv_weight", default=1e-3, type=float, help="Total Variation in the Weights") # 1.0
+parser.add_argument("--total_variation_weight", dest="tv_weight", default=1e-5, type=float, help="Total Variation in the Weights") # 1.0
 parser.add_argument("--num_iter", dest="num_iter", default=10, type=int, help="Number of iterations")
 parser.add_argument("--rescale_image", dest="rescale_image", default="True", type=str, help="Rescale image after execution to original dimentions")
 parser.add_argument("--rescale_method", dest="rescale_method", default="bilinear", type=str, help="Rescale image algorithm")
 parser.add_argument("--maintain_aspect_ratio", dest="maintain_aspect_ratio", default="True", type=str, help="Maintain aspect ratio of image")
 parser.add_argument("--content_layer", dest="content_layer", default="conv5_2", type=str, help="Optional 'conv4_2'")
 parser.add_argument("--init_image", dest="init_image", default="content", type=str, help="Initial image used to generate the final image. Options are 'content' or 'noise")
+parser.add_argument("--pool_type", dest="pool", default="ave", type=str, help='Pooling type. Can be "ave" for average pooling'
+                                                                              ' or "max" for max pooling ')
 
 args = parser.parse_args()
 base_image_path = args.base_image_path
@@ -114,6 +116,18 @@ def deprocess_image(x):
     x = np.clip(x, 0, 255).astype('uint8')
     return x
 
+# Decide pooling function
+pooltype = str(args.pool).lower()
+assert pooltype in ["ave", "max"], 'Pooling argument is wrong. Needs to be either "ave" or "max".'
+
+pooltype = 1 if pooltype == "ave" else 0
+
+def pooling_func():
+    if pooltype == 1:
+        return AveragePooling2D((2, 2), strides=(2, 2))
+    else:
+        return MaxPooling2D((2, 2), strides=(2, 2))
+
 # get tensor representations of our images
 base_image = K.variable(preprocess_image(base_image_path, True))
 style_reference_image = K.variable(preprocess_image(style_reference_image_path))
@@ -135,13 +149,13 @@ model.add(first_layer)
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
-model.add(AveragePooling2D((2, 2), strides=(2, 2)))
+model.add(pooling_func())
 
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_1'))
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(128, 3, 3, activation='relu'))
-model.add(AveragePooling2D((2, 2), strides=(2, 2)))
+model.add(pooling_func())
 
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_1'))
@@ -149,7 +163,7 @@ model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(256, 3, 3, activation='relu'))
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(256, 3, 3, activation='relu'))
-model.add(AveragePooling2D((2, 2), strides=(2, 2)))
+model.add(pooling_func())
 
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_1'))
@@ -157,7 +171,7 @@ model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_2'))
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(512, 3, 3, activation='relu'))
-model.add(AveragePooling2D((2, 2), strides=(2, 2)))
+model.add(pooling_func())
 
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_1'))
@@ -165,7 +179,7 @@ model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_2'))
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(512, 3, 3, activation='relu'))
-model.add(AveragePooling2D((2, 2), strides=(2, 2)))
+model.add(pooling_func())
 
 # load the weights of the VGG16 networks
 # (trained on ImageNet, won the ILSVRC competition in 2014)
