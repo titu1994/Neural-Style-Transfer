@@ -24,7 +24,7 @@ Therefore their is a argument 'init_image' which can take the options 'content' 
 
 
 - Uses AveragePooling2D inplace of MaxPooling2D layers
-The original paper uses AveragePooling for better results
+The original paper uses AveragePooling for better results, but this can be changed to use MaxPooling2D layers via the argument `--pool_type="max"`. By default AveragePooling is used, since if offers smoother images, but MaxPooling applys the style better in some cases (especially when style image is the "Starry Night" by Van Goph.
 
 - Style weight scaling
 - Rescaling of image to original dimensions, using lossy upscaling present in scipy.imresize()
@@ -45,12 +45,32 @@ It is a C# program written to more easily generate the arguments for the python 
 - Easy parameter selection
 - Easily generate argument list, if command line execution is preferred. 
 
+## Parameters
+```
+--image_size : Allows to set the Gram Matrix size. Default is 400 x 400, since it produces good results fast. 
+--num_iter : Number of iterations. Default is 10. Test the output with 10 iterations, and increase to improve results.
+--init_image : Can be "content" or "noise". Default is "content", since it reduces reproduction noise.
+--pool_type : Pooling type. AveragePooling ("ave") is default, but smoothens the image too much. For sharper images, use MaxPooling ("max").
+
+--content_weight : Weightage given to content in relation to style. Default if 0.025
+--style_weight : Weightage given to style in relation to content. Default is 1. 
+--style_scale : Scales the style_weight. Default is 1. 
+--total_variation_weight : Regularization factor. Smaller values tend to produce crisp images, but 0 is not useful. Default = 1E-5
+
+--rescale_image : Rescale image to original dimensions after each iteration. (Bilinear upscaling)
+--rescale_method : Rescaling algorithm. Default is bilinear. Options are nearest, bilinear, bicubic and cubic.
+--maintain_aspect_ratio : Rescale the image just to the original aspect ratio. Size will be (image_size, image_size * aspect_ratio). Default is True
+--content_layer : Selects the content layer. Paper suggests conv4_2, but better results can be obtained from conv5_2. Default is conv5_2.
+```
+
 # Examples
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=45% height=300> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=45% height=300>
 <br> Result after 50 iterations <br>
-<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Blue_Moon_Lake_iteration_50.png" width=90% height=450>
+<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Blue_Moon_Lake_iteration_50.jpg" width=90% height=450>
 <br> DeepArt.io result <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.png" width=90% height=450>
+<br> For comparison, same image using MaxPooling for 100 iterations.
+<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Tsukiyomi_at_iteration_100-Max-Pooling.jpg" width=45% height=300>
 
 # Network.py in action
 ![Alt Text](https://raw.githubusercontent.com/titu1994/Neural-Style-Transfer/master/images/Blue%20Moon%20Lake.gif)
