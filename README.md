@@ -30,9 +30,6 @@ The original paper uses AveragePooling for better results, but this can be chang
 - Rescaling of image to original dimensions, using lossy upscaling present in scipy.imresize()
 - Maintain aspect ratio of intermediate and final stage images, using lossy upscaling
 
-Note : Aspect Ratio is maintained only if image is not rescaled.
-       If image is rescaled to original dimensions then aspect ratio is maintained as well.
-
 ## Windows Helper
 It is a C# program written to more easily generate the arguments for the python script Network.py
 
@@ -59,7 +56,7 @@ It is a C# program written to more easily generate the arguments for the python 
 
 --rescale_image : Rescale image to original dimensions after each iteration. (Bilinear upscaling)
 --rescale_method : Rescaling algorithm. Default is bilinear. Options are nearest, bilinear, bicubic and cubic.
---maintain_aspect_ratio : Rescale the image just to the original aspect ratio. Size will be (image_size, image_size * aspect_ratio). Default is True
+--maintain_aspect_ratio : Rescale the image just to the original aspect ratio. Size will be (gram_matrix_size, gram_matrix_size * aspect_ratio). Default is True
 --content_layer : Selects the content layer. Paper suggests conv4_2, but better results can be obtained from conv5_2. Default is conv5_2.
 ```
 
@@ -69,7 +66,7 @@ It is a C# program written to more easily generate the arguments for the python 
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Blue_Moon_Lake_iteration_50.jpg" width=90% height=450>
 <br> For comparison, results after 50 iterations (Max Pooling) <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Tsukiyomi_at_iteration_100-Max-Pooling.jpg" width=90% height=450>
-<br> DeepArt.io result (1000 iterations) <br>
+<br> DeepArt.io result (1000 iterations and using improvements such as Markov Random Field Regularization) <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.png" width=90% height=450>
 
 
@@ -93,8 +90,9 @@ For a 600x600 gram matrix, each epoch takes approximately 28-30 seconds. <br>
   
 # Issues
 - Due to usage of content image as initial image, output depends heavily on parameter tuning. <br> Test to see if the image is appropriate in the first 10 epochs, and if it is correct, increase the number of iterations to smoothen and improve the quality of the output.
-- Generated image is seen to be visually better if a small image size is used.
+- Generated image is seen to be visually better if a small image size (small gram matrix size) is used.
 - Due to small gram sizes, the output image is usually small. 
 <br> To correct this, use the implementations of this paper "Image Super-Resolution Using Deep Convolutional Networks" http://arxiv.org/abs/1501.00092 to upscale the images with minimal loss.
-<br> <br> <br> Some implementations of the above paper for Windows : https://github.com/tanakamura/waifu2x-converter-cpp
+<br> Some implementations of the above paper for Windows : https://github.com/tanakamura/waifu2x-converter-cpp <br>
+- Implementation of Markov Random Field Regularization and Patch Match algorithm are currently being tested. MRFNetwork.py contains the basic code, which need to be integrated to use MRF and Patch Match as in Image Analogies paper <a href="http://arxiv.org/abs/1601.04589"> Combining Markov Random Fields and Convolutional Neural Networks for Image Synthesis </a>
 
