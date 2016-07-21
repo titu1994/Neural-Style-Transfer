@@ -4,6 +4,15 @@ Implementation of Neural Style Transfer from the paper A Neural Algorithm of Art
 Uses the VGG-16 model as described in the Keras example below :
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
 
+# Examples
+<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=45% height=300> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=45% height=300>
+<br> Result after 50 iterations (Average Pooling) <br>
+<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Blue_Moon_Lake_iteration_50.jpg" width=90% height=450>
+<br> For comparison, results after 50 iterations (Max Pooling) <br>
+<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Tsukiyomi_at_iteration_100-Max-Pooling.jpg" width=90% height=450>
+<br> DeepArt.io result (1000 iterations and using improvements such as Markov Random Field Regularization) <br>
+<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.png" width=90% height=450>
+
 ## Weights (VGG 16)
 
 Before running this script, download the weights for the VGG16 model at:
@@ -24,14 +33,11 @@ Therefore their is a argument 'init_image' which can take the options 'content' 
 
 
 - Uses AveragePooling2D inplace of MaxPooling2D layers
-The original paper uses AveragePooling for better results
+The original paper uses AveragePooling for better results, but this can be changed to use MaxPooling2D layers via the argument `--pool_type="max"`. By default AveragePooling is used, since if offers smoother images, but MaxPooling applys the style better in some cases (especially when style image is the "Starry Night" by Van Goph.
 
 - Style weight scaling
 - Rescaling of image to original dimensions, using lossy upscaling present in scipy.imresize()
 - Maintain aspect ratio of intermediate and final stage images, using lossy upscaling
-
-Note : Aspect Ratio is maintained only if image is not rescaled.
-       If image is rescaled to original dimensions then aspect ratio is maintained as well.
 
 ## Windows Helper
 It is a C# program written to more easily generate the arguments for the python script Network.py
@@ -45,12 +51,26 @@ It is a C# program written to more easily generate the arguments for the python 
 - Easy parameter selection
 - Easily generate argument list, if command line execution is preferred. 
 
-# Examples
-<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=45% height=300> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=45% height=300>
-<br> Result after 50 iterations <br>
-<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Blue_Moon_Lake_iteration_50.png" width=90% height=450>
-<br> DeepArt.io result <br>
-<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.png" width=90% height=450>
+## Parameters
+```
+--image_size : Allows to set the Gram Matrix size. Default is 400 x 400, since it produces good results fast. 
+--num_iter : Number of iterations. Default is 10. Test the output with 10 iterations, and increase to improve results.
+--init_image : Can be "content" or "noise". Default is "content", since it reduces reproduction noise.
+--pool_type : Pooling type. AveragePooling ("ave") is default, but smoothens the image too much. For sharper images, use MaxPooling ("max").
+
+--content_weight : Weightage given to content in relation to style. Default if 0.025
+--style_weight : Weightage given to style in relation to content. Default is 1. 
+--style_scale : Scales the style_weight. Default is 1. 
+--total_variation_weight : Regularization factor. Smaller values tend to produce crisp images, but 0 is not useful. Default = 1E-5
+
+--rescale_image : Rescale image to original dimensions after each iteration. (Bilinear upscaling)
+--rescale_method : Rescaling algorithm. Default is bilinear. Options are nearest, bilinear, bicubic and cubic.
+--maintain_aspect_ratio : Rescale the image just to the original aspect ratio. Size will be (gram_matrix_size, gram_matrix_size * aspect_ratio). Default is True
+--content_layer : Selects the content layer. Paper suggests conv4_2, but better results can be obtained from conv5_2. Default is conv5_2.
+```
+
+
+
 
 # Network.py in action
 ![Alt Text](https://raw.githubusercontent.com/titu1994/Neural-Style-Transfer/master/images/Blue%20Moon%20Lake.gif)
@@ -72,8 +92,9 @@ For a 600x600 gram matrix, each epoch takes approximately 28-30 seconds. <br>
   
 # Issues
 - Due to usage of content image as initial image, output depends heavily on parameter tuning. <br> Test to see if the image is appropriate in the first 10 epochs, and if it is correct, increase the number of iterations to smoothen and improve the quality of the output.
-- Generated image is seen to be visually better if a small image size is used.
+- Generated image is seen to be visually better if a small image size (small gram matrix size) is used.
 - Due to small gram sizes, the output image is usually small. 
 <br> To correct this, use the implementations of this paper "Image Super-Resolution Using Deep Convolutional Networks" http://arxiv.org/abs/1501.00092 to upscale the images with minimal loss.
-<br> <br> <br> Some implementations of the above paper for Windows : https://github.com/tanakamura/waifu2x-converter-cpp
+<br> Some implementations of the above paper for Windows : https://github.com/tanakamura/waifu2x-converter-cpp <br>
+- Implementation of Markov Random Field Regularization and Patch Match algorithm are currently being tested. MRFNetwork.py contains the basic code, which need to be integrated to use MRF and Patch Match as in Image Analogies paper <a href="http://arxiv.org/abs/1601.04589"> Combining Markov Random Fields and Convolutional Neural Networks for Image Synthesis </a>
 
