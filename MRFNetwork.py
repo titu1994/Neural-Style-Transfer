@@ -569,7 +569,7 @@ parser.add_argument("--init_image", dest="init_image", default="content", type=s
 parser.add_argument('--analogy-w', dest='analogy_weight', type=float, default=1.0, help='Weight for analogy loss.')
 parser.add_argument('--analogy-layers', dest='analogy_layers', default=['conv3_1', 'conv4_1'], help='Comma-separated list of layer names to be used for the analogy loss')
 parser.add_argument('--use-full-analogy', dest='use_full_analogy', action="store_true", help='Use the full set of analogy patches (slower/more memory but maybe more accurate)')
-parser.add_argument('--mrf-w', dest='mrf_weight', type=float, default=0.5, help='Weight for MRF loss between A\' and B\'')
+parser.add_argument('--mrf-w', dest='mrf_weight', type=float, default=1, help='Weight for MRF loss between A\' and B\'')
 parser.add_argument('--mrf-layers', dest='mrf_layers', default=['conv3_1', 'conv4_1'], help='Comma-separated list of layer names to be used for the MRF loss')
 parser.add_argument('--b-content-w', dest='b_bp_content_weight', type=float, default=4.0, help='Weight for content loss between B and B\'')
 parser.add_argument('--mrf-nnf-steps', dest='mrf_nnf_steps', type=int, default=5, help='Number of patchmatch updates per iteration for local coherence loss.')
@@ -600,8 +600,8 @@ content_weight = args.content_weight
 img_width = img_height = args.img_size
 assert img_height == img_width, 'Due to the use of the Gram matrix, width and height must match.'
 
-analogy_layers  =['conv3_1','conv4_1'] # 'conv1_1','conv2_1','conv3_1', 'conv4_1'
-mrf_layers = ['conv3_1', 'conv4_1'] # 'conv3_1', 'conv4_1'
+analogy_layers  =['conv4_1'] # 'conv1_1','conv2_1','conv3_1', 'conv4_1'
+mrf_layers = ['conv4_1', 'conv5_1'] # 'conv3_1', 'conv4_1'
 
 img_WIDTH = img_HEIGHT = 0
 aspect_ratio = 0
@@ -712,7 +712,7 @@ content_image_tensor = K.variable(content_img)
 # this will contain our generated image
 combination_image = K.placeholder((1, 3, img_width, img_height))
 
-# combine the 3 images into a single Keras tensor
+# combine the 4 images into a single Keras tensor
 input_tensor = K.concatenate([style_image_tensor,
                               style_image_mask_tensor,
                               content_image_tensor,
