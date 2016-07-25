@@ -1,5 +1,5 @@
 # Neural Style Transfer
-Implementation of Neural Style Transfer from the paper A Neural Algorithm of Artistic Style(http://arxiv.org/abs/1508.06576) in Keras 1.0.4
+Implementation of Neural Style Transfer from the paper A Neural Algorithm of Artistic Style(http://arxiv.org/abs/1508.06576) in Keras 1.0.6
 
 Uses the VGG-16 model as described in the Keras example below :
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
