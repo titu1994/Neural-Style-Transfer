@@ -239,30 +239,37 @@ def total_variation_loss(x):
     b = K.square(x[:, :, :img_width-1, :img_height-1] - x[:, :, :img_width-1, 1:])
     return K.sum(K.pow(a + b, 1.25))
 
+feature_layers = ['conv1_1', 'conv1_2', 'conv2_1', 'conv2_2', 'conv3_1', 'conv3_2', 'conv3_3',
+                  'conv4_1', 'conv4_2', 'conv4_3', 'conv5_1', 'conv5_2', 'conv5_3']
+
 # combine these loss functions into a single scalar
 loss = K.variable(0.)
-layer_features = outputs_dict[args.content_layer] # 'conv5_2' or 'conv4_2'
+layer_features = outputs_dict[args.content_layer]
 base_image_features = layer_features[0, :, :, :]
 combination_features = layer_features[2, :, :, :]
 loss += content_weight * content_loss(base_image_features,
                                       combination_features)
-
 # Improvement 2
-# Use all layers for feature extraction
-feature_layers = ['conv1_1', 'conv1_2', 'conv2_1', 'conv2_2', 'conv3_1', 'conv3_2', 'conv3_3',
-                  'conv4_1', 'conv4_2', 'conv4_3', 'conv5_1', 'conv5_2', 'conv5_3']
+# Use all layers for style feature extraction and reconstruction
+nb_layers = len(feature_layers) - 1
 
-nb_layers = len(feature_layers)
-
-for i, layer_name in enumerate(feature_layers):
-    layer_features = outputs_dict[layer_name]
+# Improvement 3 : Chained Inference without blurring
+for i in range(len(feature_layers) - 1):
+    layer_features = outputs_dict[feature_layers[i]]
     style_reference_features = layer_features[1, :, :, :]
     combination_features = layer_features[2, :, :, :]
-    sl = style_loss(style_reference_features, combination_features)
+    sl1 = style_loss(style_reference_features, combination_features)
 
-    # Improvement 3
+    layer_features = outputs_dict[feature_layers[i + 1]]
+    style_reference_features = layer_features[1, :, :, :]
+    combination_features = layer_features[2, :, :, :]
+    sl2 = style_loss(style_reference_features, combination_features)
+
+    sl = sl1 - sl2
+
+    # Improvement 4
     # Geometric weighted scaling of style loss
-    loss += (style_weight / (2 ** (nb_layers - i + 1))) * sl
+    loss += (style_weight / (2 ** (nb_layers - (i + 1)))) * sl
 loss += total_variation_weight * total_variation_loss(combination_image)
 
 # get the gradients of the generated image wrt the loss
