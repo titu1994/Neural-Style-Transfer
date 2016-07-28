@@ -1,6 +1,5 @@
 from scipy.misc import imread, imresize, imsave
 from scipy.optimize import fmin_l_bfgs_b
-from sklearn.preprocessing import normalize
 import numpy as np
 import time
 import os
@@ -17,10 +16,13 @@ from keras.layers.convolutional import Convolution2D, ZeroPadding2D, AveragePool
 from keras import backend as K
 
 """
-Neural Style Transfer with Keras 1.0.2
+Neural Style Transfer with Keras 1.0.6
 
 Uses the VGG-16 model as described in the Keras example below :
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
+
+Contains few improvements suggested in the paper Improving the Neural Algorithm of Artistic Style
+(http://arxiv.org/abs/1605.04603).
 
 Note:
 
