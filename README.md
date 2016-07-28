@@ -1,5 +1,5 @@
 # Neural Style Transfer
-Implementation of Neural Style Transfer from the paper A Neural Algorithm of Artistic Style(http://arxiv.org/abs/1508.06576) in Keras 1.0.6
+Implementation of Neural Style Transfer from the paper A Neural Algorithm of Artistic Style(http://arxiv.org/abs/1508.06576) in Keras 1.0.6. INetwork, which focuses on certain improvements suggested in <a href="http://arxiv.org/abs/1605.04603">Improving the Neural Algorithm of Artistic Style</a>.
 
 Uses the VGG-16 model as described in the Keras example below :
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
@@ -8,9 +8,11 @@ https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=45% height=300> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=45% height=300>
 <br> Result after 50 iterations (Average Pooling) <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Blue_Moon_Lake_iteration_50.jpg" width=90% height=450>
-<br> For comparison, results after 50 iterations (Max Pooling) <br>
+<br><br> For comparison, results after 50 iterations (Max Pooling) <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Tsukiyomi_at_iteration_100-Max-Pooling.jpg" width=90% height=450>
-<br> DeepArt.io result (1000 iterations and using improvements such as Markov Random Field Regularization) <br>
+<br><br> For comparison, results after 50 iterations using the INetwork. Notice that in comparison to Max Pooling results, it is far more detailed in the mountain peaks and colours are more natural<br>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Tsukiyomi_INetwork_at_iteration_50.jpg?raw=true" width=90% height=450>
+<br><br> DeepArt.io result (1000 iterations and using improvements such as Markov Random Field Regularization) <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.png" width=90% height=450>
 
 ## Weights (VGG 16)
@@ -31,7 +33,6 @@ Original paper utilizes 'conv4_2' output
 This method tends to create better output images, however parameters have to be well tuned.
 Therefore their is a argument 'init_image' which can take the options 'content' or 'noise'
 
-
 - Uses AveragePooling2D inplace of MaxPooling2D layers
 The original paper uses AveragePooling for better results, but this can be changed to use MaxPooling2D layers via the argument `--pool_type="max"`. By default AveragePooling is used, since if offers smoother images, but MaxPooling applys the style better in some cases (especially when style image is the "Starry Night" by Van Goph.
 
@@ -39,8 +40,20 @@ The original paper uses AveragePooling for better results, but this can be chang
 - Rescaling of image to original dimensions, using lossy upscaling present in scipy.imresize()
 - Maintain aspect ratio of intermediate and final stage images, using lossy upscaling
 
+## Improvements in INetwork
+- Improvement 3.1 in paper : Geometric Layer weight adjustment for Style inference
+- Improvement 3.2 in paper : Using all layers of VGG-16 for style inference
+- Improvement 3.3 in paper : Activation Shift of gram matrix
+- Improvement 3.5 in paper : Correlation Chain
+
+These improvements are almost same as the Chain Blurred version, however a few differences exist : 
+- Chaining of gram matrix G is not used, as in the paper the author concludes that the results are often not major, and convergence speed is greatly diminished due to very complex gradients.
+- Only one layer for Content inference instead of using all the layers as suggested in the Chain Blurred version.
+- Does not use CNN MRF network, but apply these modifications to the original network.
+- All of this is applied on the VGG-16 network, not on the VGG-19 network. It is trivial to extrapolate this to the VGG-19 network. Simply adding the layer names to the `feature_layers` list will be sufficient to apply these changes to the VGG-19 network. 
+
 ## Windows Helper
-It is a C# program written to more easily generate the arguments for the python script Network.py
+It is a C# program written to more easily generate the arguments for the python script Network.py or INetwork.py
 
 - Make sure to save the vgg16_weights.h5 weights file in the windows_helper folder.
 - Upon first run, it will request the python path. Traverse your directory to locate the python.exe of your choice (Anaconda is tested)
@@ -69,9 +82,6 @@ It is a C# program written to more easily generate the arguments for the python 
 --content_layer : Selects the content layer. Paper suggests conv4_2, but better results can be obtained from conv5_2. Default is conv5_2.
 ```
 
-
-
-
 # Network.py in action
 ![Alt Text](https://raw.githubusercontent.com/titu1994/Neural-Style-Transfer/master/images/Blue%20Moon%20Lake.gif)
 
@@ -97,5 +107,5 @@ For a 600x600 gram matrix, each epoch takes approximately 28-30 seconds. <br>
 <br> To correct this, use the implementations of this paper "Image Super-Resolution Using Deep Convolutional Networks" http://arxiv.org/abs/1501.00092 to upscale the images with minimal loss.
 <br> Some implementations of the above paper for Windows : https://github.com/tanakamura/waifu2x-converter-cpp <br>
 - Implementation of Markov Random Field Regularization and Patch Match algorithm are currently being tested. MRFNetwork.py contains the basic code, which need to be integrated to use MRF and Patch Match as in Image Analogies paper <a href="http://arxiv.org/abs/1601.04589"> Combining Markov Random Fields and Convolutional Neural Networks for Image Synthesis </a>
-- Began implementation of improved Style Transfer algorithm as suggested in the paper <a href="http://arxiv.org/abs/1605.04603">Improving the Neural Algorithm of Artistic Style</a>. Creates slightly better resulting images, at the cost of slightly more processing time.
+- Began implementation of improved Style Transfer algorithm in INetwork.py as suggested in the paper <a href="http://arxiv.org/abs/1605.04603">Improving the Neural Algorithm of Artistic Style</a>. Creates slightly better resulting images, at the cost of slightly more processing time (1-2 seconds).
 
