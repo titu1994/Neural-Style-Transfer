@@ -313,7 +313,7 @@ evaluator = Evaluator()
 # run scipy-based optimization (L-BFGS) over the pixels of the generated image
 # so as to minimize the neural style loss
 
-assert args.init_image in ["content", "noise"] , "init_image must be one of ['original', 'noise']"
+assert args.init_image in ["content", "noise"] , "init_image must be one of ['content', 'noise']"
 if "content" in args.init_image:
     x = preprocess_image(base_image_path, True)
 else:
