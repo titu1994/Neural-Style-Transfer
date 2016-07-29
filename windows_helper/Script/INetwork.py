@@ -108,6 +108,10 @@ def preprocess_image(image_path, load_dims=False):
         aspect_ratio = img_HEIGHT / img_WIDTH
 
     img = imresize(img, (img_width, img_height))
+    img = img[:, :, ::-1].astype('float64')
+    img[:, :, 0] -= 103.939
+    img[:, :, 1] -= 116.779
+    img[:, :, 2] -= 123.68
     img = img.transpose((2, 0, 1)).astype('float64')
     img = np.expand_dims(img, axis=0)
     return img
@@ -115,6 +119,10 @@ def preprocess_image(image_path, load_dims=False):
 # util function to convert a tensor into a valid image
 def deprocess_image(x):
     x = x.transpose((1, 2, 0))
+    x[:, :, 0] += 103.939
+    x[:, :, 1] += 116.779
+    x[:, :, 2] += 123.68
+    x = x[:, :, ::-1]
     x = np.clip(x, 0, 255).astype('uint8')
     return x
 
@@ -324,11 +332,14 @@ evaluator = Evaluator()
 # run scipy-based optimization (L-BFGS) over the pixels of the generated image
 # so as to minimize the neural style loss
 
-assert args.init_image in ["content", "noise"] , "init_image must be one of ['original', 'noise']"
+assert args.init_image in ["content", "noise"] , "init_image must be one of ['content', 'noise']"
 if "content" in args.init_image:
     x = preprocess_image(base_image_path, True)
 else:
     x = np.random.uniform(0, 255, (1, 3, img_width, img_height))
+    x[0, 0, :, :] -= 103.939
+    x[0, 1, :, :] -= 116.779
+    x[0, 2, :, :] -= 123.68
 
 num_iter = args.num_iter
 for i in range(num_iter):
@@ -339,13 +350,12 @@ for i in range(num_iter):
                                      fprime=evaluator.grads, maxfun=20)
     print('Current loss value:', min_val)
     # save current generated image
-    img = deprocess_image(x.reshape((3, img_width, img_height)))
+    img = deprocess_image(x.copy().reshape((3, img_width, img_height)))
 
     if (maintain_aspect_ratio) & (not rescale_image):
         img_ht = int(img_width * aspect_ratio)
         print("Rescaling Image to (%d, %d)" % (img_width, img_ht))
         img = imresize(img, (img_width, img_ht), interp=args.rescale_method)
-
 
     if rescale_image:
         print("Rescaling Image to (%d, %d)" % (img_WIDTH, img_HEIGHT))
