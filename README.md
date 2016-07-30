@@ -47,7 +47,7 @@ The original paper uses AveragePooling for better results, but this can be chang
 - Improvement 3.5 in paper : Correlation Chain
 
 These improvements are almost same as the Chain Blurred version, however a few differences exist : 
-- Chaining of gram matrix G is not used, as in the paper the author concludes that the results are often not major, and convergence speed is greatly diminished due to very complex gradients.
+- Blurring of gram matrix G is not used, as in the paper the author concludes that the results are often not major, and convergence speed is greatly diminished due to very complex gradients.
 - Only one layer for Content inference instead of using all the layers as suggested in the Chain Blurred version.
 - Does not use CNN MRF network, but apply these modifications to the original network.
 - All of this is applied on the VGG-16 network, not on the VGG-19 network. It is trivial to extrapolate this to the VGG-19 network. Simply adding the layer names to the `feature_layers` list will be sufficient to apply these changes to the VGG-19 network. 
