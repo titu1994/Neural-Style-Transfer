@@ -17,7 +17,7 @@ from keras.layers.convolutional import Convolution2D, ZeroPadding2D, AveragePool
 from keras import backend as K
 
 """
-Neural Style Transfer with Keras 1.0.2
+Neural Style Transfer with Keras 1.0.6
 
 Uses the VGG-16 model as described in the Keras example below :
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
@@ -156,21 +156,21 @@ model = Sequential()
 model.add(first_layer)
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
 model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(64, 3, 3, activation='relu'))
+model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_2'))
 model.add(pooling_func())
 
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_1'))
 model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(128, 3, 3, activation='relu'))
+model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_2'))
 model.add(pooling_func())
 
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_1'))
 model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(256, 3, 3, activation='relu'))
+model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_2'))
 model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(256, 3, 3, activation='relu'))
+model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_3'))
 model.add(pooling_func())
 
 model.add(ZeroPadding2D((1, 1)))
@@ -178,7 +178,7 @@ model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_1'))
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_2'))
 model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_3'))
 model.add(pooling_func())
 
 model.add(ZeroPadding2D((1, 1)))
@@ -186,7 +186,7 @@ model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_1'))
 model.add(ZeroPadding2D((1, 1)))
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_2'))
 model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_3'))
 model.add(pooling_func())
 
 # load the weights of the VGG16 networks

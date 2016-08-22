@@ -20,7 +20,7 @@ from keras.layers.convolutional import Convolution2D, ZeroPadding2D, AveragePool
 from keras import backend as K
 
 """
-Neural Style Transfer with Keras 1.0.2
+Neural Style Transfer with Keras 1.0.6
 
 Uses the VGG-16 model as described in the Keras example below :
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
