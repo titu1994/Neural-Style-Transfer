@@ -1,53 +1,24 @@
 from scipy.misc import imread, imresize, imsave
 from scipy.optimize import fmin_l_bfgs_b
-from sklearn.preprocessing import normalize
 import numpy as np
 import time
-import os
 import argparse
-import h5py
-
-import theano
-theano.config.dnn.conv.algo_fwd='small'
-theano.config.dnn.conv.algo_bwd_filter='none'
-theano.config.dnn.conv.algo_bwd_data='none'
 
 from keras.models import Sequential
 from keras.layers.convolutional import Convolution2D, ZeroPadding2D, AveragePooling2D, MaxPooling2D
 from keras import backend as K
+from keras.utils.data_utils import get_file
 
 """
-Neural Style Transfer with Keras 1.0.2
+Neural Style Transfer with Keras 1.0.7
 
-Uses the VGG-16 model as described in the Keras example below :
+Based on:
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
 
-Note:
-
-Before running this script, download the weights for the VGG16 model at:
-https://drive.google.com/file/d/0Bz7KyqmuGsilT0J5dmRCM0ROVHc/view?usp=sharing
-(source: https://gist.github.com/baraldilorenzo/07d7802847aaad0a35d3)
-and make sure the variable `weights_path` in this script matches the location of the file.
-
 -----------------------------------------------------------------------------------------------------------------------
-
-Modifications to original implementation :
-- Uses 'conv5_2' output to measure content loss.
-Original paper utilizes 'conv4_2' output
-
-- Initial image used for image is the base image (instead of random noise image)
-This method tends to create better output images, however parameters have to be well tuned
-
-- Uses AveragePooling2D inplace of MaxPooling2D layers
-The original paper uses AveragePooling for better results
-
-- Style weight scaling
-- Rescaling of image to original dimensions, using lossy upscaling present in scipy.imresize()
-- Maintain aspect ratio of intermediate and final stage images, using lossy upscaling
-
-Note : Aspect Ratio is maintained only if image is not rescaled.
-       If image is rescaled to original dimensions then aspect ratio is maintained as well.
 """
+
+THEANO_WEIGHTS_NO_TOP = "https://github.com/titu1994/Neural-Style-Transfer/releases/download/v0.1.0/vgg16_no_top_neural_style.h5"
 
 parser = argparse.ArgumentParser(description='Neural style transfer with Keras.')
 parser.add_argument('base_image_path', metavar='base', type=str,
@@ -155,54 +126,30 @@ first_layer.set_input(input_tensor, shape=(3, 3, img_width, img_height))
 model = Sequential()
 model.add(first_layer)
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(64, 3, 3, activation='relu'))
+model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_2', border_mode='same'))
 model.add(pooling_func())
 
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_1'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(128, 3, 3, activation='relu'))
+model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_1', border_mode='same'))
+model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_2', border_mode='same'))
 model.add(pooling_func())
 
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_1'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(256, 3, 3, activation='relu'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(256, 3, 3, activation='relu'))
+model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_1', border_mode='same'))
+model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_2', border_mode='same'))
+model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_3', border_mode='same'))
 model.add(pooling_func())
 
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_1'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_2'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_1', border_mode='same'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_2', border_mode='same'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_3', border_mode='same'))
 model.add(pooling_func())
 
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_1'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_2'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_1', border_mode='same'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_2', border_mode='same'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_3', border_mode='same'))
 model.add(pooling_func())
 
-# load the weights of the VGG16 networks
-# (trained on ImageNet, won the ILSVRC competition in 2014)
-# note: when there is a complete match between your model definition
-# and your weight savefile, you can simply call model.load_weights(filename)
-assert os.path.exists(weights_path), 'Model weights not found (see "weights_path" variable in script).'
-f = h5py.File(weights_path)
-for k in range(f.attrs['nb_layers']):
-    if k >= len(model.layers):
-        # we don't look at the last (fully-connected) layers in the savefile
-        break
-    g = f['layer_{}'.format(k)]
-    weights = [g['param_{}'.format(p)] for p in range(g.attrs['nb_params'])]
-    model.layers[k].set_weights(weights)
-f.close()
+weights = get_file('vgg16_no_top_artistic_style.h5', THEANO_WEIGHTS_NO_TOP, cache_subdir='models')
+model.load_weights(weights)
 print('Model loaded.')
 
 # get the symbolic outputs of each "key" layer (we gave them unique names).
