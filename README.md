@@ -1,5 +1,7 @@
 # Neural Style Transfer
-Implementation of Neural Style Transfer from the paper <a href="http://arxiv.org/abs/1508.06576">A Neural Algorithm of Artistic Style</a> in Keras 1.0.6. <br>INetwork, implements and focuses on certain improvements suggested in <a href="http://arxiv.org/abs/1605.04603">Improving the Neural Algorithm of Artistic Style</a>. 
+Implementation of Neural Style Transfer from the paper <a href="http://arxiv.org/abs/1508.06576">A Neural Algorithm of Artistic Style</a> in Keras 1.0.6. 
+
+INetwork implements and focuses on certain improvements suggested in <a href="http://arxiv.org/abs/1605.04603">Improving the Neural Algorithm of Artistic Style</a>. 
 
 Uses the VGG-16 model as described in the Keras example below :
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
@@ -47,9 +49,9 @@ The original paper uses AveragePooling for better results, but this can be chang
 - Improvement 3.5 in paper : Correlation Chain
 
 These improvements are almost same as the Chain Blurred version, however a few differences exist : 
-- Chaining of gram matrix G is not used, as in the paper the author concludes that the results are often not major, and convergence speed is greatly diminished due to very complex gradients.
+- Blurring of gram matrix G is not used, as in the paper the author concludes that the results are often not major, and convergence speed is greatly diminished due to very complex gradients.
 - Only one layer for Content inference instead of using all the layers as suggested in the Chain Blurred version.
-- Does not use CNN MRF network, but apply these modifications to the original network.
+- Does not use CNN MRF network, but applies these modifications to the original algorithm.
 - All of this is applied on the VGG-16 network, not on the VGG-19 network. It is trivial to extrapolate this to the VGG-19 network. Simply adding the layer names to the `feature_layers` list will be sufficient to apply these changes to the VGG-19 network. 
 
 ## Windows Helper
@@ -102,10 +104,9 @@ For a 600x600 gram matrix, each epoch takes approximately 28-30 seconds. <br>
   
 # Issues
 - Due to usage of content image as initial image, output depends heavily on parameter tuning. <br> Test to see if the image is appropriate in the first 10 epochs, and if it is correct, increase the number of iterations to smoothen and improve the quality of the output.
-- Generated image is seen to be visually better if a small image size (small gram matrix size) is used.
 - Due to small gram sizes, the output image is usually small. 
 <br> To correct this, use the implementations of this paper "Image Super-Resolution Using Deep Convolutional Networks" http://arxiv.org/abs/1501.00092 to upscale the images with minimal loss.
-<br> Some implementations of the above paper for Windows : https://github.com/tanakamura/waifu2x-converter-cpp <br>
+<br> Some implementations of the above paper for Windows : https://github.com/lltcggie/waifu2x-caffe/releases <br>(Download the waifu2x-caffe.zip and extract, program supports English)
 - Implementation of Markov Random Field Regularization and Patch Match algorithm are currently being tested. MRFNetwork.py contains the basic code, which need to be integrated to use MRF and Patch Match as in Image Analogies paper <a href="http://arxiv.org/abs/1601.04589"> Combining Markov Random Fields and Convolutional Neural Networks for Image Synthesis </a>
-- Began implementation of improved Style Transfer algorithm in INetwork.py as suggested in the paper <a href="http://arxiv.org/abs/1605.04603">Improving the Neural Algorithm of Artistic Style</a>. Creates slightly better resulting images, at the cost of slightly more processing time (1-2 seconds).
+
 

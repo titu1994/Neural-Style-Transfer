@@ -1,23 +1,17 @@
 from scipy.misc import imread, imresize, imsave
 from scipy.optimize import fmin_l_bfgs_b
-from sklearn.preprocessing import normalize
 import numpy as np
 import time
 import os
 import argparse
 import h5py
 
-import theano
-theano.config.dnn.conv.algo_fwd='small'
-theano.config.dnn.conv.algo_bwd_filter='none'
-theano.config.dnn.conv.algo_bwd_data='none'
-
 from keras.models import Sequential
 from keras.layers.convolutional import Convolution2D, ZeroPadding2D, AveragePooling2D, MaxPooling2D
 from keras import backend as K
 
 """
-Neural Style Transfer with Keras 1.0.6
+Neural Style Transfer with Keras 1.0.7
 
 Uses the VGG-16 model as described in the Keras example below :
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
@@ -30,23 +24,6 @@ https://drive.google.com/file/d/0Bz7KyqmuGsilT0J5dmRCM0ROVHc/view?usp=sharing
 and make sure the variable `weights_path` in this script matches the location of the file.
 
 -----------------------------------------------------------------------------------------------------------------------
-
-Modifications to original implementation :
-- Uses 'conv5_2' output to measure content loss.
-Original paper utilizes 'conv4_2' output
-
-- Initial image used for image is the base image (instead of random noise image)
-This method tends to create better output images, however parameters have to be well tuned
-
-- Uses AveragePooling2D inplace of MaxPooling2D layers
-The original paper uses AveragePooling for better results
-
-- Style weight scaling
-- Rescaling of image to original dimensions, using lossy upscaling present in scipy.imresize()
-- Maintain aspect ratio of intermediate and final stage images, using lossy upscaling
-
-Note : Aspect Ratio is maintained only if image is not rescaled.
-       If image is rescaled to original dimensions then aspect ratio is maintained as well.
 """
 
 parser = argparse.ArgumentParser(description='Neural style transfer with Keras.')
