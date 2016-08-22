@@ -1,5 +1,5 @@
 # Neural Style Transfer
-Implementation of Neural Style Transfer from the paper <a href="http://arxiv.org/abs/1508.06576">A Neural Algorithm of Artistic Style</a> in Keras 1.0.6. 
+Implementation of Neural Style Transfer from the paper <a href="http://arxiv.org/abs/1508.06576">A Neural Algorithm of Artistic Style</a> in Keras 1.0.7. 
 
 INetwork implements and focuses on certain improvements suggested in <a href="http://arxiv.org/abs/1605.04603">Improving the Neural Algorithm of Artistic Style</a>. 
 
@@ -19,13 +19,9 @@ https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
 
 ## Weights (VGG 16)
 
-Before running this script, download the weights for the VGG16 model at:
-https://drive.google.com/file/d/0Bz7KyqmuGsilT0J5dmRCM0ROVHc/view?usp=sharing
-(source: https://gist.github.com/baraldilorenzo/07d7802847aaad0a35d3)
-and make sure the variable `weights_path` in this script matches the location of the file.
+Weights are now automatically downloaded and cached in the ~/.keras (Users/<username>/.keras for Windows) folder under the 'models' subdirectory. The weights are a smaller version which include only the Convolutional layers without Zero Padding Layers, thereby increasing the speed of execution.
 
-- Save the weights in the root folder
-- Save a copy of the weights in the root of the windows_helper folder (if you wish to use the Windows Helper tool to easily execute the script)
+Note: Requires the latest version of Keras (1.0.7+) due to use of new methods to get files and cache them into .keras directory.
 
 ## Modifications to original implementation :
 - Uses 'conv5_2' output to measure content loss.
@@ -39,7 +35,7 @@ Therefore their is a argument 'init_image' which can take the options 'content' 
 The original paper uses AveragePooling for better results, but this can be changed to use MaxPooling2D layers via the argument `--pool_type="max"`. By default AveragePooling is used, since if offers smoother images, but MaxPooling applys the style better in some cases (especially when style image is the "Starry Night" by Van Goph.
 
 - Style weight scaling
-- Rescaling of image to original dimensions, using lossy upscaling present in scipy.imresize()
+- Rescaling of image to original dimensions, using lossy upscaling present
 - Maintain aspect ratio of intermediate and final stage images, using lossy upscaling
 
 ## Improvements in INetwork
@@ -57,7 +53,6 @@ These improvements are almost same as the Chain Blurred version, however a few d
 ## Windows Helper
 It is a C# program written to more easily generate the arguments for the python script Network.py or INetwork.py
 
-- Make sure to save the vgg16_weights.h5 weights file in the windows_helper folder.
 - Upon first run, it will request the python path. Traverse your directory to locate the python.exe of your choice (Anaconda is tested)
 
 ### Benefits 
@@ -98,9 +93,9 @@ It is a C# program written to more easily generate the arguments for the python 
 # Speed
 On a 980M GPU, the time required for each epoch depends on mainly image size (gram matrix size) :
 
-For a 400x400 gram matrix, each epoch takes approximately 11-13 seconds. <br>
-For a 512x512 gram matrix, each epoch takes approximately 18-22 seconds. <br>
-For a 600x600 gram matrix, each epoch takes approximately 28-30 seconds. <br>
+For a 400x400 gram matrix, each epoch takes approximately 8-10 seconds. <br>
+For a 512x512 gram matrix, each epoch takes approximately 15-18 seconds. <br>
+For a 600x600 gram matrix, each epoch takes approximately 24-28 seconds. <br>
   
 # Issues
 - Due to usage of content image as initial image, output depends heavily on parameter tuning. <br> Test to see if the image is appropriate in the first 10 epochs, and if it is correct, increase the number of iterations to smoothen and improve the quality of the output.
