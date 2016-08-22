@@ -135,38 +135,26 @@ first_layer.set_input(input_tensor, shape=(3, 3, img_width, img_height))
 model = Sequential()
 model.add(first_layer)
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_2'))
+model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_2', border_mode='same'))
 model.add(pooling_func())
 
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_1'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_2'))
+model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_1', border_mode='same'))
+model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_2', border_mode='same'))
 model.add(pooling_func())
 
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_1'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_2'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_3'))
+model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_1', border_mode='same'))
+model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_2', border_mode='same'))
+model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_3', border_mode='same'))
 model.add(pooling_func())
 
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_1'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_2'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_3'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_1', border_mode='same'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_2', border_mode='same'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_3', border_mode='same'))
 model.add(pooling_func())
 
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_1'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_2'))
-model.add(ZeroPadding2D((1, 1)))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_3'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_1', border_mode='same'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_2', border_mode='same'))
+model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_3', border_mode='same'))
 model.add(pooling_func())
 
 # load the weights of the VGG16 networks
@@ -175,13 +163,17 @@ model.add(pooling_func())
 # and your weight savefile, you can simply call model.load_weights(filename)
 assert os.path.exists(weights_path), 'Model weights not found (see "weights_path" variable in script).'
 f = h5py.File(weights_path)
-for k in range(f.attrs['nb_layers']):
-    if k >= len(model.layers):
-        # we don't look at the last (fully-connected) layers in the savefile
-        break
+
+skip_layers = [0, 2, 5, 7, 10, 12, 14, 17, 19, 21, 24, 26, 28]  # Zero Padding layers
+current_layer = 1
+
+for k in range(31):  # The first 31 layers comprise of ZeroPadding, Conv and Pool layers
+    if k in skip_layers: continue
+
     g = f['layer_{}'.format(k)]
     weights = [g['param_{}'.format(p)] for p in range(g.attrs['nb_params'])]
-    model.layers[k].set_weights(weights)
+    model.layers[current_layer].set_weights(weights)
+    current_layer += 1
 f.close()
 print('Model loaded.')
 
