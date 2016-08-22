@@ -2,32 +2,26 @@ from scipy.misc import imread, imresize, imsave
 from scipy.optimize import fmin_l_bfgs_b
 import numpy as np
 import time
-import os
 import argparse
-import h5py
 
 from keras.models import Sequential
 from keras.layers.convolutional import Convolution2D, ZeroPadding2D, AveragePooling2D, MaxPooling2D
 from keras import backend as K
+from keras.utils.data_utils import get_file
 
 """
 Neural Style Transfer with Keras 1.0.7
 
-Uses the VGG-16 model as described in the Keras example below :
+Based on:
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
 
 Contains few improvements suggested in the paper Improving the Neural Algorithm of Artistic Style
 (http://arxiv.org/abs/1605.04603).
 
-Note:
-
-Before running this script, download the weights for the VGG16 model at:
-https://drive.google.com/file/d/0Bz7KyqmuGsilT0J5dmRCM0ROVHc/view?usp=sharing
-(source: https://gist.github.com/baraldilorenzo/07d7802847aaad0a35d3)
-and make sure the variable `weights_path` in this script matches the location of the file.
-
 -----------------------------------------------------------------------------------------------------------------------
 """
+
+THEANO_WEIGHTS_NO_TOP = "https://github.com/titu1994/Neural-Style-Transfer/releases/download/v0.1.0/vgg16_no_top_neural_style.h5"
 
 parser = argparse.ArgumentParser(description='Neural style transfer with Keras.')
 parser.add_argument('base_image_path', metavar='base', type=str,
@@ -157,24 +151,8 @@ model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_2', border_mod
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_3', border_mode='same'))
 model.add(pooling_func())
 
-# load the weights of the VGG16 networks
-# (trained on ImageNet, won the ILSVRC competition in 2014)
-# note: when there is a complete match between your model definition
-# and your weight savefile, you can simply call model.load_weights(filename)
-assert os.path.exists(weights_path), 'Model weights not found (see "weights_path" variable in script).'
-f = h5py.File(weights_path)
-
-skip_layers = [0, 2, 5, 7, 10, 12, 14, 17, 19, 21, 24, 26, 28]  # Zero Padding layers
-current_layer = 1
-
-for k in range(31):  # The first 31 layers comprise of ZeroPadding, Conv and Pool layers
-    if k in skip_layers: continue
-
-    g = f['layer_{}'.format(k)]
-    weights = [g['param_{}'.format(p)] for p in range(g.attrs['nb_params'])]
-    model.layers[current_layer].set_weights(weights)
-    current_layer += 1
-f.close()
+weights = get_file('vgg16_no_top_artistic_style.h5', THEANO_WEIGHTS_NO_TOP, cache_subdir='models')
+model.load_weights(weights)
 print('Model loaded.')
 
 # get the symbolic outputs of each "key" layer (we gave them unique names).
