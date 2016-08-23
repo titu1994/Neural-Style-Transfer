@@ -49,7 +49,6 @@ args = parser.parse_args()
 base_image_path = args.base_image_path
 style_reference_image_path = args.style_reference_image_path
 result_prefix = args.result_prefix
-weights_path = r"vgg16_weights.h5"
 
 def strToBool(v):
     return v.lower() in ("true", "yes", "t", "1")
