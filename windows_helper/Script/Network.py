@@ -1,4 +1,4 @@
-from scipy.misc import imread, imresize, imsave
+from scipy.misc import imread, imresize, imsave, fromimage, toimage
 from scipy.optimize import fmin_l_bfgs_b
 import numpy as np
 import time
@@ -41,18 +41,19 @@ parser.add_argument("--content_layer", dest="content_layer", default="conv5_2", 
 parser.add_argument("--init_image", dest="init_image", default="content", type=str, help="Initial image used to generate the final image. Options are 'content' or 'noise")
 parser.add_argument("--pool_type", dest="pool", default="max", type=str, help='Pooling type. Can be "ave" for average pooling'
                                                                               ' or "max" for max pooling ')
+parser.add_argument('--preserve_color', dest='color', default="False", type=str, help='Preserve original color in image')
 
 args = parser.parse_args()
 base_image_path = args.base_image_path
 style_reference_image_path = args.style_reference_image_path
 result_prefix = args.result_prefix
-weights_path = r"vgg16_weights.h5"
 
 def strToBool(v):
     return v.lower() in ("true", "yes", "t", "1")
 
 rescale_image = strToBool(args.rescale_image)
 maintain_aspect_ratio = strToBool(args.maintain_aspect_ratio)
+preserve_color = strToBool(args.color)
 
 # these are the weights of the different loss components
 total_variation_weight = args.tv_weight
@@ -94,6 +95,13 @@ def deprocess_image(x):
     x = x[:, :, ::-1]
     x = np.clip(x, 0, 255).astype('uint8')
     return x
+
+# util function to preserve image color
+def original_color_transform(content, generated):
+    generated = fromimage(toimage(generated), mode='YCbCr') # Convert to YCbCr color space
+    generated[:, :, 1:] = content[: , :, 1:] # Generated CbCr = Content CbCr
+    generated = fromimage(toimage(generated, mode='YCbCr'), mode='RGB') # Convert to RGB color space
+    return generated
 
 # Decide pooling function
 pooltype = str(args.pool).lower()
@@ -269,6 +277,11 @@ else:
     x[0, 1, :, :] -= 116.779
     x[0, 2, :, :] -= 123.68
 
+# We require original image if we are to preserve color in YCbCr mode
+if preserve_color:
+    content = imread(base_image_path, mode="YCbCr")
+    content = imresize(content, (img_width, img_height))
+
 num_iter = args.num_iter
 for i in range(num_iter):
     print('Start of iteration', (i+1))
@@ -279,6 +292,9 @@ for i in range(num_iter):
     print('Current loss value:', min_val)
     # save current generated image
     img = deprocess_image(x.copy().reshape((3, img_width, img_height)))
+
+    if preserve_color and content is not None:
+        img = original_color_transform(content, img)
 
     if (maintain_aspect_ratio) & (not rescale_image):
         img_ht = int(img_width * aspect_ratio)

@@ -71,6 +71,7 @@ It is a C# program written to more easily generate the arguments for the python 
 --num_iter : Number of iterations. Default is 10. Test the output with 10 iterations, and increase to improve results.
 --init_image : Can be "content" or "noise". Default is "content", since it reduces reproduction noise.
 --pool_type : Pooling type. AveragePooling ("ave") is default, but smoothens the image too much. For sharper images, use MaxPooling ("max").
+--preserve_color : Preserves the original color space of the content image, while applying style. Post processing technique on final image.
 
 --content_weight : Weightage given to content in relation to style. Default if 0.025
 --style_weight : Weightage given to style in relation to content. Default is 1. 
@@ -91,7 +92,7 @@ It is a C# program written to more easily generate the arguments for the python 
 - Keras 
 - CUDA (GPU)
 - CUDNN (GPU)
-- Scipy
+- Scipy + PIL
 - Numpy
 
 # Speed
