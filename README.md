@@ -3,8 +3,6 @@ Implementation of Neural Style Transfer from the paper <a href="http://arxiv.org
 
 INetwork implements and focuses on certain improvements suggested in <a href="http://arxiv.org/abs/1605.04603">Improving the Neural Algorithm of Artistic Style</a>. 
 
-Both networks allow for preserving original color space of the content image, as described in the paper <a href="http://arxiv.org/abs/1606.05897">Preserving Color in Neural Artistic Style Transfer</a>.
-
 Uses the VGG-16 model as described in the Keras example below :
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
 
