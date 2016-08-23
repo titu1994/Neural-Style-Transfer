@@ -16,6 +16,9 @@ https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Tsukiyomi_INetwork_at_iteration_50.jpg?raw=true" width=90% height=450>
 <br><br> DeepArt.io result (1000 iterations and using improvements such as Markov Random Field Regularization) <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.png" width=90% height=450>
+<br><br> For reference, the same image with Color Preservation 
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Tsukiyomi_color_preserved.jpg?raw=true" width=90% height=450>
+<br><br>
 
 ## Guide
 
