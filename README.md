@@ -17,6 +17,10 @@ https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
 <br><br> DeepArt.io result (1000 iterations and using improvements such as Markov Random Field Regularization) <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.png" width=90% height=450>
 
+## Guide
+
+See the <a href="https://github.com/titu1994/Neural-Style-Transfer/blob/master/Guide.md">guide</a> for details regarding how to use the script to acheive the best results
+
 ## Weights (VGG 16)
 
 Weights are now automatically downloaded and cached in the ~/.keras (Users/<username>/.keras for Windows) folder under the 'models' subdirectory. The weights are a smaller version which include only the Convolutional layers without Zero Padding Layers, thereby increasing the speed of execution.
