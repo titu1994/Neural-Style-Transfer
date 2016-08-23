@@ -28,7 +28,7 @@ parser.add_argument('style_reference_image_path', metavar='ref', type=str,
 parser.add_argument('result_prefix', metavar='res_prefix', type=str,
                     help='Prefix for the saved results.')
 
-parser.add_argument("--image_size", dest="img_size", default=512, type=int, help='Output Image size')
+parser.add_argument("--image_size", dest="img_size", default=400, type=int, help='Output Image size')
 parser.add_argument("--content_weight", dest="content_weight", default=0.025, type=float, help="Weight of content") # 0.025
 parser.add_argument("--style_weight", dest="style_weight", default=1, type=float, help="Weight of content") # 1.0
 parser.add_argument("--style_scale", dest="style_scale", default=1.0, type=float, help="Scale the weightage of the style") # 1, 0.5, 2
@@ -39,7 +39,7 @@ parser.add_argument("--rescale_method", dest="rescale_method", default="bilinear
 parser.add_argument("--maintain_aspect_ratio", dest="maintain_aspect_ratio", default="True", type=str, help="Maintain aspect ratio of image")
 parser.add_argument("--content_layer", dest="content_layer", default="conv5_2", type=str, help="Optional 'conv4_2'")
 parser.add_argument("--init_image", dest="init_image", default="content", type=str, help="Initial image used to generate the final image. Options are 'content' or 'noise")
-parser.add_argument("--pool_type", dest="pool", default="ave", type=str, help='Pooling type. Can be "ave" for average pooling'
+parser.add_argument("--pool_type", dest="pool", default="max", type=str, help='Pooling type. Can be "ave" for average pooling'
                                                                               ' or "max" for max pooling ')
 
 args = parser.parse_args()
