@@ -18,7 +18,8 @@ https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.png" width=90% height=450>
 <br><br> For reference, the same image with Color Preservation 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Tsukiyomi_color_preserved.jpg?raw=true" width=90% height=450>
-<br><br>
+<br><br> As an example, here are two images of the Sagano Bamboo Forest with the pattened-leaf style, with and without color preservation <br>
+<img src"https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Fores.jpg?raw=true" height=450 width=45%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Forest-No-Color-Preservation.jpg?raw=true" height=450 width=45%>
 
 ## Guide
 
