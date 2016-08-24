@@ -34,22 +34,6 @@ and make sure the variable `weights_path` in this script matches the location of
 
 -----------------------------------------------------------------------------------------------------------------------
 
-Modifications to original implementation :
-- Uses 'conv5_2' output to measure content loss.
-Original paper utilizes 'conv4_2' output
-
-- Initial image used for image is the base image (instead of random noise image)
-This method tends to create better output images, however parameters have to be well tuned
-
-- Uses AveragePooling2D inplace of MaxPooling2D layers
-The original paper uses AveragePooling for better results
-
-- Style weight scaling
-- Rescaling of image to original dimensions, using lossy upscaling present in scipy.imresize()
-- Maintain aspect ratio of intermediate and final stage images, using lossy upscaling
-
-Note : Aspect Ratio is maintained only if image is not rescaled.
-       If image is rescaled to original dimensions then aspect ratio is maintained as well.
 """
 
 
