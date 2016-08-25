@@ -32,7 +32,7 @@ parser.add_argument("--image_size", dest="img_size", default=400, type=int, help
 parser.add_argument("--content_weight", dest="content_weight", default=0.025, type=float, help="Weight of content") # 0.025
 parser.add_argument("--style_weight", dest="style_weight", default=1, type=float, help="Weight of content") # 1.0
 parser.add_argument("--style_scale", dest="style_scale", default=1.0, type=float, help="Scale the weightage of the style") # 1, 0.5, 2
-parser.add_argument("--total_variation_weight", dest="tv_weight", default=1e-5, type=float, help="Total Variation in the Weights") # 1.0
+parser.add_argument("--total_variation_weight", dest="tv_weight", default=8.5e-5, type=float, help="Total Variation in the Weights") # 1.0
 parser.add_argument("--num_iter", dest="num_iter", default=10, type=int, help="Number of iterations")
 parser.add_argument("--rescale_image", dest="rescale_image", default="True", type=str, help="Rescale image after execution to original dimentions")
 parser.add_argument("--rescale_method", dest="rescale_method", default="bilinear", type=str, help="Rescale image algorithm")
@@ -283,13 +283,18 @@ if preserve_color:
     content = imresize(content, (img_width, img_height))
 
 num_iter = args.num_iter
+prev_min_val = np.inf
+
 for i in range(num_iter):
     print('Start of iteration', (i+1))
     start_time = time.time()
 
-    x, min_val, info = fmin_l_bfgs_b(evaluator.loss, x.flatten(),
-                                     fprime=evaluator.grads, maxfun=20)
-    print('Current loss value:', min_val)
+    x, min_val, info = fmin_l_bfgs_b(evaluator.loss, x.flatten(), fprime=evaluator.grads, maxfun=20)
+
+    improvement = (prev_min_val - min_val) / prev_min_val * 100
+
+    print('Current loss value:', min_val, " Improvement : %0.3f" % (improvement), "%")
+    prev_min_val = min_val
     # save current generated image
     img = deprocess_image(x.copy().reshape((3, img_width, img_height)))
 
