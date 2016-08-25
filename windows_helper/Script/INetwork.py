@@ -45,6 +45,7 @@ parser.add_argument("--init_image", dest="init_image", default="content", type=s
 parser.add_argument("--pool_type", dest="pool", default="max", type=str, help='Pooling type. Can be "ave" for average pooling'
                                                                               ' or "max" for max pooling ')
 parser.add_argument('--preserve_color', dest='color', default="False", type=str, help='Preserve original color in image')
+parser.add_argument('--min_improvement', default=0.0, type=float, help='Defines minimum improvement required to continue script')
 
 args = parser.parse_args()
 base_image_path = args.base_image_path
@@ -305,15 +306,17 @@ if preserve_color:
 num_iter = args.num_iter
 prev_min_val = np.inf
 
+improvement_threshold = float(args.min_improvement)
+
 for i in range(num_iter):
-    print('Start of iteration', (i+1))
+    print("Start of iteration", (i+1))
     start_time = time.time()
 
     x, min_val, info = fmin_l_bfgs_b(evaluator.loss, x.flatten(), fprime=evaluator.grads, maxfun=20)
 
     improvement = (prev_min_val - min_val) / prev_min_val * 100
 
-    print('Current loss value:', min_val, " Improvement : %0.3f" % (improvement), "%")
+    print("Current loss value:", min_val, " Improvement : %0.3f" % (improvement), "%")
     prev_min_val = min_val
     # save current generated image
     img = deprocess_image(x.copy().reshape((3, img_width, img_height)))
@@ -330,8 +333,13 @@ for i in range(num_iter):
         print("Rescaling Image to (%d, %d)" % (img_WIDTH, img_HEIGHT))
         img = imresize(img, (img_WIDTH, img_HEIGHT), interp=args.rescale_method)
 
-    fname = result_prefix + '_at_iteration_%d.png' % (i+1)
+    fname = result_prefix + "_at_iteration_%d.png" % (i+1)
     imsave(fname, img)
     end_time = time.time()
-    print('Image saved as', fname)
-    print('Iteration %d completed in %ds' % (i+1, end_time - start_time))
+    print("Image saved as", fname)
+    print("Iteration %d completed in %ds" % (i+1, end_time - start_time))
+
+    if improvement_threshold is not 0.0:
+        if improvement < improvement_threshold and improvement is not np.nan:
+            print("Improvement (%f) is less than improvement threshold (%f). Early stopping script." % (improvement, improvement_threshold))
+            exit()
