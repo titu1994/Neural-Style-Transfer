@@ -71,6 +71,26 @@ It is a C# program written to more easily generate the arguments for the python 
 - Easy parameter selection
 - Easily generate argument list, if command line execution is preferred. 
 
+## Usage
+Both Network.py and INetwork.py have similar usage styles, and share all parameters.
+
+Network.py
+```
+python network.py "/path/to/content image" "path/to/style image" "result prefix or /path/to/result prefix"
+```
+
+INetwork.py
+```
+python inetwork.py "/path/to/content image" "path/to/style image" "result prefix or /path/to/result prefix"
+```
+
+There are various parameters discussed below which can be modified to alter the output image. Note that many parameters require the command to be enclosed in double quotes ( " " ).
+
+Example:
+```
+python inetwork.py "/path/to/content image" "path/to/style image" "result prefix or /path/to/result prefix" --preserve_color "True" --pool_type "ave" --rescale_method "bicubic" --content_layer "conv4_2"
+```
+
 ## Parameters
 ```
 --image_size : Allows to set the Gram Matrix size. Default is 400 x 400, since it produces good results fast. 
