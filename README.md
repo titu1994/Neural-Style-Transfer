@@ -41,8 +41,8 @@ Original paper utilizes 'conv4_2' output
 This method tends to create better output images, however parameters have to be well tuned.
 Therefore their is a argument 'init_image' which can take the options 'content' or 'noise'
 
-- Uses AveragePooling2D inplace of MaxPooling2D layers
-The original paper uses AveragePooling for better results, but this can be changed to use MaxPooling2D layers via the argument `--pool_type="max"`. By default AveragePooling is used, since if offers smoother images, but MaxPooling applys the style better in some cases (especially when style image is the "Starry Night" by Van Goph.
+- Can use AveragePooling2D inplace of MaxPooling2D layers
+The original paper uses AveragePooling for better results, but this can be changed to use MaxPooling2D layers via the argument `--pool_type="max"`. By default MaxPoooling is used, since if offers sharper images, but AveragePooling applys the style better in some cases (especially when style image is the "Starry Night" by Van Goph.
 
 - Style weight scaling
 - Rescaling of image to original dimensions, using lossy upscaling present
@@ -96,15 +96,14 @@ python inetwork.py "/path/to/content image" "path/to/style image" "result prefix
 --image_size : Allows to set the Gram Matrix size. Default is 400 x 400, since it produces good results fast. 
 --num_iter : Number of iterations. Default is 10. Test the output with 10 iterations, and increase to improve results.
 --init_image : Can be "content" or "noise". Default is "content", since it reduces reproduction noise.
---pool_type : Pooling type. AveragePooling ("ave") is default, but smoothens the image too much. For sharper images, use MaxPooling ("max").
---preserve_color : Preserves the original color space of the content image, while applying style. Post processing technique on final image.
---min_improvement : Sets the minimum improvement required to continue training. Default is 0.0, indicating no minimum threshold. Advised values are 0.05 or 0.01.
-
+--pool_type : Pooling type. MaxPooling ("max") is default. For smoother images, use AveragePooling ("ave").
+--preserve_color : Preserves the original color space of the content image, while applying only style. Post processing technique on final image, therefore does not harm quality of style.
+--min_improvement : Sets the minimum improvement required to continue training. Default is 0.0, indicating no minimum threshold. Advised values are 0.05 or 0.01
 
 --content_weight : Weightage given to content in relation to style. Default if 0.025
 --style_weight : Weightage given to style in relation to content. Default is 1. 
 --style_scale : Scales the style_weight. Default is 1. 
---total_variation_weight : Regularization factor. Smaller values tend to produce crisp images, but 0 is not useful. Default = 1E-5
+--total_variation_weight : Regularization factor. Smaller values tend to produce crisp images, but 0 is not useful. Default = 8.5E-5
 
 --rescale_image : Rescale image to original dimensions after each iteration. (Bilinear upscaling)
 --rescale_method : Rescaling algorithm. Default is bilinear. Options are nearest, bilinear, bicubic and cubic.
