@@ -98,6 +98,8 @@ python inetwork.py "/path/to/content image" "path/to/style image" "result prefix
 --init_image : Can be "content" or "noise". Default is "content", since it reduces reproduction noise.
 --pool_type : Pooling type. AveragePooling ("ave") is default, but smoothens the image too much. For sharper images, use MaxPooling ("max").
 --preserve_color : Preserves the original color space of the content image, while applying style. Post processing technique on final image.
+--min_improvement : Sets the minimum improvement required to continue training. Default is 0.0, indicating no minimum threshold. Advised values are 0.05 or 0.01.
+
 
 --content_weight : Weightage given to content in relation to style. Default if 0.025
 --style_weight : Weightage given to style in relation to content. Default is 1. 
