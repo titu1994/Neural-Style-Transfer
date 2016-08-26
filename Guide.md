@@ -14,9 +14,9 @@ There are various parameters in both Network.py and INetwork.py scripts that can
 ## Tips for Total Variation Regularization
 Total Variation Weight has a subtle but important role to play. The implementation in keras examples states to use tv_weight as 1, but I found that the images are smoothed to an extreme degree, and the results are not appealing. After several tests, I have found a few values which are very suitable to certain cases :
 
-1) If the content and style have similar colour schemes, use tv_weight = 1E-04<br>
-2) If the content and style have at least one major color similar, use tv_weight = 5E-04<br>
-3) If the content and style have the same background color, use tv_weight = 8E-04<br>
+1) If the content and style have similar colour schemes, use tv_weight = 1E-5<br>
+2) If the content and style have at least one major color similar, use tv_weight = 5E-05<br>
+3) If the content and style have the same background color, use tv_weight = 8E-05<br>
 4) If the content and style do not share same color palette at all, use tv_weight = 5E-05<br>
 5) If you want relatively crisp images without worrying about color similarity, use tv_weight = 8.5E-05. It works well almost 90 % of the time.<br>
 6) If style image is "The Starry Night", use tv_weight = 1E-04 or 1E-05. Other values produce distortions and unpleasant visual artifacts in most cases.<br>
