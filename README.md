@@ -1,10 +1,12 @@
 # Neural Style Transfer
-Implementation of Neural Style Transfer from the paper <a href="http://arxiv.org/abs/1508.06576">A Neural Algorithm of Artistic Style</a> in Keras 1.0.7. 
+Implementation of Neural Style Transfer from the paper <a href="http://arxiv.org/abs/1508.06576">A Neural Algorithm of Artistic Style</a> in Keras 1.0.8. 
 
 INetwork implements and focuses on certain improvements suggested in <a href="http://arxiv.org/abs/1605.04603">Improving the Neural Algorithm of Artistic Style</a>. 
 
 Uses the VGG-16 model as described in the Keras example below :
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
+
+Uses weights from Keras Deep Learning Models : https://github.com/fchollet/deep-learning-models
 
 # Examples
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=45% height=300> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=45% height=300>
@@ -115,10 +117,10 @@ python inetwork.py "/path/to/content image" "path/to/style image" "result prefix
 ![Alt Text](https://raw.githubusercontent.com/titu1994/Neural-Style-Transfer/master/images/Blue%20Moon%20Lake.gif)
 
 # Requirements 
-- Theano
+- Theano / Tensorflow
 - Keras 
-- CUDA (GPU)
-- CUDNN (GPU)
+- CUDA (GPU) -- Recommended
+- CUDNN (GPU) -- Recommended 
 - Scipy + PIL
 - Numpy
 
