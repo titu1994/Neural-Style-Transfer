@@ -274,6 +274,7 @@ if "content" in args.init_image:
     x = preprocess_image(base_image_path, True)
 else:
     x = np.random.uniform(0, 255, (1, 3, img_width, img_height))
+    x = x[:, :, ::-1]
     x[0, 0, :, :] -= 103.939
     x[0, 1, :, :] -= 116.779
     x[0, 2, :, :] -= 123.68
