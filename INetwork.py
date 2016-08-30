@@ -22,6 +22,7 @@ Contains few improvements suggested in the paper Improving the Neural Algorithm 
 """
 
 THEANO_WEIGHTS_NO_TOP = "https://github.com/titu1994/Neural-Style-Transfer/releases/download/v0.1.0/vgg16_no_top_neural_style.h5"
+TENSORFLOW_WEIGHTS_NO_TOP = "https://github.com/titu1994/Neural-Style-Transfer/releases/download/v0.1.4.1/vgg16_no_top_artistic_style_tensorflow.h5"
 
 parser = argparse.ArgumentParser(description='Neural style transfer with Keras.')
 parser.add_argument('base_image_path', metavar='base', type=str,
@@ -82,17 +83,22 @@ def preprocess_image(image_path, load_dims=False):
         aspect_ratio = img_HEIGHT / img_WIDTH
 
     img = imresize(img, (img_width, img_height))
-    img = img[:, :, ::-1].astype('float64')
+    img = img[:, :, ::-1].astype('float32')
     img[:, :, 0] -= 103.939
     img[:, :, 1] -= 116.779
     img[:, :, 2] -= 123.68
-    img = img.transpose((2, 0, 1)).astype('float64')
+
+    if K.image_dim_ordering() == "th":
+        img = img.transpose((2, 0, 1)).astype('float32')
+
     img = np.expand_dims(img, axis=0)
     return img
 
 # util function to convert a tensor into a valid image
 def deprocess_image(x):
-    x = x.transpose((1, 2, 0))
+    if K.image_dim_ordering() == "th":
+        x = x.transpose((1, 2, 0))
+
     x[:, :, 0] += 103.939
     x[:, :, 1] += 116.779
     x[:, :, 2] += 123.68
@@ -102,7 +108,7 @@ def deprocess_image(x):
 
 # util function to preserve image color
 def original_color_transform(content, generated):
-    generated = fromimage(toimage(generated), mode='YCbCr') # Convert to YCbCr color space
+    generated = fromimage(toimage(generated, mode='RGB'), mode='YCbCr') # Convert to YCbCr color space
     generated[:, :, 1:] = content[: , :, 1:] # Generated CbCr = Content CbCr
     generated = fromimage(toimage(generated, mode='YCbCr'), mode='RGB') # Convert to RGB color space
     return generated
@@ -124,16 +130,24 @@ base_image = K.variable(preprocess_image(base_image_path, True))
 style_reference_image = K.variable(preprocess_image(style_reference_image_path))
 
 # this will contain our generated image
-combination_image = K.placeholder((1, 3, img_width, img_height))
+if K.image_dim_ordering() == 'th':
+    combination_image = K.placeholder((1, 3, img_width, img_height))
+else:
+    combination_image = K.placeholder((1, img_width, img_height, 3))
 
 # combine the 3 images into a single Keras tensor
 input_tensor = K.concatenate([base_image,
                               style_reference_image,
                               combination_image], axis=0)
 
+if K.image_dim_ordering() == "th":
+    shape = (3, 3, img_width, img_height)
+else:
+    shape = (3, img_width, img_height, 3)
+
 # build the VGG16 network with our 3 images as input
 first_layer = ZeroPadding2D((1, 1))
-first_layer.set_input(input_tensor, shape=(3, 3, img_width, img_height))
+first_layer.set_input(input_tensor, shape=shape)
 
 model = Sequential()
 model.add(first_layer)
@@ -160,7 +174,11 @@ model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_2', border_mod
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_3', border_mode='same'))
 model.add(pooling_func())
 
-weights = get_file('vgg16_no_top_artistic_style.h5', THEANO_WEIGHTS_NO_TOP, cache_subdir='models')
+if K.image_dim_ordering() == "th":
+    weights = get_file('vgg16_no_top_artistic_style.h5', THEANO_WEIGHTS_NO_TOP, cache_subdir='models')
+else:
+    weights = get_file('vgg16_no_top_artistic_style_tensorflow.h5', TENSORFLOW_WEIGHTS_NO_TOP, cache_subdir='models')
+
 model.load_weights(weights)
 print('Model loaded.')
 
@@ -202,8 +220,12 @@ def content_loss(base, combination):
 # designed to keep the generated image locally coherent
 def total_variation_loss(x):
     assert K.ndim(x) == 4
-    a = K.square(x[:, :, :img_width-1, :img_height-1] - x[:, :, 1:, :img_height-1])
-    b = K.square(x[:, :, :img_width-1, :img_height-1] - x[:, :, :img_width-1, 1:])
+    if K.image_dim_ordering() == 'th':
+        a = K.square(x[:, :, :img_width - 1, :img_height - 1] - x[:, :, 1:, :img_height - 1])
+        b = K.square(x[:, :, :img_width - 1, :img_height - 1] - x[:, :, :img_width - 1, 1:])
+    else:
+        a = K.square(x[:, :img_width - 1, :img_height - 1, :] - x[:, 1:, :img_height - 1, :])
+        b = K.square(x[:, :img_width - 1, :img_height - 1, :] - x[:, :img_width - 1, 1:, :])
     return K.sum(K.pow(a + b, 1.25))
 
 feature_layers = ['conv1_1', 'conv1_2', 'conv2_1', 'conv2_2', 'conv3_1', 'conv3_2', 'conv3_3',
@@ -250,7 +272,10 @@ else:
 
 f_outputs = K.function([combination_image], outputs)
 def eval_loss_and_grads(x):
-    x = x.reshape((1, 3, img_width, img_height))
+    if K.image_dim_ordering() == 'th':
+        x = x.reshape((1, 3, img_width, img_height))
+    else:
+        x = x.reshape((1, img_width, img_height, 3))
     outs = f_outputs([x])
     loss_value = outs[0]
     if len(outs[1:]) == 1:
@@ -293,11 +318,14 @@ assert args.init_image in ["content", "noise"] , "init_image must be one of ['co
 if "content" in args.init_image:
     x = preprocess_image(base_image_path, True)
 else:
-    x = np.random.uniform(0, 255, (1, 3, img_width, img_height))
-    x = x[:, :, ::-1]
-    x[0, 0, :, :] -= 103.939
-    x[0, 1, :, :] -= 116.779
-    x[0, 2, :, :] -= 123.68
+    x = np.random.uniform(0, 255, (1, img_width, img_height, 3))
+    x = x[:, :, :, ::-1]
+    x[0, :, :, 0] -= 103.939
+    x[0, :, :, 1] -= 116.779
+    x[0, :, :, 2] -= 123.68
+
+    if K.image_dim_ordering() == "th":
+        x = x.transpose((0, 3, 1, 2))
 
 # We require original image if we are to preserve color in YCbCr mode
 if preserve_color:
