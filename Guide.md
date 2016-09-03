@@ -96,8 +96,8 @@ Next go to this <a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">site</a>, w
 - Use : `pip install X.whl`, replacing X with the full name of each of the downloaded files. Note that the .whl extention is necessary.
 - Finally install the all important libraries : `pip install theano keras`
 
-There is one last step, and that is setting up the all important .theanorc.txt file in the user directory.
-The path will be <b>C:\Users\YOUR_USERNAME\\.theanorc.txt </b>
+There is one last step, and that is setting up the all important .theanorc.txt file in the user directory. 
+The path will be <b>C:\Users\YOUR_USERNAME\\.theanorc.txt </b> Create a file with the name ".theanorc.txt" in this path.
 
 It's contents need to be : 
 ```
