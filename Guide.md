@@ -11,6 +11,13 @@ There are various parameters in both Network.py and INetwork.py scripts that can
 - Always use init_image as "content" and not "noise". "noise" will produce a very grainy image
 - Style scale simply multiplies the scale with the style weight. Keeping it constant at 1 and modifying the style weight is sufficient in achieving good results.
 
+## Examples 
+A folder with several example stylized images : <a href="https://goo.gl/photos/joqqjcquRMu8uuZp6">Google Photos - Neural Style Transfer Folder </a>
+
+<a href="https://goo.gl/photos/joqqjcquRMu8uuZp6"><img src="https://lh3.googleusercontent.com/pyjUXvpjoUn8bMmOgiPYt6UBnyMLduJ_H2lDEA2pBqAhPRo2WtargtJZf7AS_2BkD4u1_o84POAnoiIGekD7JeIZbyWjEvmmcEUPiisDdqYHRuumyfPwbjNJMIRBSkCVOa8e2Zevici-pDyO2Pojx62tIYrTDhSzZkQUAHZV8URVDAVZGKNf4OMP9VDimaZoYkmZEWr3LrL3347v1gOcYWOpOX5XthXBXFpxf33aFNoCUFP7pRKflsic2_tXccQ2A9HkUzN_OkLxfgM1vJcuiszvrn2HFtmJE_gLr6WZlbgIjT5hI-MzmcyGWtbK1SN_g-988499lC-ojj5ZEnmLRfXhCl2oYcLzqjmRyQGDdeu0OFhc4EdztN5Ral5N_2OxanK2uXYsE1ZwCBumAsd01UCw_DdPc-LKbZs4noP5GLskcr2KshO8ydIXpM9X_OZIv41AalePJB06a1Oiq2lQsoT6HpIqpGQZ_OCuWXQBM5yRO-gY2EWwO5xlK5ilqXbC9IK2T-RVoc1ug8PMRiH_jAcRPGLVSiT70nz3f-taJRv4FeNaxzKEvEktB8gn2Q28nHyWoV7PBiGihYBvi14c38l5wiR8xFcRxKTRWQi01FHLTEfiCA=w711-h400-no" width=90%></a>
+
+<a href="https://goo.gl/photos/joqqjcquRMu8uuZp6"><img src="https://lh3.googleusercontent.com/3qmUFEHa74d0qhtsbwxhHnbJNxAqgZAOHdhKTggbrsQ_xSyeKhZAtmccyUEM1R-BDwXX8rMOnnNGtxej-DWYgvg6_qN18PR5i8lZBKrRgsKQwIvvZ9dNHAJ5jU9RY6bMpUU3GXXwff_db2D6yqA6csrzd_TXV_zGFwhAAWYGDWYm3vf2GkwUOhuV_Pw8eXskOPKpChZHNHkBC4GAhrgFMtu6uodaYdyQg5uLgT-UU-iNWURPgfzeNn9yWpH4HbFnAeYd2qStxW3Z1aobRBcgurdE_KsODYxPQnA2vyBBAni6Gq3G9AEZChgmNWB1OM2jZX3YN9JDbC_kza5JPV04ICEm3cwco2GgGScg6Jjy_1vzxusl-u4HfqzyKVAe7a44mrDd-FWhpeu9C7GFI_yNlS5bTH5vsOMDY76Bta7_j4l9sXEzy89ZQTR_2IWBvh-3a_UIxeTnlpWgwdYDXweuC9LQVnr-gspFHVnQl6de5OP0lotjAJZ9_GYVEIrHEy6YBRZ-urciffEuHBCtzjJpdapFdMI-uct77uIEL--vQ31WTZ9y6tLa8EFQpc66Rmx5fP3Z2C2kj_1dma79jBGnVff0WiIUq0bDKvvw1F-Sy69pz7Dy3w=w600-h400-no" width=90%></a>
+
 ## Tips for Total Variation Regularization
 Total Variation Weight has a subtle but important role to play. The implementation in keras examples states to use tv_weight as 1, but I found that the images are smoothed to an extreme degree, and the results are not appealing. After several tests, I have found a few values which are very suitable to certain cases :
 
