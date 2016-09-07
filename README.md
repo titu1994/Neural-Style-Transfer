@@ -8,6 +8,12 @@ https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
 
 Uses weights from Keras Deep Learning Models : https://github.com/fchollet/deep-learning-models
 
+## Guide
+
+See the <a href="https://github.com/titu1994/Neural-Style-Transfer/blob/master/Guide.md">guide</a> for details regarding how to use the script to acheive the best results
+
+It also explains how to setup Theano (with GPU support) on both Windows and Linux. Theano on Windows is a long and tedious process, so the guide can speed up the process by simply letting you finish all the steps in the correct order, so as not to screw up the finicky Theano + Windows setup.
+
 # Examples
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=45% height=300> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=45% height=300>
 <br> Result after 50 iterations (Average Pooling) <br>
@@ -24,10 +30,6 @@ Uses weights from Keras Deep Learning Models : https://github.com/fchollet/deep-
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/sagano_bamboo_forest.jpg?raw=true" height=450 width=45%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/patterned_leaves.jpg?raw=true" height=450 width=45%>
 <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Fores.jpg?raw=true" height=450 width=45%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Forest-No-Color-Preservation.jpg?raw=true" height=450 width=45%>
-
-## Guide
-
-See the <a href="https://github.com/titu1994/Neural-Style-Transfer/blob/master/Guide.md">guide</a> for details regarding how to use the script to acheive the best results
 
 ## Weights (VGG 16)
 
@@ -64,6 +66,8 @@ These improvements are almost same as the Chain Blurred version, however a few d
 
 ## Windows Helper
 It is a C# program written to more easily generate the arguments for the python script Network.py or INetwork.py
+
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/Neural%20Art%20Windows.JPG?raw=true" height=600 width=90%>
 
 - Upon first run, it will request the python path. Traverse your directory to locate the python.exe of your choice (Anaconda is tested)
 
