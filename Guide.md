@@ -12,7 +12,7 @@ There are various parameters in both Network.py and INetwork.py scripts that can
 - Style scale simply multiplies the scale with the style weight. Keeping it constant at 1 and modifying the style weight is sufficient in achieving good results.
 
 ## Examples 
-A folder with several example stylized images : <a href="https://goo.gl/photos/joqqjcquRMu8uuZp6">Google Photos - Neural Style Transfer Folder </a>
+A folder with several example stylized images as  well as some style images which are useful to produce images in less than 10 epochs : <a href="https://goo.gl/photos/joqqjcquRMu8uuZp6">Google Photos - Neural Style Transfer Folder </a>
 
 <a href="https://goo.gl/photos/joqqjcquRMu8uuZp6"><img src="https://lh3.googleusercontent.com/pyjUXvpjoUn8bMmOgiPYt6UBnyMLduJ_H2lDEA2pBqAhPRo2WtargtJZf7AS_2BkD4u1_o84POAnoiIGekD7JeIZbyWjEvmmcEUPiisDdqYHRuumyfPwbjNJMIRBSkCVOa8e2Zevici-pDyO2Pojx62tIYrTDhSzZkQUAHZV8URVDAVZGKNf4OMP9VDimaZoYkmZEWr3LrL3347v1gOcYWOpOX5XthXBXFpxf33aFNoCUFP7pRKflsic2_tXccQ2A9HkUzN_OkLxfgM1vJcuiszvrn2HFtmJE_gLr6WZlbgIjT5hI-MzmcyGWtbK1SN_g-988499lC-ojj5ZEnmLRfXhCl2oYcLzqjmRyQGDdeu0OFhc4EdztN5Ral5N_2OxanK2uXYsE1ZwCBumAsd01UCw_DdPc-LKbZs4noP5GLskcr2KshO8ydIXpM9X_OZIv41AalePJB06a1Oiq2lQsoT6HpIqpGQZ_OCuWXQBM5yRO-gY2EWwO5xlK5ilqXbC9IK2T-RVoc1ug8PMRiH_jAcRPGLVSiT70nz3f-taJRv4FeNaxzKEvEktB8gn2Q28nHyWoV7PBiGihYBvi14c38l5wiR8xFcRxKTRWQi01FHLTEfiCA=w711-h400-no" width=90%></a>
 
