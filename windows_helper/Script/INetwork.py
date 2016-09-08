@@ -21,8 +21,8 @@ Contains few improvements suggested in the paper Improving the Neural Algorithm 
 -----------------------------------------------------------------------------------------------------------------------
 """
 
-THEANO_WEIGHTS_NO_TOP = "https://github.com/titu1994/Neural-Style-Transfer/releases/download/v0.1.0/vgg16_no_top_neural_style.h5"
-TENSORFLOW_WEIGHTS_NO_TOP = "https://github.com/titu1994/Neural-Style-Transfer/releases/download/v0.1.4.1/vgg16_no_top_artistic_style_tensorflow.h5"
+THEANO_WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_th_dim_ordering_th_kernels_notop.h5'
+TF_WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5'
 
 parser = argparse.ArgumentParser(description='Neural style transfer with Keras.')
 parser.add_argument('base_image_path', metavar='base', type=str,
@@ -164,12 +164,11 @@ else:
     shape = (3, img_width, img_height, 3)
 
 # build the VGG16 network with our 3 images as input
-first_layer = ZeroPadding2D((1, 1))
-first_layer.set_input(input_tensor, shape=shape)
+first_layer = Convolution2D(64, 3, 3, activation='relu', name='conv1_1')
+first_layer.set_input(input_tensor, shape)
 
 model = Sequential()
 model.add(first_layer)
-model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_2', border_mode='same'))
 model.add(pooling_func())
 
@@ -193,9 +192,9 @@ model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_3', border_mod
 model.add(pooling_func())
 
 if K.image_dim_ordering() == "th":
-    weights = get_file('vgg16_no_top_artistic_style.h5', THEANO_WEIGHTS_NO_TOP, cache_subdir='models')
+    weights = get_file('vgg16_weights_th_dim_ordering_th_kernels_notop.h5', THEANO_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
 else:
-    weights = get_file('vgg16_no_top_artistic_style_tensorflow.h5', TENSORFLOW_WEIGHTS_NO_TOP, cache_subdir='models')
+    weights = get_file('vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5', TF_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
 
 model.load_weights(weights)
 print('Model loaded.')
@@ -211,7 +210,10 @@ outputs_dict = dict([(layer.name, layer.output) for layer in model.layers])
 # the gram matrix of an image tensor (feature-wise outer product) using shifted activations
 def gram_matrix(x):
     assert K.ndim(x) == 3
-    features = K.batch_flatten(x)
+    if K.image_dim_ordering() == "th":
+        features = K.batch_flatten(x)
+    else:
+        features = K.batch_flatten(K.permute_dimensions(x, (2, 0, 1)))
     gram = K.dot(features - 1, K.transpose(features - 1))
     return gram
 
