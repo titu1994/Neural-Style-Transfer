@@ -232,8 +232,8 @@ def region_style_loss(style_image, target_image, style_mask, target_mask):
             style_image, (2, 0, 1)) * style_mask
         masked_target = K.permute_dimensions(
             target_image, (2, 0, 1)) * target_mask
-    s = gram_matrix(masked_style) #* K.sum(style_mask)
-    c = gram_matrix(masked_target) #* K.sum(target_mask)
+    s = gram_matrix(masked_style) #* K.sum(style_mask) # Removed area weight of mask
+    c = gram_matrix(masked_target) #* K.sum(target_mask) # Removed area weight of mask
     return K.sum(K.square(s - c))
 
 
