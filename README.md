@@ -1,4 +1,4 @@
-# Neural Style Transfer
+# Neural Style Transfer & Neural Doodles
 Implementation of Neural Style Transfer from the paper <a href="http://arxiv.org/abs/1508.06576">A Neural Algorithm of Artistic Style</a> in Keras 1.0.8. 
 
 INetwork implements and focuses on certain improvements suggested in <a href="http://arxiv.org/abs/1605.04603">Improving the Neural Algorithm of Artistic Style</a>. 
@@ -7,6 +7,8 @@ Uses the VGG-16 model as described in the Keras example below :
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
 
 Uses weights from Keras Deep Learning Models : https://github.com/fchollet/deep-learning-models
+
+Neural Doodles is a modification of the example script available at Keras : https://github.com/fchollet/keras/blob/master/examples/neural_doodle.py
 
 ## Guide
 
@@ -30,6 +32,12 @@ It also explains how to setup Theano (with GPU support) on both Windows and Linu
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/sagano_bamboo_forest.jpg?raw=true" height=450 width=45%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/patterned_leaves.jpg?raw=true" height=450 width=45%>
 <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Fores.jpg?raw=true" height=450 width=45%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Forest-No-Color-Preservation.jpg?raw=true" height=450 width=45%>
+
+# Neural Doodle Examples
+Renoit Style + Content Image <br>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/neural_doodle/generated/renoit.png?raw=true" width=90%><br>
+Monet Style + Doodle Creation <br>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/neural_doodle/generated/monet.png?raw=true" width=90%>
 
 ## Weights (VGG 16)
 
@@ -65,7 +73,7 @@ These improvements are almost same as the Chain Blurred version, however a few d
 - All of this is applied on the VGG-16 network, not on the VGG-19 network. It is trivial to extrapolate this to the VGG-19 network. Simply adding the layer names to the `feature_layers` list will be sufficient to apply these changes to the VGG-19 network. 
 
 ## Windows Helper
-It is a C# program written to more easily generate the arguments for the python script Network.py or INetwork.py
+It is a C# program written to more easily generate the arguments for the python script Network.py or INetwork.py (Using Neural Style Transfer tab) and neural_doodle.py or improved_neural_doodle.py script (Using Neural Doodle Tab)
 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/Neural%20Art%20Windows.JPG?raw=true" height=600 width=90%>
 
@@ -76,6 +84,7 @@ It is a C# program written to more easily generate the arguments for the python 
 - Easy selection of images (Content, Style, Output Prefix)
 - Easy parameter selection
 - Easily generate argument list, if command line execution is preferred. 
+- Allows usage of both Neural Style Transfer as well as Neural Doodles
 
 ## Usage
 Both Network.py and INetwork.py have similar usage styles, and share all parameters.
@@ -97,7 +106,29 @@ Example:
 python inetwork.py "/path/to/content image" "path/to/style image" "result prefix or /path/to/result prefix" --preserve_color "True" --pool_type "ave" --rescale_method "bicubic" --content_layer "conv4_2"
 ```
 
-## Parameters
+Both the neural_doodle.py and improved_neural_doodle.py script share similar usage styles.
+
+neural_doodle.py & improved_neural_doodle.py
+```
+python neural_doodle.py --nlabels -style-image --style-mask --target-mask --content-image --target-image-prefix
+```
+ 
+Example 1 : Doodle using a style image, style mask and target mask (from keras examples)
+```
+python neural_doodle.py --nlabels 4 --style-image Monet/style.png \
+    --style-mask Monet/style_mask.png --target-mask Monet/target_mask.png \
+    --target-image-prefix generated/monet
+```
+
+Example 2:  Doodle using a style image, style mask, target mask and an optional content image.
+```
+ python neural_doodle.py --nlabels 4 --style-image Renoir/style.png \
+    --style-mask Renoir/style_mask.png --target-mask Renoir/target_mask.png \
+    --content-image Renoir/creek.jpg \
+    --target-image-prefix generated/renoir
+```
+
+## Parameters (Neural Style)
 ```
 --image_size : Allows to set the Gram Matrix size. Default is 400 x 400, since it produces good results fast. 
 --num_iter : Number of iterations. Default is 10. Test the output with 10 iterations, and increase to improve results.
@@ -115,6 +146,18 @@ python inetwork.py "/path/to/content image" "path/to/style image" "result prefix
 --rescale_method : Rescaling algorithm. Default is bilinear. Options are nearest, bilinear, bicubic and cubic.
 --maintain_aspect_ratio : Rescale the image just to the original aspect ratio. Size will be (gram_matrix_size, gram_matrix_size * aspect_ratio). Default is True
 --content_layer : Selects the content layer. Paper suggests conv4_2, but better results can be obtained from conv5_2. Default is conv5_2.
+```
+
+## Parameters (Neural Doodle)
+```
+--nlabels : Number of colors or labels in mask image
+--image_size : Allows to set the Gram Matrix size. Default is -1, which means that it uses style image size automatically. 
+--num_iter : Number of iterations. Default is 10. Test the output with 10 iterations, and increase to improve results.
+--preserve_color : Preserves the original color space of the content image, while applying only style. Post processing technique on final image, therefore does not harm quality of style. Works only when using content image for guided style transfer
+
+--content_weight : Weightage given to content in relation to style. Default if 0.1
+--style_weight : Weightage given to style in relation to content. Default is 1. 
+--total_variation_weight : Regularization factor. Smaller values tend to produce crisp images, but 0 is not useful. Default = 8.5E-5
 ```
 
 # Network.py in action
