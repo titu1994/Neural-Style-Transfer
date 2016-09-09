@@ -3,7 +3,7 @@ import time
 import argparse
 import numpy as np
 from scipy.optimize import fmin_l_bfgs_b
-from scipy.misc import imread, imsave, imresize, fromimage, toimage
+from scipy.misc import imread, imsave, imresize, fromimage, toimage, imfilter
 
 from keras import backend as K
 from keras.layers import Input, AveragePooling2D
@@ -45,6 +45,7 @@ parser.add_argument("--content_weight", dest="content_weight", default=0.1, type
 parser.add_argument("--style_weight", dest="style_weight", default=1, type=float, help="Weight of content")
 parser.add_argument("--tv_weight", dest="tv_weight", default=8.5e-5, type=float,
                     help="Total Variation in the Weights")
+parser.add_argument("--region_style_weight", dest="region_weight", default=1.0, type=float, help="Region Style Weight")
 
 
 args = parser.parse_args()
@@ -73,6 +74,7 @@ img_nrows, img_ncols = ref_img.shape[:2]
 total_variation_weight = float(args.tv_weight)
 style_weight = float(args.style_weight)
 content_weight =float(args.content_weight) if use_content_img else 0
+region_style_weight = float(args.region_weight)
 
 content_feature_layers = ['block5_conv2']
 # To get better generation qualities, use more conv layers for style features
@@ -249,8 +251,7 @@ def style_loss(style_image, target_image, style_masks, target_masks):
         else:
             style_mask = style_masks[:, :, i]
             target_mask = target_masks[:, :, i]
-        loss += region_style_loss(style_image,
-                                  target_image, style_mask, target_mask)
+        loss += region_style_weight * region_style_loss(style_image, target_image, style_mask, target_mask)
     size = img_nrows * img_ncols
     return loss / (4. * nb_colors ** 2 * size ** 2)
 
@@ -370,6 +371,10 @@ for i in range(args.num_iter):
 
     # save current generated image
     img = deprocess_image(x.copy())
+
+    if not use_content_img:
+        img = imfilter(img, ftype='smooth')
+        img = imfilter(img, ftype='sharpen')
 
     if use_content_img and preserve_color and content is not None:
         img = original_color_transform(content, img)
