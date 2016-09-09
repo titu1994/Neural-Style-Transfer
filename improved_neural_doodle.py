@@ -376,8 +376,8 @@ for i in range(args.num_iter):
     if use_content_img and preserve_color and content is not None:
         img = original_color_transform(content, img)
 
-    fname = target_img_prefix + '_at_iteration_%d.png' % i
+    fname = target_img_prefix + '_at_iteration_%d.png' % (i + 1)
     imsave(fname, img)
     end_time = time.time()
     print('Image saved as', fname)
-    print('Iteration %d completed in %ds' % (i, end_time - start_time))
+    print('Iteration %d completed in %ds' % (i + 1, end_time - start_time))
