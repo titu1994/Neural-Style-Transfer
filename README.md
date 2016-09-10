@@ -35,9 +35,9 @@ It also explains how to setup Theano (with GPU support) on both Windows and Linu
 
 # Neural Doodle Examples
 Renoit Style + Content Image <br>
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/neural_doodle/generated/renoit.png?raw=true" width=90%><br>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/neural_doodle/generated/renoit_new.png?raw=true" width=90%><br>
 Monet Style + Doodle Creation <br>
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/neural_doodle/generated/monet.png?raw=true" width=90%>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/neural_doodle/generated/monet_new.png?raw=true" width=90%>
 <br>Van Gogh + Doodle Creation <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/neural_doodle/generated/van%20gogh.png?raw=true" width=90%>
 
