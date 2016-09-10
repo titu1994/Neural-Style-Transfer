@@ -43,6 +43,7 @@ parser.add_argument("--img_size", type=int, default=-1, help='Image size will be
 parser.add_argument("--num_iter", dest="num_iter", default=10, type=int, help="Number of iterations")
 parser.add_argument('--preserve_color', dest='color', default="False", type=str,
                     help='Preserve original color in image')
+parser.add_argument("--phases", default=1, type=int, help='Number of phases to pass through')
 
 parser.add_argument("--content_weight", dest="content_weight", default=0.1, type=float, help="Weight of content")
 parser.add_argument("--style_weight", dest="style_weight", default=1, type=float, help="Weight of content")
@@ -68,7 +69,7 @@ ref_img = imread(target_mask_path)
 
 if args.img_size != -1:
     aspect_ratio = ref_img.shape[1] / ref_img.shape[0]
-    ref_img = imresize(ref_img, (args.img_size, args.img_size * aspect_ratio))
+    ref_img = imresize(ref_img, (args.img_size, int(args.img_size * aspect_ratio)))
 
 img_nrows, img_ncols = ref_img.shape[:2]
 

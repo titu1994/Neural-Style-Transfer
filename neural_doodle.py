@@ -67,7 +67,7 @@ ref_img = imread(target_mask_path)
 
 if args.img_size != -1:
     aspect_ratio = ref_img.shape[1] / ref_img.shape[0]
-    ref_img = imresize(ref_img, (args.img_size, args.img_size * aspect_ratio))
+    ref_img = imresize(ref_img, (args.img_size, int(args.img_size * aspect_ratio)))
 
 img_nrows, img_ncols = ref_img.shape[:2]
 
