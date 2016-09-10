@@ -38,6 +38,8 @@ Renoit Style + Content Image <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/neural_doodle/generated/renoit.png?raw=true" width=90%><br>
 Monet Style + Doodle Creation <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/neural_doodle/generated/monet.png?raw=true" width=90%>
+<br>Van Gogh + Doodle Creation <br>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/neural_doodle/generated/van%20gogh.png?raw=true" width=90%>
 
 ## Weights (VGG 16)
 
