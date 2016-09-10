@@ -43,6 +43,8 @@ parser.add_argument("--img_size", type=int, default=-1, help='Image size will be
 parser.add_argument("--num_iter", dest="num_iter", default=10, type=int, help="Number of iterations")
 parser.add_argument('--preserve_color', dest='color', default="False", type=str,
                     help='Preserve original color in image')
+parser.add_argument("--min_improvement", default=0.0, type=float,
+                    help="Minimum improvement required to continue training")
 
 parser.add_argument("--content_weight", dest="content_weight", default=0.1, type=float, help="Weight of content")
 parser.add_argument("--style_weight", dest="style_weight", default=1, type=float, help="Weight of content")
@@ -68,7 +70,7 @@ ref_img = imread(target_mask_path)
 
 if args.img_size != -1:
     aspect_ratio = ref_img.shape[1] / ref_img.shape[0]
-    ref_img = imresize(ref_img, (args.img_size, args.img_size * aspect_ratio))
+    ref_img = imresize(ref_img, (args.img_size, int(args.img_size * aspect_ratio)))
 
 img_nrows, img_ncols = ref_img.shape[:2]
 
@@ -386,3 +388,9 @@ for i in range(args.num_iter):
     end_time = time.time()
     print('Image saved as', fname)
     print('Iteration %d completed in %ds' % (i + 1, end_time - start_time))
+
+    if args.min_improvement != 0.0:
+        if improvement < args.min_improvement:
+            print("Script is early stopping since improvement (%0.2f) < min improvement (%0.2f)" %
+                  (improvement, args.min_improvement))
+            exit()
