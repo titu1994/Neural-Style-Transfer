@@ -89,6 +89,7 @@ It is a C# program written to more easily generate the arguments for the python 
 - Allows usage of both Neural Style Transfer as well as Neural Doodles
 
 ## Usage
+### Neural Style Transfer
 Both Network.py and INetwork.py have similar usage styles, and share all parameters.
 
 Network.py
@@ -108,6 +109,7 @@ Example:
 python inetwork.py "/path/to/content image" "path/to/style image" "result prefix or /path/to/result prefix" --preserve_color "True" --pool_type "ave" --rescale_method "bicubic" --content_layer "conv4_2"
 ```
 
+### Neural Doodles
 Both the neural_doodle.py and improved_neural_doodle.py script share similar usage styles.
 
 neural_doodle.py & improved_neural_doodle.py
@@ -128,6 +130,28 @@ Example 2:  Doodle using a style image, style mask, target mask and an optional 
     --style-mask Renoir/style_mask.png --target-mask Renoir/target_mask.png \
     --content-image Renoir/creek.jpg \
     --target-image-prefix generated/renoir
+```
+
+Multiple phases Example : Doodle using a style image, style mask, target mask and using it multiple times to acheive better results.
+- Assume that an image has a size (400 x 600). 
+- Divide the image size by 4 (100 x 125)
+- Create 1st doodle according to the below script #1 (--img_size 100)
+- Create 2nd doodle according to the below script #2 (Note that we pass 1st doodle as content image here) (--img_size 200)
+- Create 3rd and last doodle acc to below script #3 (Note we pass 2nd doodle as content image here) (Do not put img_size parameter)
+
+```
+# Script 1
+python improved_neural_doodle.py --nlabels 4 --style-image srcl.jpg --style-mask srcl-m.png --target-mask dst-m.png  --target-image-prefix ./doodle3-100 --num_iter 50 --img_size 100 --min_improvement 5.0
+
+# Script 2
+python improved_neural_doodle.py --nlabels 4 --style-image srcl.jpg --style-mask srcl-m.png --target-mask dst-m.png  --target-image-prefix ./doodle3-200 --num_iter 50 --content-image ./doodle3-100_at_iteration_XXXX.png --img_size 200 --min_improvement 2.5
+
+############# Replace XXXX by last iteration number ################
+
+# Script 3 
+python improved_neural_doodle.py --nlabels 4 --style-image srcl.jpg --style-mask srcl-m.png --target-mask dst-m.png  --target-image-prefix ./doodle3-500 --num_iter 50 --content-image ./doodle3-200_at_iteration_XXXX.png
+
+############# Replace XXXX by last iteration number ################
 ```
 
 ## Parameters (Neural Style)
@@ -156,10 +180,12 @@ Example 2:  Doodle using a style image, style mask, target mask and an optional 
 --image_size : Allows to set the Gram Matrix size. Default is -1, which means that it uses style image size automatically. 
 --num_iter : Number of iterations. Default is 10. Test the output with 10 iterations, and increase to improve results.
 --preserve_color : Preserves the original color space of the content image, while applying only style. Post processing technique on final image, therefore does not harm quality of style. Works only when using content image for guided style transfer
+--min_improvement : Minimum improvement in percentage required to continue training. Set to 0.0 to disable.
 
 --content_weight : Weightage given to content in relation to style. Default if 0.1
 --style_weight : Weightage given to style in relation to content. Default is 1. 
 --total_variation_weight : Regularization factor. Smaller values tend to produce crisp images, but 0 is not useful. Default = 8.5E-5
+--region_style_weight : Weight for region style regularization. Keep it set to 1.0 unless testing for experimental purposes.
 ```
 
 # Network.py in action
