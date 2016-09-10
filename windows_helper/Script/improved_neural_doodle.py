@@ -230,14 +230,16 @@ def region_style_loss(style_image, target_image, style_mask, target_mask):
     if K.image_dim_ordering() == 'th':
         masked_style = style_image * style_mask
         masked_target = target_image * target_mask
+        nb_channels = K.shape(style_image)[0]
     else:
         masked_style = K.permute_dimensions(
             style_image, (2, 0, 1)) * style_mask
         masked_target = K.permute_dimensions(
             target_image, (2, 0, 1)) * target_mask
-    s = gram_matrix(masked_style) #* K.sum(style_mask) # Removed area weight of mask
-    c = gram_matrix(masked_target) #* K.sum(target_mask) # Removed area weight of mask
-    return K.sum(K.square(s - c))
+        nb_channels = K.shape(style_image)[-1]
+    s = gram_matrix(masked_style) / K.mean(style_mask) / nb_channels
+    c = gram_matrix(masked_target) / K.mean(target_mask) / nb_channels
+    return K.mean(K.square(s - c))
 
 
 def style_loss(style_image, target_image, style_masks, target_masks):
@@ -255,8 +257,7 @@ def style_loss(style_image, target_image, style_masks, target_masks):
             style_mask = style_masks[:, :, i]
             target_mask = target_masks[:, :, i]
         loss += region_style_weight * region_style_loss(style_image, target_image, style_mask, target_mask)
-    size = img_nrows * img_ncols
-    return loss / (4. * nb_colors ** 2 * size ** 2)
+    return loss
 
 
 def content_loss(content_image, target_image):
