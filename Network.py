@@ -92,11 +92,12 @@ def preprocess_image(image_path, load_dims=False):
         img_HEIGHT = img.shape[1]
         aspect_ratio = img_HEIGHT / img_WIDTH
 
-    img = imresize(img, (img_width, img_height))
-    img = img[:, :, ::-1].astype('float32')
+    img = imresize(img, (img_width, img_height)).astype('float32')
     img[:, :, 0] -= 103.939
     img[:, :, 1] -= 116.779
     img[:, :, 2] -= 123.68
+
+    img = img[:, :, ::-1]
 
     if K.image_dim_ordering() == "th":
         img = img.transpose((2, 0, 1)).astype('float32')
@@ -108,12 +109,15 @@ def preprocess_image(image_path, load_dims=False):
 # util function to convert a tensor into a valid image
 def deprocess_image(x):
     if K.image_dim_ordering() == "th":
+        x = x.reshape((3, img_width, img_height))
         x = x.transpose((1, 2, 0))
+    else:
+        x = x.reshape((img_width, img_height, 3))
 
+    x = x[:, :, ::-1]
     x[:, :, 0] += 103.939
     x[:, :, 1] += 116.779
     x[:, :, 2] += 123.68
-    x = x[:, :, ::-1]
     x = np.clip(x, 0, 255).astype('uint8')
     return x
 
@@ -327,11 +331,7 @@ assert args.init_image in ["content", "noise"], "init_image must be one of ['con
 if "content" in args.init_image:
     x = preprocess_image(base_image_path, True)
 else:
-    x = np.random.uniform(0, 255, (1, img_width, img_height, 3))
-    x = x[:, :, :, ::-1]
-    x[0, :, :, 0] -= 103.939
-    x[0, :, :, 1] -= 116.779
-    x[0, :, :, 2] -= 123.68
+    x = np.random.uniform(0, 255, (1, img_width, img_height, 3)) - 128.
 
     if K.image_dim_ordering() == "th":
         x = x.transpose((0, 3, 1, 2))
@@ -357,7 +357,7 @@ for i in range(num_iter):
     print('Current loss value:', min_val, " Improvement : %0.3f" % improvement, "%")
     prev_min_val = min_val
     # save current generated image
-    img = deprocess_image(x.copy().reshape((3, img_width, img_height)))
+    img = deprocess_image(x.copy())
 
     if preserve_color and content is not None:
         img = original_color_transform(content, img)
