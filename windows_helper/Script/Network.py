@@ -38,7 +38,7 @@ parser.add_argument("--style_scale", dest="style_scale", default=1.0, type=float
 parser.add_argument("--total_variation_weight", dest="tv_weight", default=8.5e-5, type=float,
                     help="Total Variation in the Weights")  # 1.0
 parser.add_argument("--num_iter", dest="num_iter", default=10, type=int, help="Number of iterations")
-parser.add_argument("--rescale_image", dest="rescale_image", default="True", type=str,
+parser.add_argument("--rescale_image", dest="rescale_image", default="False", type=str,
                     help="Rescale image after execution to original dimentions")
 parser.add_argument("--rescale_method", dest="rescale_method", default="bilinear", type=str,
                     help="Rescale image algorithm")
