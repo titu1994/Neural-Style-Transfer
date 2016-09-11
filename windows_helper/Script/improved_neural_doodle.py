@@ -69,8 +69,8 @@ nb_colors = 3  # RGB
 ref_img = imread(target_mask_path)
 
 if args.img_size != -1:
-    aspect_ratio = ref_img.shape[1] / ref_img.shape[0]
-    ref_img = imresize(ref_img, (args.img_size, int(args.img_size * aspect_ratio)))
+    aspect_ratio = float(ref_img.shape[1]) / float(ref_img.shape[0])
+    ref_img = imresize(ref_img, (int(args.img_size), int(args.img_size * aspect_ratio)))
 
 img_nrows, img_ncols = ref_img.shape[:2]
 
@@ -390,7 +390,9 @@ for i in range(args.num_iter):
     print('Iteration %d completed in %ds' % (i + 1, end_time - start_time))
 
     if args.min_improvement != 0.0:
-        if improvement < args.min_improvement:
+        if improvement < args.min_improvement and i > 1:
             print("Script is early stopping since improvement (%0.2f) < min improvement (%0.2f)" %
                   (improvement, args.min_improvement))
+            output_image = target_img_prefix + '.png'
+            imsave(output_image, img)
             exit()
