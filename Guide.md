@@ -96,6 +96,7 @@ Next, we will add a few things to the PATH variable. In Windows 10, you can easi
 Aaand you're almost done!. A few last steps to take, so open a command prompt (Win + R, cmd.exe):
 - `conda update --all`
 - `conda install mingw libpython` # Two modules which are absolutely needed, else you will see crashes when running without doubt.
+- `pip install pillow` # Dependency for scipy.misc (all image related stuff)
 
 Next go to this <a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">site</a>, which contains pre built windows binaries for several python libraries which are used in Python Scientific Stack.
 - Download these files : scipy, numpy, statsmodels
