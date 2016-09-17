@@ -32,7 +32,7 @@ It also explains how to setup Theano (with GPU support) on both Windows and Linu
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/sagano_bamboo_forest.jpg?raw=true" height=450 width=45%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/patterned_leaves.jpg?raw=true" height=450 width=45%>
 <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Fores.jpg?raw=true" height=450 width=45%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Forest-No-Color-Preservation.jpg?raw=true" height=450 width=45%> <br><br>
-Example of various styles (with and without color preservation) from the Lost Grounds from .Hack G.U.<br>
+Example of various styles (with and without color preservation). Images of the "Lost Grounds" from .Hack G.U.<br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Lost-Grounds.jpg?raw=true" width=90%>
 
 # Neural Doodle Examples
