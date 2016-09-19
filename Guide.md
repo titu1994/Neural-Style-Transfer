@@ -18,6 +18,10 @@ A folder with several example stylized images as  well as some style images whic
 
 <a href="https://goo.gl/photos/joqqjcquRMu8uuZp6"><img src="https://lh3.googleusercontent.com/3qmUFEHa74d0qhtsbwxhHnbJNxAqgZAOHdhKTggbrsQ_xSyeKhZAtmccyUEM1R-BDwXX8rMOnnNGtxej-DWYgvg6_qN18PR5i8lZBKrRgsKQwIvvZ9dNHAJ5jU9RY6bMpUU3GXXwff_db2D6yqA6csrzd_TXV_zGFwhAAWYGDWYm3vf2GkwUOhuV_Pw8eXskOPKpChZHNHkBC4GAhrgFMtu6uodaYdyQg5uLgT-UU-iNWURPgfzeNn9yWpH4HbFnAeYd2qStxW3Z1aobRBcgurdE_KsODYxPQnA2vyBBAni6Gq3G9AEZChgmNWB1OM2jZX3YN9JDbC_kza5JPV04ICEm3cwco2GgGScg6Jjy_1vzxusl-u4HfqzyKVAe7a44mrDd-FWhpeu9C7GFI_yNlS5bTH5vsOMDY76Bta7_j4l9sXEzy89ZQTR_2IWBvh-3a_UIxeTnlpWgwdYDXweuC9LQVnr-gspFHVnQl6de5OP0lotjAJZ9_GYVEIrHEy6YBRZ-urciffEuHBCtzjJpdapFdMI-uct77uIEL--vQ31WTZ9y6tLa8EFQpc66Rmx5fP3Z2C2kj_1dma79jBGnVff0WiIUq0bDKvvw1F-Sy69pz7Dy3w=w600-h400-no" width=90%></a>
 
+Example of various styles (with and without color preservation). Images of the "Lost Grounds" from .Hack G.U.<br>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Lost-Grounds.jpg?raw=true" width=90%>
+
+
 ## Tips for Total Variation Regularization
 Total Variation Weight has a subtle but important role to play. The implementation in keras examples states to use tv_weight as 1, but I found that the images are smoothed to an extreme degree, and the results are not appealing. After several tests, I have found a few values which are very suitable to certain cases :
 
