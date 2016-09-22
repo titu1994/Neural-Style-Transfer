@@ -2,6 +2,18 @@
 
 There are various parameters in both Network.py and INetwork.py scripts that can be modified to achieve different results.
 
+<b>Note: </b> As of Keras 1.1.0, Tensorflow is the default backend for Keras. However, if you are on Windows, Tensorflow is not available. Therefore, Windows users should go to their C:/Users/{UserName}/.keras directory and configure their keras.json file as below:
+
+```
+{
+    "image_dim_ordering": "th",
+    "floatx": "float32",
+    "backend": "theano",
+    "epsilon": 1e-07
+}
+```
+
+
 ## General Tips
 - Max number of epochs should be around 100. The original paper suggests 1000 epochs, but this script provides a very good result much faster.
 - Pooling type matters a lot. Generally, I find that using Max Pooling delivers better results, even though the paper suggests to use Average Pooling
