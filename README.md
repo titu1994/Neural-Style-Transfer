@@ -16,6 +16,17 @@ See the <a href="https://github.com/titu1994/Neural-Style-Transfer/blob/master/G
 
 It also explains how to setup Theano (with GPU support) on both Windows and Linux. Theano on Windows is a long and tedious process, so the guide can speed up the process by simply letting you finish all the steps in the correct order, so as not to screw up the finicky Theano + Windows setup.
 
+<b>Note: </b> As of Keras 1.1.0, Tensorflow is the default backend for Keras. However, if you are on Windows, Tensorflow is not available. Therefore, Windows users should go to their C:/Users/{UserName}/.keras directory and configure their keras.json file as below:
+
+```
+{
+    "image_dim_ordering": "th",
+    "floatx": "float32",
+    "backend": "theano",
+    "epsilon": 1e-07
+}
+```
+
 # Examples
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=45% height=300> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=45% height=300>
 <br> Result after 50 iterations (Average Pooling) <br>
