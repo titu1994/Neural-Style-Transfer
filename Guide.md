@@ -147,7 +147,7 @@ ldflags= -LC:\openblas\bin -lopenblas
 cnmem=0.8
 ```
 
-# Setting up Theano on Linux (100x Simpler than on Windows, but cannot use Windows Helper program then)
+# Setting up Theano on Linux (100x Simpler than on Windows, the Windows Helper program runs with mono)
 
 These steps should work for most versions of Ubuntu (14.04 / 15.04 / 16.04):
 - Install Anaconda2, whatever version is most recent and add to path as default python interpreter. Drawback is you have to program in python 2.7. Otherwise use steps as above to downgrade Anaconda 4.1+ with 3.5 to python 3.4 and then update all packages, or install <a href="https://repo.continuum.io/archive/index.html">Anaconda 2.2.0</a> (linux version) directly and update all packages.
