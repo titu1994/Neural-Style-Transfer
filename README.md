@@ -93,6 +93,7 @@ It is a C# program written to more easily generate the arguments for the python 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/Neural%20Art%20Windows.JPG?raw=true" height=600 width=90%>
 
 - Upon first run, it will request the python path. Traverse your directory to locate the python.exe of your choice (Anaconda is tested)
+- The windows helper program code is available at: https://github.com/titu1994/Neural-Style-Transfer-Windows
 
 ### Benefits 
 - Automatically executes the script based on the arguments.
