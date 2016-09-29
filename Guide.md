@@ -54,9 +54,9 @@ The following improvements from the paper <a href="http://arxiv.org/abs/1605.046
 - Improvement 3.3 in paper : Activation Shift of gram matrix
 - Improvement 3.5 in paper : Correlation Chain
 
-## Windows Helper Program
+## Script Helper Program
 
-Bundled together with the script is the windows_helper directory, which contains a Windows Forms application in C# that allows for rapid testing of the script. It provides a quick way to launch the script or copy the arguments to the clipboard for use in the command line.
+Bundled together with the script is the script_helper directory, which contains a C# Forms application that allows for rapid testing of the script. It provides a quick way to launch the script or copy the arguments to the clipboard for use in the command line.
 
 Benefits
 
@@ -64,6 +64,7 @@ Benefits
 - Easy selection of images (Content, Style, Output Prefix)
 - Easy parameter selection
 - Easily generate argument list, if command line execution is preferred.
+- Works on Linux using Mono
 
 ## Need for cuDNN
 

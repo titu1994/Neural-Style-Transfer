@@ -87,13 +87,13 @@ These improvements are almost same as the Chain Blurred version, however a few d
 - Does not use CNN MRF network, but applies these modifications to the original algorithm.
 - All of this is applied on the VGG-16 network, not on the VGG-19 network. It is trivial to extrapolate this to the VGG-19 network. Simply adding the layer names to the `feature_layers` list will be sufficient to apply these changes to the VGG-19 network. 
 
-## Windows Helper
+## Script Helper
 It is a C# program written to more easily generate the arguments for the python script Network.py or INetwork.py (Using Neural Style Transfer tab) and neural_doodle.py or improved_neural_doodle.py script (Using Neural Doodle Tab)
 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/Neural%20Art%20Windows.JPG?raw=true" height=600 width=90%>
 
 - Upon first run, it will request the python path. Traverse your directory to locate the python.exe of your choice (Anaconda is tested)
-- The windows helper program code is available at: https://github.com/titu1994/Neural-Style-Transfer-Windows
+- The script helper program code is available at: https://github.com/titu1994/Neural-Style-Transfer-Windows The program runs on Linux using Mono
 
 ### Benefits 
 - Automatically executes the script based on the arguments.
@@ -101,6 +101,7 @@ It is a C# program written to more easily generate the arguments for the python 
 - Easy parameter selection
 - Easily generate argument list, if command line execution is preferred. 
 - Allows usage of both Neural Style Transfer as well as Neural Doodles
+- Runs on Windows (Native) and Linux (Using Mono)
 
 ## Usage
 ### Neural Style Transfer
