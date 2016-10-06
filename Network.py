@@ -342,7 +342,7 @@ if preserve_color:
     content = imresize(content, (img_width, img_height))
 
 num_iter = args.num_iter
-prev_min_val = np.inf
+prev_min_val = -1
 
 improvement_threshold = float(args.min_improvement)
 
@@ -351,6 +351,9 @@ for i in range(num_iter):
     start_time = time.time()
 
     x, min_val, info = fmin_l_bfgs_b(evaluator.loss, x.flatten(), fprime=evaluator.grads, maxfun=20)
+
+    if prev_min_val == -1:
+        prev_min_val = min_val
 
     improvement = (prev_min_val - min_val) / prev_min_val * 100
 
