@@ -3,14 +3,16 @@ from scipy.optimize import fmin_l_bfgs_b
 import numpy as np
 import time
 import argparse
+import warnings
 
 from keras.models import Sequential
-from keras.layers.convolutional import Convolution2D, ZeroPadding2D, AveragePooling2D, MaxPooling2D
+from keras.layers.convolutional import Convolution2D, AveragePooling2D, MaxPooling2D
 from keras import backend as K
 from keras.utils.data_utils import get_file
+from keras.utils.layer_utils import convert_all_kernels_in_model
 
 """
-Neural Style Transfer with Keras 1.0.8
+Neural Style Transfer with Keras 1.1.0
 
 Based on:
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
@@ -201,6 +203,18 @@ else:
     weights = get_file('vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5', TF_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
 
 model.load_weights(weights)
+
+if K.backend() == 'tensorflow':
+    warnings.warn('You are using the TensorFlow backend, yet you '
+                  'are using the Theano '
+                  'image dimension ordering convention '
+                  '(`image_dim_ordering="th"`). '
+                  'For best performance, set '
+                  '`image_dim_ordering="tf"` in '
+                  'your Keras config '
+                  'at ~/.keras/keras.json.')
+    convert_all_kernels_in_model(model)
+
 print('Model loaded.')
 
 # get the symbolic outputs of each "key" layer (we gave them unique names).
@@ -401,7 +415,7 @@ for i in range(num_iter):
     print("Iteration %d completed in %ds" % (i + 1, end_time - start_time))
 
     if improvement_threshold is not 0.0:
-        if improvement < improvement_threshold and improvement is not np.nan:
+        if improvement < improvement_threshold and improvement is not 0.0:
             print("Improvement (%f) is less than improvement threshold (%f). Early stopping script." %
                   (improvement, improvement_threshold))
             exit()
