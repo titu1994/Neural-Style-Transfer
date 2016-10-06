@@ -207,12 +207,13 @@ python improved_neural_doodle.py --nlabels 4 --style-image srcl.jpg --style-mask
 ![Alt Text](https://raw.githubusercontent.com/titu1994/Neural-Style-Transfer/master/images/Blue%20Moon%20Lake.gif)
 
 # Requirements 
-- Theano / Tensorflow
+- Theano / Tensorflow (Tensorflow not tested)
 - Keras 
 - CUDA (GPU) -- Recommended
 - CUDNN (GPU) -- Recommended 
 - Scipy + PIL
 - Numpy
+- h5py
 
 # Speed
 On a 980M GPU, the time required for each epoch depends on mainly image size (gram matrix size) :
