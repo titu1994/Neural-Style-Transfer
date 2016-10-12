@@ -95,11 +95,13 @@ def preprocess_image(image_path, load_dims=False):
         aspect_ratio = img_HEIGHT / img_WIDTH
 
     img = imresize(img, (img_width, img_height)).astype('float32')
+
+    # RGB -> BGR
+    img = img[:, :, ::-1]
+
     img[:, :, 0] -= 103.939
     img[:, :, 1] -= 116.779
     img[:, :, 2] -= 123.68
-
-    img = img[:, :, ::-1]
 
     if K.image_dim_ordering() == "th":
         img = img.transpose((2, 0, 1)).astype('float32')
@@ -116,10 +118,12 @@ def deprocess_image(x):
     else:
         x = x.reshape((img_width, img_height, 3))
 
-    x = x[:, :, ::-1]
     x[:, :, 0] += 103.939
     x[:, :, 1] += 116.779
     x[:, :, 2] += 123.68
+
+    # BGR -> RGB
+    x = x[:, :, ::-1]
     x = np.clip(x, 0, 255).astype('uint8')
     return x
 

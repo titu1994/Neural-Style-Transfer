@@ -100,10 +100,12 @@ def deprocess_image(x):
         x = x.transpose((1, 2, 0))
     else:
         x = x.reshape((img_nrows, img_ncols, 3))
-    x = x[:, :, ::-1]
     x[:, :, 0] += 103.939
     x[:, :, 1] += 116.779
     x[:, :, 2] += 123.68
+
+    # BGR to RGB
+    x = x[:, :, ::-1]
     x = np.clip(x, 0, 255).astype('uint8')
     return x
 
