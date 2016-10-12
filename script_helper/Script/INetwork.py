@@ -3,14 +3,16 @@ from scipy.optimize import fmin_l_bfgs_b
 import numpy as np
 import time
 import argparse
+import warnings
 
 from keras.models import Sequential
-from keras.layers.convolutional import Convolution2D, ZeroPadding2D, AveragePooling2D, MaxPooling2D
+from keras.layers.convolutional import Convolution2D, AveragePooling2D, MaxPooling2D
 from keras import backend as K
 from keras.utils.data_utils import get_file
+from keras.utils.layer_utils import convert_all_kernels_in_model
 
 """
-Neural Style Transfer with Keras 1.0.8
+Neural Style Transfer with Keras 1.1.0
 
 Based on:
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
@@ -96,11 +98,14 @@ def preprocess_image(image_path, load_dims=False):
         aspect_ratio = img_HEIGHT / img_WIDTH
 
     img = imresize(img, (img_width, img_height)).astype('float32')
+
+    # RGB -> BGR
+    img = img[:, :, ::-1]
+
     img[:, :, 0] -= 103.939
     img[:, :, 1] -= 116.779
     img[:, :, 2] -= 123.68
 
-    img = img[:, :, ::-1]
 
     if K.image_dim_ordering() == "th":
         img = img.transpose((2, 0, 1)).astype('float32')
@@ -117,10 +122,13 @@ def deprocess_image(x):
     else:
         x = x.reshape((img_width, img_height, 3))
 
-    x = x[:, :, ::-1]
     x[:, :, 0] += 103.939
     x[:, :, 1] += 116.779
     x[:, :, 2] += 123.68
+
+    # BGR -> RGB
+    x = x[:, :, ::-1]
+
     x = np.clip(x, 0, 255).astype('uint8')
     return x
 
@@ -201,6 +209,18 @@ else:
     weights = get_file('vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5', TF_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
 
 model.load_weights(weights)
+
+if K.backend() == 'tensorflow':
+    warnings.warn('You are using the TensorFlow backend, yet you '
+                  'are using the Theano '
+                  'image dimension ordering convention '
+                  '(`image_dim_ordering="th"`). '
+                  'For best performance, set '
+                  '`image_dim_ordering="tf"` in '
+                  'your Keras config '
+                  'at ~/.keras/keras.json.')
+    convert_all_kernels_in_model(model)
+
 print('Model loaded.')
 
 # get the symbolic outputs of each "key" layer (we gave them unique names).
@@ -362,7 +382,7 @@ if preserve_color:
     content = imresize(content, (img_width, img_height))
 
 num_iter = args.num_iter
-prev_min_val = np.inf
+prev_min_val = -1
 
 improvement_threshold = float(args.min_improvement)
 
@@ -371,6 +391,9 @@ for i in range(num_iter):
     start_time = time.time()
 
     x, min_val, info = fmin_l_bfgs_b(evaluator.loss, x.flatten(), fprime=evaluator.grads, maxfun=20)
+
+    if prev_min_val == -1:
+        prev_min_val = min_val
 
     improvement = (prev_min_val - min_val) / prev_min_val * 100
 
@@ -398,7 +421,7 @@ for i in range(num_iter):
     print("Iteration %d completed in %ds" % (i + 1, end_time - start_time))
 
     if improvement_threshold is not 0.0:
-        if improvement < improvement_threshold and improvement is not np.nan:
+        if improvement < improvement_threshold and improvement is not 0.0:
             print("Improvement (%f) is less than improvement threshold (%f). Early stopping script." %
                   (improvement, improvement_threshold))
             exit()
