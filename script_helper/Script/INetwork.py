@@ -26,6 +26,10 @@ Contains few improvements suggested in the paper Improving the Neural Algorithm 
 THEANO_WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_th_dim_ordering_th_kernels_notop.h5'
 TF_WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5'
 
+TH_19_WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg19_weights_th_dim_ordering_th_kernels_notop.h5'
+TF_19_WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5'
+
+
 parser = argparse.ArgumentParser(description='Neural style transfer with Keras.')
 parser.add_argument('base_image_path', metavar='base', type=str,
                     help='Path to the image to transform.')
@@ -44,6 +48,7 @@ parser.add_argument("--total_variation_weight", dest="tv_weight", default=8.5e-5
                     help="Total Variation in the Weights")  # 1.0
 
 parser.add_argument("--num_iter", dest="num_iter", default=10, type=int, help="Number of iterations")
+parser.add_argument("--model", default="vgg16", type=str, help="Choices are 'vgg16' and 'vgg19'")
 parser.add_argument("--rescale_image", dest="rescale_image", default="False", type=str,
                     help="Rescale image after execution to original dimentions")
 parser.add_argument("--rescale_method", dest="rescale_method", default="bilinear", type=str,
@@ -232,22 +237,34 @@ model.add(pooling_func())
 model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_1', border_mode='same'))
 model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_2', border_mode='same'))
 model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_3', border_mode='same'))
+if args.model == "vgg19":
+    model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_4', border_mode='same'))
 model.add(pooling_func())
 
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_1', border_mode='same'))
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_2', border_mode='same'))
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_3', border_mode='same'))
+if args.model == "vgg19":
+    model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_4', border_mode='same'))
 model.add(pooling_func())
 
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_1', border_mode='same'))
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_2', border_mode='same'))
 model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_3', border_mode='same'))
+if args.model == "vgg19":
+    model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_4', border_mode='same'))
 model.add(pooling_func())
 
 if K.image_dim_ordering() == "th":
-    weights = get_file('vgg16_weights_th_dim_ordering_th_kernels_notop.h5', THEANO_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
+    if args.model == "vgg19":
+        weights = get_file('vgg19_weights_th_dim_ordering_th_kernels_notop.h5', TH_19_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
+    else:
+        weights = get_file('vgg16_weights_th_dim_ordering_th_kernels_notop.h5', THEANO_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
 else:
-    weights = get_file('vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5', TF_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
+    if args.model == "vgg19":
+        weights = get_file('vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5', TF_19_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
+    else:
+        weights = get_file('vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5', TF_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
 
 model.load_weights(weights)
 
@@ -317,9 +334,12 @@ def total_variation_loss(x):
         b = K.square(x[:, :img_width - 1, :img_height - 1, :] - x[:, :img_width - 1, 1:, :])
     return K.sum(K.pow(a + b, 1.25))
 
-
-feature_layers = ['conv1_1', 'conv1_2', 'conv2_1', 'conv2_2', 'conv3_1', 'conv3_2', 'conv3_3',
-                  'conv4_1', 'conv4_2', 'conv4_3', 'conv5_1', 'conv5_2', 'conv5_3']
+if args.model == "vgg19":
+    feature_layers = ['conv1_1', 'conv1_2', 'conv2_1', 'conv2_2', 'conv3_1', 'conv3_2', 'conv3_3', 'conv3_4',
+                      'conv4_1', 'conv4_2', 'conv4_3', 'conv4_4', 'conv5_1', 'conv5_2', 'conv5_3', 'conv5_4']
+else:
+    feature_layers = ['conv1_1', 'conv1_2', 'conv2_1', 'conv2_2', 'conv3_1', 'conv3_2', 'conv3_3',
+                      'conv4_1', 'conv4_2', 'conv4_3', 'conv5_1', 'conv5_2', 'conv5_3']
 
 # combine these loss functions into a single scalar
 loss = K.variable(0.)
