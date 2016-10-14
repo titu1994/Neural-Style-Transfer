@@ -49,6 +49,9 @@ parser.add_argument("--total_variation_weight", dest="tv_weight", default=8.5e-5
 
 parser.add_argument("--num_iter", dest="num_iter", default=10, type=int, help="Number of iterations")
 parser.add_argument("--model", default="vgg16", type=str, help="Choices are 'vgg16' and 'vgg19'")
+parser.add_argument("--content_loss_type", default=0, type=int, help='Can be one of 0, 1 or 2. Readme contains '
+                                                                     'the required information of each mode.')
+
 parser.add_argument("--rescale_image", dest="rescale_image", default="False", type=str,
                     help="Rescale image after execution to original dimentions")
 parser.add_argument("--rescale_method", dest="rescale_method", default="bilinear", type=str,
@@ -113,6 +116,7 @@ img_WIDTH = img_HEIGHT = 0
 aspect_ratio = 0
 
 assert args.init_image in ["content", "noise", "gray"], "init_image must be one of ['content', 'noise', 'gray']"
+assert args.content_loss_type in [0, 1, 2], "Content Loss Type must be one of 0, 1 or 2"
 
 # util function to open, resize and format pictures into appropriate tensors
 def preprocess_image(image_path, load_dims=False, read_mode="color"):
@@ -319,7 +323,17 @@ def style_loss(style, combination):
 # designed to maintain the "content" of the
 # base image in the generated image
 def content_loss(base, combination):
-    return K.sum(K.square(combination - base))
+    channels = 3
+    size = img_width * img_height
+
+    if args.content_loss_type == 0:
+        multiplier = 1 / (2. * channels ** 0.5 * size ** 0.5)
+    elif args.content_loss_type == 1:
+        multiplier = 1 / (channels * size)
+    else:
+        multiplier = 1.
+
+    return multiplier * K.sum(K.square(combination - base))
 
 
 # the 3rd loss function, total variation loss,
