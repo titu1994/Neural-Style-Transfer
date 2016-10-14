@@ -199,7 +199,7 @@ python improved_neural_doodle.py --nlabels 4 --style-image srcl.jpg --style-mask
 ```
 --image_size : Allows to set the Gram Matrix size. Default is 400 x 400, since it produces good results fast. 
 --num_iter : Number of iterations. Default is 10. Test the output with 10 iterations, and increase to improve results.
---init_image : Can be "content" or "noise". Default is "content", since it reduces reproduction noise.
+--init_image : Can be "content", "noise" or "gray". Default is "content", since it reduces reproduction noise. "gray" is useful when you want only the color of the style to be used in the image.
 --pool_type : Pooling type. MaxPooling ("max") is default. For smoother images, use AveragePooling ("ave").
 --preserve_color : Preserves the original color space of the content image, while applying only style. Post processing technique on final image, therefore does not harm quality of style.
 --min_improvement : Sets the minimum improvement required to continue training. Default is 0.0, indicating no minimum threshold. Advised values are 0.05 or 0.01
