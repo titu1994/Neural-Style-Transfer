@@ -50,7 +50,7 @@ parser.add_argument("--maintain_aspect_ratio", dest="maintain_aspect_ratio", def
 
 parser.add_argument("--content_layer", dest="content_layer", default="conv5_2", type=str, help="Optional 'conv4_2'")
 parser.add_argument("--init_image", dest="init_image", default="content", type=str,
-                    help="Initial image used to generate the final image. Options are 'content' or 'noise")
+                    help="Initial image used to generate the final image. Options are 'content', 'noise', or 'gray'")
 parser.add_argument("--pool_type", dest="pool", default="max", type=str,
                     help='Pooling type. Can be "ave" for average pooling'
                          ' or "max" for max pooling ')
@@ -93,7 +93,6 @@ if len(style_image_paths) != len(args.style_weight):
 
     for i in range(len(style_image_paths)):
         style_weights.append(weight_sum / count)
-    style_weights[0] = 1.0
 else:
     for style_weight in args.style_weight:
         style_weights.append(style_weight * args.style_scale)
@@ -105,12 +104,24 @@ assert img_height == img_width, 'Due to the use of the Gram matrix, width and he
 img_WIDTH = img_HEIGHT = 0
 aspect_ratio = 0
 
+assert args.init_image in ["content", "noise", "gray"], "init_image must be one of ['content', 'noise', 'gray']"
 
 # util function to open, resize and format pictures into appropriate tensors
-def preprocess_image(image_path, load_dims=False):
+def preprocess_image(image_path, load_dims=False, read_mode="color"):
     global img_WIDTH, img_HEIGHT, aspect_ratio
 
-    img = imread(image_path, mode="RGB")  # Prevents crashes due to PNG images (ARGB)
+    mode = "RGB" if read_mode == "color" else "L"
+    img = imread(image_path, mode=mode)  # Prevents crashes due to PNG images (ARGB)
+
+    if mode == "L":
+        # Expand the 1 channel grayscale to 3 channel grayscale image
+        temp = np.zeros(img.shape + (3,), dtype=np.uint8)
+        temp[:, :, 0] = img
+        temp[:, :, 1] = img
+        temp[:, :, 2] = img
+
+        img = temp
+
     if load_dims:
         img_WIDTH = img.shape[0]
         img_HEIGHT = img.shape[1]
@@ -153,7 +164,7 @@ def deprocess_image(x):
 
 # util function to preserve image color
 def original_color_transform(content, generated):
-    generated = fromimage(toimage(generated), mode='YCbCr')  # Convert to YCbCr color space
+    generated = fromimage(toimage(generated, mode='RGB'), mode='YCbCr')  # Convert to YCbCr color space
     generated[:, :, 1:] = content[:, :, 1:]  # Generated CbCr = Content CbCr
     generated = fromimage(toimage(generated, mode='YCbCr'), mode='RGB')  # Convert to RGB color space
     return generated
@@ -172,9 +183,9 @@ def pooling_func():
     else:
         return MaxPooling2D((2, 2), strides=(2, 2))
 
-
+read_mode = "gray" if args.init_image == "gray" else "color"
 # get tensor representations of our images
-base_image = K.variable(preprocess_image(base_image_path, True))
+base_image = K.variable(preprocess_image(base_image_path, True, read_mode=read_mode))
 
 style_reference_images = []
 for style_path in style_image_paths:
@@ -382,9 +393,9 @@ evaluator = Evaluator()
 # run scipy-based optimization (L-BFGS) over the pixels of the generated image
 # so as to minimize the neural style loss
 
-assert args.init_image in ["content", "noise"], "init_image must be one of ['content', 'noise']"
+
 if "content" in args.init_image:
-    x = preprocess_image(base_image_path, True)
+    x = preprocess_image(base_image_path, True, read_mode=read_mode)
 else:
     x = np.random.uniform(0, 255, (1, img_width, img_height, 3)) - 128.
 
