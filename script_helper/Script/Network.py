@@ -333,7 +333,8 @@ for layer_name in feature_layers:
         sl.append(style_loss(style_reference_features[j], combination_features))
 
     for j in range(nb_style_images):
-        loss += (style_weights[j] / len(feature_layers)) * sl
+        loss += (style_weights[j] / len(feature_layers)) * sl[j]
+
 loss += total_variation_weight * total_variation_loss(combination_image)
 
 # get the gradients of the generated image wrt the loss
