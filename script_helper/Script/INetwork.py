@@ -435,7 +435,7 @@ evaluator = Evaluator()
 # so as to minimize the neural style loss
 
 
-if "content" in args.init_image:
+if "content" in args.init_image or "gray" in args.init_image:
     x = preprocess_image(base_image_path, True, read_mode=read_mode)
 else:
     x = np.random.uniform(0, 255, (1, img_width, img_height, 3)) - 128.
