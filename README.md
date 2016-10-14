@@ -43,7 +43,7 @@ For reference, the same image with Color Preservation
 <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Fores.jpg?raw=true" height=450 width=45%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Forest-No-Color-Preservation.jpg?raw=true" height=450 width=45%> <br><br>
 
-## Multiple Style Transfer With different weight 
+## Multiple Style Transfer With Different Weights 
 The next few images use the Blue Moon Lake as a content image and Vincent Van Gogh's "Starry Night" and Georgia O'Keeffe's "Red Canna": <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=45% height=300> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/red-canna.jpg?raw=true" height=300 width=45%>
 
@@ -116,11 +116,13 @@ It is a C# program written to more easily generate the arguments for the python 
 
 ### Benefits 
 - Automatically executes the script based on the arguments.
-- Easy selection of images (Content, Style, Output Prefix)
+- Easy selection of images (Content, Style (Multiple Selection allowed), Output Prefix)
 - Easy parameter selection
 - Easily generate argument list, if command line execution is preferred. 
 - Allows usage of both Neural Style Transfer as well as Neural Doodles
 - Runs on Windows (Native) and Linux (Using Mono)
+
+To use multiple style images, when the image choice window opens, select all style images as needed. Pass multiple style weights by using a space between each style weight in the parameters section.
 
 ## Usage
 ### Neural Style Transfer
@@ -134,6 +136,11 @@ python network.py "/path/to/content image" "path/to/style image" "result prefix 
 INetwork.py
 ```
 python inetwork.py "/path/to/content image" "path/to/style image" "result prefix or /path/to/result prefix"
+```
+
+To pass multiple style images, after passing the content image path, seperate each style path with a space
+```
+python inetwork.py "/path/to/content image" "path/to/style image 1" "path/to/style image 2" ... "result prefix or /path/to/result prefix" --style_weight 1.0 1.0 ... 
 ```
 
 There are various parameters discussed below which can be modified to alter the output image. Note that many parameters require the command to be enclosed in double quotes ( " " ).
@@ -198,7 +205,7 @@ python improved_neural_doodle.py --nlabels 4 --style-image srcl.jpg --style-mask
 --min_improvement : Sets the minimum improvement required to continue training. Default is 0.0, indicating no minimum threshold. Advised values are 0.05 or 0.01
 
 --content_weight : Weightage given to content in relation to style. Default if 0.025
---style_weight : Weightage given to style in relation to content. Default is 1. 
+--style_weight : Weightage given to style. Default is 1. When using multiple styles, seperate each style weight with a space
 --style_scale : Scales the style_weight. Default is 1. 
 --total_variation_weight : Regularization factor. Smaller values tend to produce crisp images, but 0 is not useful. Default = 8.5E-5
 
