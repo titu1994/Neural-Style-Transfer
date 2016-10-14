@@ -29,14 +29,10 @@ It also explains how to setup Theano (with GPU support) on both Windows and Linu
 
 # Examples
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=45% height=300> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=45% height=300>
-<br> Result after 50 iterations (Average Pooling) <br>
-<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Blue_Moon_Lake_iteration_50.jpg" width=90% height=450>
-<br><br> For comparison, results after 50 iterations (Max Pooling) <br>
-<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/Tsukiyomi_at_iteration_100-Max-Pooling.jpg" width=90% height=450>
-<br><br> For comparison, results after 50 iterations using the INetwork. Notice that in comparison to Max Pooling results, it is far more detailed in the mountain peaks and colours are more natural<br>
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Tsukiyomi_INetwork_at_iteration_50.jpg?raw=true" width=90% height=450>
+<br><br> Results after 100 iterations using the INetwork<br>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Blue-Moon-Lake_at_iteration_100.jpg?raw=true" width=90% height=450>
 <br><br> DeepArt.io result (1000 iterations and using improvements such as Markov Random Field Regularization) <br>
-<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.png" width=90% height=450>
+<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.jpg" width=90% height=450>
 <br><br> For reference, the same image with Color Preservation 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Tsukiyomi_color_preserved.jpg?raw=true" width=90% height=450>
 <br><br> As an example, here are two images of the Sagano Bamboo Forest with the "pattened-leaf" style, with and without color preservation <br>
