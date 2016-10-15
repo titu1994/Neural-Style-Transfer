@@ -45,21 +45,21 @@ An example of color preservation with Kinkaku-ji, a Buddhist temple, as the cont
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Fores.jpg?raw=true" height=450 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Forest-No-Color-Preservation.jpg?raw=true" height=450 width=49%> <br><br>
 
 ## Style Interpolation
-Style weight and Content weight can be manipulated to get drastically different results. Here 'S' represents Style weight and 'C' represents Content weight 
+Style weight and Content weight can be manipulated to get drastically different results.
 
 Leonid Afremov's "Misty Mood" is the style image and "Dipping Sun" is the content image : <br>
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/misty-mood-leonid-afremov.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Dipping-Sun.jpg?raw=true" height=300 width=49%></td>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Dipping-Sun.jpg?raw=true" height=300 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/misty-mood-leonid-afremov.jpg?raw=true" height=300 width=50%> 
 
 <table>
 <tr align='center'>
-<td>S=1e3, C=1</td>
-<td>S=1, C=1</td>
-<td>S=1, C=1e3</td>
+<td>Style=1, Content=1000</td>
+<td>Style=1, Content=1</td>
+<td>Style=1000, Content=1</td>
 </tr>
 <tr>
-<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/DippingSun1.jpg?raw=true" height=300></td>
-<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/DippingSun2.jpg?raw=true" height=300></td>
 <td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/DippingSun3.jpg?raw=true" height=300></td>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/DippingSun2.jpg?raw=true" height=300></td>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/DippingSun1.jpg?raw=true" height=300></td>
 </tr>
 </table>
 
@@ -83,10 +83,9 @@ The below are the results after 50 iterations using 3 different style weights : 
 </table>
 
 ## Masked Style Transfer
-Supplying an additional binary mask for each of the styles, we can apply the style to a selected region and preserve the content.
-We can also use multiple masks to apply 2 different styles in 2 different regions.
+Supplying an additional binary mask for each style, we can apply the style to a selected region and preserve the content in other regions.We can also use multiple masks to apply 2 different styles in 2 different regions of the same content image.
 
-The below uses an animated image as the content and "The Starry Night" as the style image. The mask tries to preserve the woman's shape and color, while applying the style to all other regions. Results are very good, as "The Starry Night" has a tendency to overpower the content shape and color. <br>
+The below "The Starry Night" as the style image. The mask tries to preserve the woman's shape and color, while applying the style to all other regions. Results are very good, as "The Starry Night" has a tendency to overpower the content shape and color. <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Dawn%20Sky.jpg?raw=true" height=300 width=50%> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" height=300 width=49%>
 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/Dawn-Sky-Mask.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Dawn_Sky_masked.jpg?raw=true" height=300 width=49%>
