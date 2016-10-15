@@ -126,8 +126,8 @@ def preprocess_image(image_path, load_dims=False, read_mode="color"):
         # Expand the 1 channel grayscale to 3 channel grayscale image
         temp = np.zeros(img.shape + (3,), dtype=np.uint8)
         temp[:, :, 0] = img
-        temp[:, :, 1] = img
-        temp[:, :, 2] = img
+        temp[:, :, 1] = img.copy()
+        temp[:, :, 2] = img.copy()
 
         img = temp
 
