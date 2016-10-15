@@ -189,7 +189,6 @@ A note on mask images:
 - They should be binary images (only black and white)
 - White represents parts of the image that you want style transfer to occur
 - Black represents parts of the image that you want to preserve the content
-- For now, only 2 images can be used in Multi Style Multi Mask generation. This is because we are using a binary mask to represent the regions. Support for multiple styles multiple masks is being considered.
 - Be careful of the order in which mask images are presented in Multi Style Multi Mask generation. They have a 1 : 1 mapping between style images and style masks.
 - When using the Script Helper program, it may happen that the masks are being ordered incorrectly due to name-wise sorting. Therefore, rename the masks in alphabetic order to correct this flaw.
 
