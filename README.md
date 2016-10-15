@@ -44,12 +44,32 @@ An example of color preservation with Kinkaku-ji, a Buddhist temple, as the cont
 <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Fores.jpg?raw=true" height=450 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Forest-No-Color-Preservation.jpg?raw=true" height=450 width=49%> <br><br>
 
+## Style Interpolation
+Style weight and Content weight can be manipulated to get drastically different results. Here 'S' represents Style weight and 'C' represents Content weight 
+
+Leonid Afremov's "Misty Mood" is the style image and "Dipping Sun" is the content image : <br>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/misty-mood-leonid-afremov.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Dipping-Sun.jpg?raw=true" height=300 width=49%></td>
+
+<table>
+<tr align='center'>
+<td>S=1e3, C=1</td>
+<td>S=1, C=1</td>
+<td>S=1, C=1e3</td>
+</tr>
+<tr>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/DippingSun1.jpg?raw=true" height=300></td>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/DippingSun2.jpg?raw=true" height=300></td>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/DippingSun3.jpg?raw=true" height=300></td>
+</tr>
+</table>
+
+
 ## Multiple Style Transfer
 The next few images use the Blue Moon Lake as a content image and Vincent Van Gogh's "Starry Night" and Georgia O'Keeffe's "Red Canna" as the style images: <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=49% height=300> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/red-canna.jpg?raw=true" height=300 width=49%>
 
 The below are the results after 50 iterations using 3 different style weights : <br>
-<table>
+<table align='center'>
 <tr align='center'>
 <td>Starry Night : 1.0, Red Canna 0.2</td>
 <td>Starry Night : 1.0, Red Canna 0.4</td>
