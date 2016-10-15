@@ -34,6 +34,7 @@ parser.add_argument('syle_image_paths', metavar='ref', nargs='+', type=str,
                     help='Path to the style reference image.')
 parser.add_argument('result_prefix', metavar='res_prefix', type=str,
                     help='Prefix for the saved results.')
+parser.add_argument("--style_masks", type=str, default=None, nargs='+', help='Maska for style images')
 
 parser.add_argument("--image_size", dest="img_size", default=400, type=int, help='Output Image size')
 parser.add_argument("--content_weight", dest="content_weight", default=0.025, type=float,
@@ -75,6 +76,13 @@ result_prefix = args.result_prefix
 style_image_paths = []
 for style_image_path in style_reference_image_paths:
     style_image_paths.append(style_image_path)
+
+style_masks_present = args.style_masks is not None
+mask_paths = []
+
+if style_masks_present:
+    for mask_path in args.style_masks:
+        mask_paths.append(mask_path)
 
 
 def str_to_bool(v):
@@ -179,6 +187,28 @@ def original_color_transform(content, generated):
     return generated
 
 
+def load_mask(mask_path, shape):
+    if K.image_dim_ordering() == "th":
+        _, channels, width, height = shape
+    else:
+        _, width, height, channels = shape
+
+    mask = imread(mask_path, mode="L") # Grayscale mask load
+    mask = imresize(mask, (width, height)).astype('float32')
+
+    mask_shape = shape[1:]
+
+    mask_tensor = np.empty(mask_shape)
+
+    for i in range(channels):
+        if K.image_dim_ordering() == "th":
+            mask_tensor[i, :, :] = mask
+        else:
+            mask_tensor[:, :, i] = mask
+
+    return mask_tensor
+
+
 # Decide pooling function
 pooltype = str(args.pool).lower()
 assert pooltype in ["ave", "max"], 'Pooling argument is wrong. Needs to be either "ave" or "max".'
@@ -191,6 +221,7 @@ def pooling_func():
         return AveragePooling2D((2, 2), strides=(2, 2))
     else:
         return MaxPooling2D((2, 2), strides=(2, 2))
+
 
 read_mode = "gray" if args.init_image == "gray" else "color"
 # get tensor representations of our images
@@ -223,7 +254,7 @@ else:
     shape = (nb_tensors, img_width, img_height, 3)
 
 # build the VGG16 network with our 3 images as input
-first_layer = Convolution2D(64, 3, 3, activation='relu', name='conv1_1')
+first_layer = Convolution2D(64, 3, 3, activation='relu', name='conv1_1', border_mode='same')
 first_layer.set_input(input_tensor, shape)
 
 model = Sequential()
@@ -284,7 +315,7 @@ print('Model loaded.')
 
 # get the symbolic outputs of each "key" layer (we gave them unique names).
 outputs_dict = dict([(layer.name, layer.output) for layer in model.layers])
-
+shape_dict = dict([(layer.name, layer.output_shape) for layer in model.layers])
 
 # compute the neural style loss
 # first we need to define 4 util functions
@@ -305,9 +336,18 @@ def gram_matrix(x):
 # It is based on the gram matrices (which capture style) of
 # feature maps from the style reference image
 # and from the generated image
-def style_loss(style, combination):
+def style_loss(style, combination, mask_path=None, nb_channels=None):
     assert K.ndim(style) == 3
     assert K.ndim(combination) == 3
+
+    if mask_path is not None:
+        style_mask = load_mask(mask_path, nb_channels)
+
+        style = style * style_mask
+        combination = combination * style_mask
+
+        del style_mask
+
     S = gram_matrix(style)
     C = gram_matrix(combination)
     channels = 3
@@ -319,7 +359,9 @@ def style_loss(style, combination):
 # designed to maintain the "content" of the
 # base image in the generated image
 def content_loss(base, combination):
-    channels = 3
+    channel_dim = 0 if K.image_dim_ordering() == "th" else -1
+
+    channels = K.shape(base)[channel_dim]
     size = img_width * img_height
 
     if args.content_loss_type == 1:
@@ -352,16 +394,25 @@ base_image_features = layer_features[0, :, :, :]
 combination_features = layer_features[nb_tensors - 1, :, :, :]
 loss += content_weight * content_loss(base_image_features,
                                       combination_features)
+style_masks = []
+if style_masks_present:
+    style_masks = mask_paths # If mask present, pass dictionary of masks to style loss
+else:
+    style_masks = [None for _ in range(nb_style_images)] # If masks not present, pass None to the style loss
+
+channel_index = 1 if K.image_dim_ordering() == "th" else -1
 
 feature_layers = ['conv1_1', 'conv2_1', 'conv3_1', 'conv4_1', 'conv5_1']
 for layer_name in feature_layers:
     layer_features = outputs_dict[layer_name]
+    shape = shape_dict[layer_name]
     combination_features = layer_features[nb_tensors - 1, :, :, :]
 
     style_reference_features = layer_features[1:nb_tensors - 1, :, :, :]
     sl = []
     for j in range(nb_style_images):
-        sl.append(style_loss(style_reference_features[j], combination_features))
+        print("Loading mask : %s with %d channels" % (style_masks[j], shape[channel_index]))
+        sl.append(style_loss(style_reference_features[j], combination_features, style_masks[j], shape))
 
     for j in range(nb_style_images):
         loss += (style_weights[j] / len(feature_layers)) * sl[j]
