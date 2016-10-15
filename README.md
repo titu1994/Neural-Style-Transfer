@@ -151,6 +151,11 @@ Example:
 python inetwork.py "/path/to/content image" "path/to/style image" "result prefix or /path/to/result prefix" --preserve_color "True" --pool_type "ave" --rescale_method "bicubic" --content_layer "conv4_2"
 ```
 
+To perform color preservation on an already generated image, use the `color_transform.py` as below. It will save the image in the same folder as the generated image with "_original_color" suffix.
+```
+python color_transfer.py "path/to/content/image" "path/to/generated/image"
+```
+
 ### Neural Doodles
 Both the neural_doodle.py and improved_neural_doodle.py script share similar usage styles.
 
