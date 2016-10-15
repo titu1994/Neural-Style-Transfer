@@ -92,7 +92,7 @@ Supplying an additional binary mask for each style, we can apply the style to a 
 
 <br>
 The next image uses "Cherry Blossoms" as the content image, and uses two styles : "Candy Style" and Monet's "Water Lillies" using their respective masks to create an image with unique results. <br>
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Japanese-cherry-widescreen-wallpaper-Picture-1366x768.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/candy-style.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/water-lilies-1919-2.jpg?raw=true" height=300 width=33%>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/candy-style.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/water-lilies-1919-2.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Japanese-cherry-widescreen-wallpaper-Picture-1366x768.jpg?raw=true" height=300 width=33%> 
 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/cherry-blossom-1.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/cherry-blossom-2.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Cherry-Blossoms.jpg?raw=true" height=300 width=33%>
 
@@ -163,14 +163,9 @@ To use multiple style images, when the image choice window opens, select all sty
 ### Neural Style Transfer
 Both Network.py and INetwork.py have similar usage styles, and share all parameters.
 
-Network.py
+Network.py / INetwork.py
 ```
-python network.py "/path/to/content image" "path/to/style image" "result prefix or /path/to/result prefix"
-```
-
-INetwork.py
-```
-python inetwork.py "/path/to/content image" "path/to/style image" "result prefix or /path/to/result prefix"
+python network.py/inetwork.py "/path/to/content image" "path/to/style image" "result prefix or /path/to/result prefix"
 ```
 
 To pass multiple style images, after passing the content image path, seperate each style path with a space
@@ -188,6 +183,11 @@ python inetwork.py "/path/to/content image" "path/to/style image" "result prefix
 To perform color preservation on an already generated image, use the `color_transform.py` as below. It will save the image in the same folder as the generated image with "_original_color" suffix.
 ```
 python color_transfer.py "path/to/content/image" "path/to/generated/image"
+```
+
+As a general example, here is the list of parameters to generate a multi style multi mask image:
+```
+python network.py "Japanese-cherry-widescreen-wallpaper-Picture-1366x768.jpg" "candy-style.jpg" "water-lilies-1919-2.jpg" "Cherry Blossom" --style_masks "cherry-blossom-1.jpg" "cherry-blossom-2.jpg" --content_weight 5 --style_weight 1.0 1.0 --num_iter 20 --model "vgg16" --content_loss_type 0
 ```
 
 ### Neural Doodles
