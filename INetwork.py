@@ -88,7 +88,7 @@ if style_masks_present:
         mask_paths.append(mask_path)
 
 if style_masks_present:
-    assert len(style_image_paths) == len(style_masks_present), "Wrong number of style masks provided.\n" \
+    assert len(style_image_paths) == len(mask_paths), "Wrong number of style masks provided.\n" \
                                                                "Number of style images = %d, \n" \
                                                                "Number of style mask paths = %d." % \
                                                                (len(style_image_paths), len(style_masks_present))
@@ -430,7 +430,6 @@ for i in range(len(feature_layers) - 1):
     style_reference_features = layer_features[1:nb_tensors - 1, :, :, :]
     sl1 = []
     for j in range(nb_style_images):
-        print("i = %d, Loading mask : %s with %d channels" % (i, style_masks[j], shape[channel_index]))
         sl1.append(style_loss(style_reference_features[j], combination_features, style_masks[j], shape))
 
     layer_features = outputs_dict[feature_layers[i + 1]]
@@ -439,7 +438,6 @@ for i in range(len(feature_layers) - 1):
     style_reference_features = layer_features[1:nb_tensors - 1, :, :, :]
     sl2 = []
     for j in range(nb_style_images):
-        print("i = %d, Loading mask : %s with %d channels" % (i + 1, style_masks[j], shape[channel_index]))
         sl2.append(style_loss(style_reference_features[j], combination_features, style_masks[j], shape))
 
     for j in range(nb_style_images):

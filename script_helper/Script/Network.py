@@ -85,7 +85,7 @@ if style_masks_present:
         mask_paths.append(mask_path)
 
 if style_masks_present:
-    assert len(style_image_paths) == len(style_masks_present), "Wrong number of style masks provided.\n" \
+    assert len(style_image_paths) == len(mask_paths), "Wrong number of style masks provided.\n" \
                                                                "Number of style images = %d, \n" \
                                                                "Number of style mask paths = %d." % \
                                                                (len(style_image_paths), len(style_masks_present))
