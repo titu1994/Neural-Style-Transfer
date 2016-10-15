@@ -326,9 +326,9 @@ def content_loss(base, combination):
     channels = 3
     size = img_width * img_height
 
-    if args.content_loss_type == 0:
+    if args.content_loss_type == 1:
         multiplier = 1 / (2. * channels ** 0.5 * size ** 0.5)
-    elif args.content_loss_type == 1:
+    elif args.content_loss_type == 2:
         multiplier = 1 / (channels * size)
     else:
         multiplier = 1.
