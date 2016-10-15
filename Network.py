@@ -84,6 +84,12 @@ if style_masks_present:
     for mask_path in args.style_masks:
         mask_paths.append(mask_path)
 
+if style_masks_present:
+    assert len(style_image_paths) == len(style_masks_present), "Wrong number of style masks provided.\n" \
+                                                               "Number of style images = %d, \n" \
+                                                               "Number of style mask paths = %d." % \
+                                                               (len(style_image_paths), len(style_masks_present))
+
 
 def str_to_bool(v):
     return v.lower() in ("true", "yes", "t", "1")
