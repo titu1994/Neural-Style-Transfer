@@ -417,7 +417,6 @@ for layer_name in feature_layers:
     style_reference_features = layer_features[1:nb_tensors - 1, :, :, :]
     sl = []
     for j in range(nb_style_images):
-        print("Loading mask : %s with %d channels" % (style_masks[j], shape[channel_index]))
         sl.append(style_loss(style_reference_features[j], combination_features, style_masks[j], shape))
 
     for j in range(nb_style_images):
