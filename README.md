@@ -90,6 +90,12 @@ Supplying an additional binary mask for each style, we can apply the style to a 
 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/Dawn-Sky-Mask.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Dawn_Sky_masked.jpg?raw=true" height=300 width=49%>
 
+<br>
+The next image uses "Cherry Blossoms" as the content image, and uses two styles : "Candy Style" and Monet's "Water Lillies" using their respective masks to create an image with unique results. <br>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Japanese-cherry-widescreen-wallpaper-Picture-1366x768.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/candy-style.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/water-lilies-1919-2.jpg?raw=true" height=300 width=33%>
+
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/cherry-blossom-1.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/cherry-blossom-2.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Cherry-Blossoms.jpg?raw=true" height=300 width=33%>
+
 ## Various results with / without Color Preservation
 Example of various styles (with and without color preservation). Images of the "Lost Grounds" from .Hack G.U.<br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Lost-Grounds.jpg?raw=true" width=98%>
