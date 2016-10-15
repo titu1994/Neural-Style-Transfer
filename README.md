@@ -36,7 +36,7 @@ It also explains how to setup Theano (with GPU support) on both Windows and Linu
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.jpg" width=98% height=450>
 
 ## Style Transfer with Color Preservation
-An example of color preservation with Monet's "Water Lilies" as the art style and Kinkaku-ji, a zen Buddhist temple as the content image: <br><br>
+An example of color preservation with Kinkaku-ji, a Buddhist temple, as the content image and Monet's "Water Lilies" as the art style: <br><br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Kinkaku-ji.jpg?raw=true" height=300 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/water-lilies-1919-2.jpg?raw=true" height=300 width=49%> <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Jukai_color_preservation.jpg?raw=true" height=300 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Jukai.jpg?raw=true" width=49% height=300>
 <br><br> As an example, here are two images of the Sagano Bamboo Forest with the "pattened-leaf" style, with and without color preservation <br>
@@ -45,7 +45,7 @@ An example of color preservation with Monet's "Water Lilies" as the art style an
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Fores.jpg?raw=true" height=450 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Forest-No-Color-Preservation.jpg?raw=true" height=450 width=49%> <br><br>
 
 ## Multiple Style Transfer
-The next few images use the Blue Moon Lake as a content image and Vincent Van Gogh's "Starry Night" and Georgia O'Keeffe's "Red Canna": <br>
+The next few images use the Blue Moon Lake as a content image and Vincent Van Gogh's "Starry Night" and Georgia O'Keeffe's "Red Canna" as the style images: <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=49% height=300> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/red-canna.jpg?raw=true" height=300 width=49%>
 
 The below are the results after 50 iterations using 3 different style weights : <br>
