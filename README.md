@@ -185,9 +185,19 @@ To perform color preservation on an already generated image, use the `color_tran
 python color_transfer.py "path/to/content/image" "path/to/generated/image"
 ```
 
+A note on mask images: 
+- They should be binary images (only black and white)
+- White represents parts of the image that you want style transfer to occur
+- Black represents parts of the image that you want to preserve the content
+- For now, only 2 images can be used in Multi Style Multi Mask generation. This is because we are using a binary mask to represent the regions. Support for multiple styles multiple masks is being considered.
+- Be careful of the order in which mask images are presented in Multi Style Multi Mask generation. They have a 1 : 1 mapping between style images and style masks.
+- When using the Script Helper program, it may happen that the masks are being ordered incorrectly due to name-wise sorting. Therefore, rename the masks in alphabetic order to correct this flaw.
+
 As a general example, here is the list of parameters to generate a multi style multi mask image:
 ```
-python network.py "Japanese-cherry-widescreen-wallpaper-Picture-1366x768.jpg" "candy-style.jpg" "water-lilies-1919-2.jpg" "Cherry Blossom" --style_masks "cherry-blossom-1.jpg" "cherry-blossom-2.jpg" --content_weight 5 --style_weight 1.0 1.0 --num_iter 20 --model "vgg16" --content_loss_type 0
+python network.py "Japanese-cherry-widescreen-wallpaper-Picture-1366x768.jpg" "candy-style.jpg" "water-lilies-1919-2.jpg" \
+"Cherry Blossom" --style_masks "cherry-blossom-1.jpg" "cherry-blossom-2.jpg" --content_weight 5 --style_weight 1.0 1.0 \
+--num_iter 20 --model "vgg16" --content_loss_type 0
 ```
 
 ### Neural Doodles
