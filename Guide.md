@@ -13,6 +13,14 @@ There are various parameters in both Network.py and INetwork.py scripts that can
 }
 ```
 
+# Acknowledgements
+
+Uses the VGG-16 model as described in the Keras example below :
+https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
+
+Uses weights from Keras Deep Learning Models : https://github.com/fchollet/deep-learning-models
+
+Neural Doodles is a modification of the example script available at Keras : https://github.com/fchollet/keras/blob/master/examples/neural_doodle.py
 
 ## General Tips
 - Max number of epochs should be around 100. The original paper suggests 1000 epochs, but this script provides a very good result much faster.
