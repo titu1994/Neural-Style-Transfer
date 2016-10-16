@@ -3,12 +3,9 @@ Implementation of Neural Style Transfer from the paper <a href="http://arxiv.org
 
 INetwork implements and focuses on certain improvements suggested in <a href="http://arxiv.org/abs/1605.04603">Improving the Neural Algorithm of Artistic Style</a>. 
 
-Uses the VGG-16 model as described in the Keras example below :
-https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
+Color Preservation is based on the paper [Preserving Color in Neural Artistic Style Transfer](https://arxiv.org/abs/1606.05897).
 
-Uses weights from Keras Deep Learning Models : https://github.com/fchollet/deep-learning-models
-
-Neural Doodles is a modification of the example script available at Keras : https://github.com/fchollet/keras/blob/master/examples/neural_doodle.py
+Masked Style Transfer is based on the paper [Show, Divide and Neural: Weighted Style Transfer](http://cs231n.stanford.edu/reports2016/208_Report.pdf)
 
 ## Guide
 
@@ -302,6 +299,14 @@ On a 980M GPU, the time required for each epoch depends on mainly image size (gr
 For a 400x400 gram matrix, each epoch takes approximately 8-10 seconds. <br>
 For a 512x512 gram matrix, each epoch takes approximately 15-18 seconds. <br>
 For a 600x600 gram matrix, each epoch takes approximately 24-28 seconds. <br>
+
+For Masked Style Transfer, it is advisable to use Network.py instead of INetwork.py, since the mask must be applied to every single layer of the VGG 16 or VGG 19 network with the INetwork, thereby drastically increasing the execution time.
+
+For Multiple Style Transfer, INetwork.py requires slightly more time (~2x single style transfer as shown above for 2 styles, ~3x for 3 styles and so on). Results are better with INetwork.py in multiple style transfer.
+
+For Multi Style Multi Mask Style Transfer, it is advisable to use Network.py only. This is because applying the mask to every single layer of the VGG network each time for each style drastically increases the execution time of the INetwork.
+
+- For multi style multi mask network, Network.py requires roughly 72 seconds per iteration, whereas INetwork.py requires 248 seconds per iteration
   
 # Issues
 - Due to usage of content image as initial image, output depends heavily on parameter tuning. <br> Test to see if the image is appropriate in the first 10 epochs, and if it is correct, increase the number of iterations to smoothen and improve the quality of the output.
