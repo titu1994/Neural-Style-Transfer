@@ -28,20 +28,20 @@ The **Script Helper** program can be downloaded from the Releases tab of this re
 
 # Examples
 ## Single Style Transfer
-<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=49% height=300> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=49% height=300>
+<img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=49% height=300 alt="blue moon lake"> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=49% height=300 alt="starry night">
 <br><br> Results after 100 iterations using the INetwork<br>
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Blue-Moon-Lake_at_iteration_100.jpg?raw=true" width=98% height=450>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Blue-Moon-Lake_at_iteration_100.jpg?raw=true" width=98% height=450 alt="blue moon lake style transfer">
 <br><br> DeepArt.io result (1000 iterations and using improvements such as Markov Random Field Regularization) <br>
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/output/DeepArt_Blue_Moon_Lake.jpg" width=98% height=450>
 
 ## Style Transfer with Color Preservation
 An example of color preservation with Kinkaku-ji, a Buddhist temple, as the content image and Monet's "Water Lilies" as the art style: <br><br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Kinkaku-ji.jpg?raw=true" height=300 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/water-lilies-1919-2.jpg?raw=true" height=300 width=49%> <br>
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Jukai_color_preservation.jpg?raw=true" height=300 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Jukai.jpg?raw=true" width=49% height=300>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Jukai_color_preservation.jpg?raw=true" height=300 width=49% alt="Kinkaku color preservation"> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Jukai.jpg?raw=true" width=49% height=300 alt="kinkaku style transfer">
 <br><br> As an example, here are two images of the Sagano Bamboo Forest with the "pattened-leaf" style, with and without color preservation <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/sagano_bamboo_forest.jpg?raw=true" height=450 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/patterned_leaves.jpg?raw=true" height=450 width=49%>
 <br>
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Fores.jpg?raw=true" height=450 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Forest-No-Color-Preservation.jpg?raw=true" height=450 width=49%> <br><br>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Fores.jpg?raw=true" height=450 width=49% alt="sagano bamboo forest style transfer color preservation"> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Forest-No-Color-Preservation.jpg?raw=true" height=450 width=49% alt="sagano bamboo forest style transfer"> <br><br>
 
 ## Style Interpolation
 Style weight and Content weight can be manipulated to get drastically different results.
@@ -85,14 +85,14 @@ The below are the results after 50 iterations using 3 different style weights : 
 Supplying an additional binary mask for each style, we can apply the style to a selected region and preserve the content in other regions.We can also use multiple masks to apply 2 different styles in 2 different regions of the same content image.
 
 "The Starry Night" is used as the style image in the below images. The mask tries to preserve the woman's shape and color, while applying the style to all other regions. Results are very good, as "The Starry Night" has a tendency to overpower the content shape and color. <br>
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Dawn%20Sky.jpg?raw=true" height=300 width=50%> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" height=300 width=49%>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Dawn%20Sky.jpg?raw=true" height=300 width=50% alt="dawn sky anime"> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" height=300 width=49%>
 
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/Dawn-Sky-Mask.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Dawn_Sky_masked.jpg?raw=true" height=300 width=49%>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/Dawn-Sky-Mask.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Dawn_Sky_masked.jpg?raw=true" height=300 width=49% alt="dawn sky style transfer anime">
 
 <br>
-Another example of masked style transfer is provided below. "Winter Wolf" is used as the content image and "Bamboo Forest" is used as the style image. The mask attempts to preserve the darkened cloudy sky, and apply the style only to the mountains and the wolf itself. <br> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/winter-wolf.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/bamboo_forest.jpg?raw=true" height=300 width=49%>
+Another example of masked style transfer is provided below. "Winter Wolf" is used as the content image and "Bamboo Forest" is used as the style image. The mask attempts to preserve the darkened cloudy sky, and apply the style only to the mountains and the wolf itself. <br> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/winter-wolf.jpg?raw=true" height=300 width=50% alt="winter wolf"> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/bamboo_forest.jpg?raw=true" height=300 width=49%>
 
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/winter-wolf-mask.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/WinterWolf-Masked.jpg?raw=true" height=300 width=49%>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/winter-wolf-mask.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/WinterWolf-Masked.jpg?raw=true" height=300 width=49% alt="winter wolf style transfer">
 
 <br>
 These last few images use "Cherry Blossoms" as the content image, and uses two styles : "Candy Style" and Monet's "Water Lillies" using their respective masks to create an image with unique results. <br>
@@ -105,7 +105,9 @@ Utilizing a style image with a very distinctive texture, we can apply this textu
 
 The below is an example of the content image "Aurea Luna", with the texture images which are available in the /style/metals directory, which are Silver and Gold. Color Preservation is applied to both images, and a mask is applied on the "Burnt Gold" image to style just the circle and not the entire square image.
 
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Texture-Transfer.jpg?raw=true" width=99%>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Aurea-Luna.jpg?raw=true" width=33% alt="aurea luna golden moon clow reed"> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/metals/silver_plate.jpg?raw=true" width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/metals/burnt_gold.jpg?raw=true" width=33%>
+
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/molten-silver.jpg?raw=true" width=50% alt="molten silver moon"> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/burnt-gold.jpg?raw=true" width=49% alt="burnt gold moon">
 
 ## Various results with / without Color Preservation
 Example of various styles (with and without color preservation). Images of the "Lost Grounds" from .Hack G.U.<br>
