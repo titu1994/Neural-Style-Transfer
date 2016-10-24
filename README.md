@@ -101,7 +101,7 @@ These last few images use "Cherry Blossoms" as the content image, and uses two s
 ## Texture Transfer
 Utilizing a style image with a very distinctive texture, we can apply this texture to the content without any alterating in the algorithm. It is to be noted that the style image must possess a very strong texture to transfer correctly.
 
-The below is an example of the content image "Aurea Luna", with the texture images which are available in the /style/metals directory, which are Silver and Gold.
+The below is an example of the content image "Aurea Luna", with the texture images which are available in the /style/metals directory, which are Silver and Gold. Color Preservation is applied to both images, and a mask is applied on the "Burnt Gold" image to style just the circle and not the entire square image.
 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Texture-Transfer.jpg?raw=true" width=99%>
 
