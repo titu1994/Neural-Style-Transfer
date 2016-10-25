@@ -84,7 +84,7 @@ The below are the results after 50 iterations using 3 different style weights : 
 ## Masked Style Transfer
 Supplying an additional binary mask for each style, we can apply the style to a selected region and preserve the content in other regions.We can also use multiple masks to apply 2 different styles in 2 different regions of the same content image.
 
-Note that with the `mask_transfer.py` script, a single content image can be masked with 1 mask to preserve content in blackend regions and preserve style transfer in whitened regions in the generated image. If two masks are provided, then it will assume that black corresponds to the 1st style image and white corresponds to the second style image, and transfer the styles appropriately.
+Note that with the `mask_transfer.py` script, a single content image can be masked with 1 mask to preserve content in blackend regions and preserve style transfer in whitened regions in the generated image. Currently, only content can be transfered in a post processed manner.
 
 "The Starry Night" is used as the style image in the below images. The mask tries to preserve the woman's shape and color, while applying the style to all other regions. Results are very good, as "The Starry Night" has a tendency to overpower the content shape and color. <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Dawn%20Sky.jpg?raw=true" height=300 width=50% alt="dawn sky anime"> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" height=300 width=49%>
@@ -165,11 +165,11 @@ It is a C# program written to more easily generate the arguments for the python 
 - The script helper program code is available at: https://github.com/titu1994/Neural-Style-Transfer-Windows The program runs on Linux using Mono
 
 ### Benefits 
+- Allows Style Transfer, Neural Doodles, Color Transfer and Masked Style Transfer easily
 - Automatically executes the script based on the arguments.
 - Easy selection of images (Content, Style (Multiple Selection allowed), Output Prefix)
 - Easy parameter selection
 - Easily generate argument list, if command line execution is preferred. 
-- Allows usage of both Neural Style Transfer as well as Neural Doodles
 - Runs on Windows (Native) and Linux (Using Mono)
 
 To use multiple style images, when the image choice window opens, select all style images as needed. Pass multiple style weights by using a space between each style weight in the parameters section.
@@ -212,6 +212,13 @@ As a general example, here is the list of parameters to generate a multi style m
 python network.py "Japanese-cherry-widescreen-wallpaper-Picture-1366x768.jpg" "candy-style.jpg" "water-lilies-1919-2.jpg" \
 "Cherry Blossom" --style_masks "cherry-blossom-1.jpg" "cherry-blossom-2.jpg" --content_weight 5 --style_weight 1.0 1.0 \
 --num_iter 20 --model "vgg16" --content_loss_type 0
+```
+
+Like Color Transfer, single mask style transfer can also be applied as a post processing step instead of directly doing so in the style transfer script. You can preserve some portion of the content image in the generated image using the post processing script `mask_transfer.py`.
+
+Example:
+```
+python mask_transfer.py "path/to/content/image" "path/to/generated/image" "path/to/content/mask"
 ```
 
 ### Neural Doodles
@@ -257,6 +264,24 @@ python improved_neural_doodle.py --nlabels 4 --style-image srcl.jpg --style-mask
 python improved_neural_doodle.py --nlabels 4 --style-image srcl.jpg --style-mask srcl-m.png --target-mask dst-m.png  --target-image-prefix ./doodle3-500 --num_iter 50 --content-image ./doodle3-200_at_iteration_XXXX.png
 
 ############# Replace XXXX by last iteration number ################
+```
+
+### Color Transfer (Post Processing)
+Color transfer can be performed after the stylized image has already been generated. This can be done via the `color_transfer.py` script or via the Color Transfer tab in the Script Helper. Note that the script will save the image in the same folder as the generated image with "_original_color" suffix.
+
+Example:
+```
+python color_transfer.py "path/to/content/image" "path/to/generated/image"
+```
+
+### Masked Style Transfer (Post Processing)
+If the general requirement is to preserve some portions of the content in the stylized image, then it can simply be done as a post processing step using the `mask_transfer.py` script or the Mask Transfer tab of the Script Helper.
+
+For now, only the content can be preserved (by coloring the area **black** in the mask). To perform multi style multi mask style transfer, you must supply the styles and masks to the neural style script and let it run for several iterations. This cannot be done as a post processing step. 
+
+Example:
+```
+python mask_transfer.py "path/to/content/image" "path/to/generated/image" "path/to/content/mask"
 ```
 
 ## Parameters (Neural Style)
