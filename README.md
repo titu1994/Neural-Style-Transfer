@@ -170,6 +170,7 @@ It is a C# program written to more easily generate the arguments for the python 
 - Easy selection of images (Content, Style (Multiple Selection allowed), Output Prefix)
 - Easy parameter selection
 - Easily generate argument list, if command line execution is preferred. 
+- Creates log folders for each execution so settings can be preserved
 - Runs on Windows (Native) and Linux (Using Mono)
 
 To use multiple style images, when the image choice window opens, select all style images as needed. Pass multiple style weights by using a space between each style weight in the parameters section.
