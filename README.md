@@ -84,6 +84,8 @@ The below are the results after 50 iterations using 3 different style weights : 
 ## Masked Style Transfer
 Supplying an additional binary mask for each style, we can apply the style to a selected region and preserve the content in other regions.We can also use multiple masks to apply 2 different styles in 2 different regions of the same content image.
 
+Note that with the `mask_transfer.py` script, a single content image can be masked with 1 mask to preserve content in blackend regions and preserve style transfer in whitened regions in the generated image. If two masks are provided, then it will assume that black corresponds to the 1st style image and white corresponds to the second style image, and transfer the styles appropriately.
+
 "The Starry Night" is used as the style image in the below images. The mask tries to preserve the woman's shape and color, while applying the style to all other regions. Results are very good, as "The Starry Night" has a tendency to overpower the content shape and color. <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Dawn%20Sky.jpg?raw=true" height=300 width=50% alt="dawn sky anime"> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" height=300 width=49%>
 
