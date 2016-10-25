@@ -206,6 +206,11 @@ def load_mask(mask_path, shape):
 
     mask = imread(mask_path, mode="L") # Grayscale mask load
     mask = imresize(mask, (width, height)).astype('float32')
+
+    # Perform binarization of mask
+    mask[mask <= 127] = 0
+    mask[mask > 128] = 255
+
     max = np.amax(mask)
     mask /= max
 
