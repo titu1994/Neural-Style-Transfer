@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import argparse
 import os
 from scipy.misc import imread, imresize, imsave, fromimage, toimage

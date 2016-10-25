@@ -1,5 +1,3 @@
-from __future__ import print_function, division
-
 import time
 import argparse
 import numpy as np

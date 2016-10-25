@@ -1,5 +1,3 @@
-from __future__ import print_function, division
-
 from scipy.misc import imread, imresize, imsave, fromimage, toimage
 from scipy.optimize import fmin_l_bfgs_b
 import numpy as np
