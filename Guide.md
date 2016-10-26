@@ -101,7 +101,7 @@ The next few are optional, but still recommended if you want Theano to run fast 
 We are now down with the downloads. Onto actually installing all these things:
 - MS VS 2013 should auto install when downloaded.
 - Next, install CUDA. 
-- Now, extract cuDNN into the CUDA sub-folder called "cuda". It should overwrite several files. If it doesn't overwrite the files, it's in the wrong place.
+- Now, extract cuDNN into a folder. Inside it should be 3 sub folders which must be copied inside the CUDA directory. It should overwrite several files. If it doesn't overwrite the files, it's in the wrong place.
 - Next install Anaconda 2.2.0, and add it as default python interpreter. This adds python and conda commands to path automatically.
 - Next, extract OpenBLAS into C: drive. Also extract the mingw64 dlls into the bin folder.
 - Lastly, extract TDM-GCC into a seperate folder in C: drive
