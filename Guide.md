@@ -108,7 +108,7 @@ We are now down with the downloads. Onto actually installing all these things:
 
 Now, we have to setup some environment variables. To do so, go to Control Panal -> System and Security -> System -> "Advanced System Settings" on the left -> Advanced tab -> Environment Variables
 - Add system variable CUDA_PATH = C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5
-- Add system variable CUDNN_PATH = C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\cuda
+- Add system variable CUDNN_PATH = C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5
 - Add system variable VS120COMNTOOLS = C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\ # See if this exists first, but it should.
 
 Next, we will add a few things to the PATH variable. In Windows 10, you can easily add new paths using the buttons, but for older Windows versions, append the path to the variable and end with a semicolon. <b>Note that the order must be exactly similar to this, cause if you have MINGW or CYGWIN installed seperately then TDM-GCC has to come before them in the path string. </b>
@@ -120,7 +120,7 @@ Next, we will add a few things to the PATH variable. In Windows 10, you can easi
 
 Aaand you're almost done!. A few last steps to take, so open a command prompt (Win + R, cmd.exe):
 - `conda update --all`
-- `conda install mingw libpython` # Two modules which are absolutely needed, else you will see crashes when running without doubt.
+- `conda install mingw libpython` # Two modules which are absolutely needed, else you will see raw code when running without a doubt.
 - `conda install h5py` # Ideally comes installed with Keras, but just to be sure.
 - `pip install pillow` # Dependency for scipy.misc (all image related stuff)
 
