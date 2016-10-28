@@ -43,6 +43,8 @@ An example of color preservation with Kinkaku-ji, a Buddhist temple, as the cont
 <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Fores.jpg?raw=true" height=450 width=49% alt="sagano bamboo forest style transfer color preservation"> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Bamboo-Forest-No-Color-Preservation.jpg?raw=true" height=450 width=49% alt="sagano bamboo forest style transfer"> <br><br>
 
+Color preservation can also be done using a mask. Using the `color_transfer.py` script and supplying a mask image, in which white regions will allow the content's colors to be transfered and black regions will keep the style-generated colors.
+
 ## Style Interpolation
 Style weight and Content weight can be manipulated to get drastically different results.
 
@@ -201,6 +203,11 @@ To perform color preservation on an already generated image, use the `color_tran
 python color_transfer.py "path/to/content/image" "path/to/generated/image"
 ```
 
+A mask can also be supplied to color preservation script, using the `--mask` argument, where the white region signifies that color preservation should be done there, and black regions signify the color should not be preserved here.
+```
+python color_transfer.py "path/to/content/image" "path/to/generated/image" --mask "/path/to/mask/image"
+```
+
 A note on mask images: 
 - They should be binary images (only black and white)
 - White represents parts of the image that you want style transfer to occur
@@ -274,6 +281,13 @@ Example:
 ```
 python color_transfer.py "path/to/content/image" "path/to/generated/image"
 ```
+
+A mask can also be supplied to color preservation script, using the `--mask` argument, where the white region signifies that color preservation should be done there, and black regions signify the color should not be preserved here.
+```
+python color_transfer.py "path/to/content/image" "path/to/generated/image" --mask "/path/to/mask/image"
+```
+
+Please note that for masks for color preservation and for style transfer have different representations. Color preservations will preserve white areas as content colors, and mask transfer will preserve black areas as content image.
 
 ### Masked Style Transfer (Post Processing)
 If the general requirement is to preserve some portions of the content in the stylized image, then it can simply be done as a post processing step using the `mask_transfer.py` script or the Mask Transfer tab of the Script Helper.
