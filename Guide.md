@@ -90,7 +90,8 @@ Setting up script helper on Linux is a 2 step process, but still very easy.
 
 Steps:
 - Download and install `mono-complete` for your linux distro. For Ubuntu (tested) : `sudo apt-get mono-complete`
-- Follow steps for Windows Script Helper (above). It's that easy.
+- Follow below steps to setup Anaconda and Theano on Linux
+- Follow remaining steps for Windows Script Helper (above). It's that easy.
 
 ## Need for cuDNN
 
