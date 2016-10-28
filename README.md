@@ -45,6 +45,11 @@ An example of color preservation with Kinkaku-ji, a Buddhist temple, as the cont
 
 Color preservation can also be done using a mask. Using the `color_transfer.py` script and supplying a mask image, in which white regions will allow the content's colors to be transfered and black regions will keep the style-generated colors.
 
+Below, the content image is "Sunlit Mountain", with the style image as "Seated Nude" by Picasso. Notice that the color preservation mask ensures that color transfer occurs only for the sky region, while the mountains are untouched.
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Sunlit%20Mountains.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/Sunlit%20Mountains%20Color%20Mask.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/seated-nude.jpg?raw=true" height=300 width=33%>
+
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Sunlit-Mountain.jpg?raw=true" height=300 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Sunlit-Mountain_color_preservation.jpg?raw=true" height=300 width=50%>
+
 ## Style Interpolation
 Style weight and Content weight can be manipulated to get drastically different results.
 
@@ -301,6 +306,10 @@ python mask_transfer.py "path/to/content/image" "path/to/generated/image" "path/
 
 ## Parameters (Neural Style)
 ```
+--style_masks : Multiple style masks may be provided for masking certain regions of an image for style transfer. Number of 
+  style_weight parameters must match number of style masks.
+--color_mask : A single color mask, which defines the region where the color must be preserved. 
+
 --image_size : Allows to set the Gram Matrix size. Default is 400 x 400, since it produces good results fast. 
 --num_iter : Number of iterations. Default is 10. Test the output with 10 iterations, and increase to improve results.
 --init_image : Can be "content", "noise" or "gray". Default is "content", since it reduces reproduction noise. "gray" is useful when you want only the color of the style to be used in the image.
