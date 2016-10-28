@@ -74,9 +74,27 @@ Benefits
 - Easily generate argument list, if command line execution is preferred.
 - Works on Linux using Mono
 
+### Setting Up Script Helper on Windows
+Setting up the script helper on Windows is extremely easy. Minimum requirements are .NET 4.5 which is preinstalled on all Windows 7 and above.
+
+Steps:
+- Follow below steps to setup Anaconda and Theano on Windows
+- Download the latest Script Helper release from https://github.com/titu1994/Neural-Style-Transfer/releases
+- Extract to some location
+- Run "Neural Style Transfer.exe" program and set the content, style, output prefix and mask if necessary
+- Set other parameters as needed. Note that the default parameters are generally the best for most styles.
+- Note : The first time you execute the script, it will open a pop up asking for the location of Anaconda (Python) with all the necessary packages installed. 
+
+### Setting Up Script Helper on Linux
+Setting up script helper on Linux is a 2 step process, but still very easy.
+
+Steps:
+- Download and install `mono-complete` for your linux distro. For Ubuntu (tested) : `sudo apt-get mono-complete`
+- Follow steps for Windows Script Helper (above). It's that easy.
+
 ## Need for cuDNN
 
-Both scripts utilize the VGG-16 network, which consists of stacks of Convolutional Layers. Since VGG-16 is such a dense network, it is advisable to run this script only on GPU. Even on GPU, if the INetwork.py script is to be used, then it is absolutely recommended to install cuDNN 5.0 as well. 
+Both scripts utilize the VGG-16 network, which consists of stacks of Convolutional Layers. Since VGG-16 is such a dense network, it is advisable to run this script only on GPU. Even on GPU, if the INetwork.py script is to be used, then it is absolutely recommended to install cuDNN 5.1 as well. 
 
 This is because cuDNN 4+ has special support for VGG networks, without which the INetwork script will require several hundred seconds even on GPU. INetwork utilizes all VGG layers in orfer to compute style loss, and even uses Chained Inference between adjacent layers thus requiring a vast amount of time without cuDNN.
 
