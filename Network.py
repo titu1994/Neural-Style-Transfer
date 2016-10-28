@@ -35,7 +35,8 @@ parser.add_argument('syle_image_paths', metavar='ref', nargs='+', type=str,
                     help='Path to the style reference image.')
 parser.add_argument('result_prefix', metavar='res_prefix', type=str,
                     help='Prefix for the saved results.')
-parser.add_argument("--style_masks", type=str, default=None, nargs='+', help='Maska for style images')
+parser.add_argument("--style_masks", type=str, default=None, nargs='+', help='Masks for style images')
+parser.add_argument("--color_mask", type=str, default=None, help='Mask for color preservation')
 
 parser.add_argument("--image_size", dest="img_size", default=400, type=int, help='Output Image size')
 parser.add_argument("--content_weight", dest="content_weight", default=0.025, type=float,
@@ -90,6 +91,8 @@ if style_masks_present:
                                                                "Number of style images = %d, \n" \
                                                                "Number of style mask paths = %d." % \
                                                                (len(style_image_paths), len(style_masks_present))
+
+color_mask_present = args.color_mask is not None
 
 
 def str_to_bool(v):
@@ -187,14 +190,24 @@ def deprocess_image(x):
 
 
 # util function to preserve image color
-def original_color_transform(content, generated):
+def original_color_transform(content, generated, mask=None):
     generated = fromimage(toimage(generated, mode='RGB'), mode='YCbCr')  # Convert to YCbCr color space
-    generated[:, :, 1:] = content[:, :, 1:]  # Generated CbCr = Content CbCr
+
+    if mask is None:
+        generated[:, :, 1:] = content[:, :, 1:]  # Generated CbCr = Content CbCr
+    else:
+        width, height, channels = generated.shape
+
+        for i in range(width):
+            for j in range(height):
+                if mask[i, j] == 1:
+                    generated[i, j, 1:] = content[i, j, 1:]
+
     generated = fromimage(toimage(generated, mode='YCbCr'), mode='RGB')  # Convert to RGB color space
     return generated
 
 
-def load_mask(mask_path, shape):
+def load_mask(mask_path, shape, return_mask_img=False):
     if K.image_dim_ordering() == "th":
         _, channels, width, height = shape
     else:
@@ -209,6 +222,8 @@ def load_mask(mask_path, shape):
 
     max = np.amax(mask)
     mask /= max
+
+    if return_mask_img: return mask
 
     mask_shape = shape[1:]
 
@@ -503,6 +518,18 @@ if preserve_color:
     content = imread(base_image_path, mode="YCbCr")
     content = imresize(content, (img_width, img_height))
 
+    if color_mask_present:
+        if K.image_dim_ordering() == "th":
+            color_mask_shape = (None, None, img_width, img_height)
+        else:
+            color_mask_shape = (None, img_width, img_height, None)
+
+        color_mask = load_mask(args.color_mask, color_mask_shape, return_mask_img=True)
+    else:
+        color_mask = None
+else:
+    color_mask = None
+
 num_iter = args.num_iter
 prev_min_val = -1
 
@@ -525,7 +552,7 @@ for i in range(num_iter):
     img = deprocess_image(x.copy())
 
     if preserve_color and content is not None:
-        img = original_color_transform(content, img)
+        img = original_color_transform(content, img, mask=color_mask)
 
     if maintain_aspect_ratio & (not rescale_image):
         img_ht = int(img_width * aspect_ratio)
