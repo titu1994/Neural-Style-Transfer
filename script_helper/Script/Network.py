@@ -40,7 +40,7 @@ parser.add_argument("--style_masks", type=str, default=None, nargs='+', help='Ma
 parser.add_argument("--image_size", dest="img_size", default=400, type=int, help='Output Image size')
 parser.add_argument("--content_weight", dest="content_weight", default=0.025, type=float,
                     help="Weight of content")  # 0.025
-parser.add_argument("--style_weight", dest="style_weight", nargs='+', default=1, type=float, help="Weight of content")  # 1.0
+parser.add_argument("--style_weight", dest="style_weight", nargs='+', default=[1], type=float, help="Weight of content")  # 1.0
 parser.add_argument("--style_scale", dest="style_scale", default=1.0, type=float,
                     help="Scale the weightage of the style")  # 1, 0.5, 2
 parser.add_argument("--total_variation_weight", dest="tv_weight", default=8.5e-5, type=float,
