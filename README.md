@@ -292,6 +292,11 @@ A mask can also be supplied to color preservation script, using the `--mask` arg
 python color_transfer.py "path/to/content/image" "path/to/generated/image" --mask "/path/to/mask/image"
 ```
 
+Using the `--hist_match` parameter set to 1, it will perform histogram color matching instead of direct color transfer
+```
+python color_transfer.py "path/to/content/image" "path/to/generated/image" --hist_match 1
+```
+
 Please note that for masks for color preservation and for style transfer have different representations. Color preservations will preserve white areas as content colors, and mask transfer will preserve black areas as content image.
 
 ### Masked Style Transfer (Post Processing)
@@ -346,6 +351,12 @@ python mask_transfer.py "path/to/content/image" "path/to/generated/image" "path/
 --style_weight : Weightage given to style in relation to content. Default is 1. 
 --total_variation_weight : Regularization factor. Smaller values tend to produce crisp images, but 0 is not useful. Default = 8.5E-5
 --region_style_weight : Weight for region style regularization. Keep it set to 1.0 unless testing for experimental purposes.
+```
+
+## Parameters (Color Transfer)
+```
+--masks : Optional, performs masked color transfer
+--hist_match : Performs histogram color matching if set to 1. Default is 0.
 ```
 
 # Network.py in action
