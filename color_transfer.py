@@ -66,7 +66,7 @@ parser.add_argument('--hist_match', type=int, default=0, help='Perform histogram
 
 args = parser.parse_args()
 
-if args.hist_match == 0:
+if args.hist_match == 1:
     image_suffix = "_histogram_color.png"
     mode = "RGB"
 else:

@@ -20,7 +20,7 @@ def original_color_transform(content, generated, mask=None, hist_match=0, mode='
     generated = fromimage(toimage(generated, mode='RGB'), mode=mode)  # Convert to YCbCr color space
 
     if mask is None:
-        if hist_match == 0:
+        if hist_match == 1:
             for channel in range(3):
                 generated[:, :, channel] = match_histograms(generated[:, :, channel], content[:, :, channel])
         else:
@@ -31,7 +31,7 @@ def original_color_transform(content, generated, mask=None, hist_match=0, mode='
         for i in range(width):
             for j in range(height):
                 if mask[i, j] == 1:
-                    if hist_match == 0:
+                    if hist_match == 1:
                         for channel in range(3):
                             generated[i, j, channel] = match_histograms(generated[i, j, channel], content[i, j, channel])
                     else:
@@ -66,7 +66,7 @@ parser.add_argument('--hist_match', type=int, default=0, help='Perform histogram
 
 args = parser.parse_args()
 
-if args.hist_match == 0:
+if args.hist_match == 1:
     image_suffix = "_histogram_color.png"
     mode = "RGB"
 else:
