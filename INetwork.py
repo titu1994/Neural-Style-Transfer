@@ -127,7 +127,6 @@ else:
 
 # dimensions of the generated picture.
 img_width = img_height = args.img_size
-assert img_height == img_width, 'Due to the use of the Gram matrix, width and height must match.'
 
 img_WIDTH = img_HEIGHT = 0
 aspect_ratio = 0
