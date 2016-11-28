@@ -5,7 +5,8 @@ import time
 import argparse
 import warnings
 
-from keras.models import Sequential
+from keras.models import Model
+from keras.layers import Input
 from keras.layers.convolutional import Convolution2D, AveragePooling2D, MaxPooling2D
 from keras import backend as K
 from keras.utils.data_utils import get_file
@@ -249,11 +250,11 @@ assert pooltype in ["ave", "max"], 'Pooling argument is wrong. Needs to be eithe
 pooltype = 1 if pooltype == "ave" else 0
 
 
-def pooling_func():
+def pooling_func(x):
     if pooltype == 1:
-        return AveragePooling2D((2, 2), strides=(2, 2))
+        return AveragePooling2D((2, 2), strides=(2, 2))(x)
     else:
-        return MaxPooling2D((2, 2), strides=(2, 2))
+        return MaxPooling2D((2, 2), strides=(2, 2))(x)
 
 
 read_mode = "gray" if args.init_image == "gray" else "color"
@@ -286,39 +287,39 @@ if K.image_dim_ordering() == "th":
 else:
     shape = (nb_tensors, img_width, img_height, 3)
 
+ip = Input(tensor=input_tensor, shape=shape)
+
 # build the VGG16 network with our 3 images as input
-first_layer = Convolution2D(64, 3, 3, activation='relu', name='conv1_1', border_mode='same')
-first_layer.set_input(input_tensor, shape)
+x = Convolution2D(64, 3, 3, activation='relu', name='conv1_1', border_mode='same')(ip)
+x = Convolution2D(64, 3, 3, activation='relu', name='conv1_2', border_mode='same')(x)
+x = pooling_func(x)
 
-model = Sequential()
-model.add(first_layer)
-model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_2', border_mode='same'))
-model.add(pooling_func())
+x = Convolution2D(128, 3, 3, activation='relu', name='conv2_1', border_mode='same')(x)
+x = Convolution2D(128, 3, 3, activation='relu', name='conv2_2', border_mode='same')(x)
+x = pooling_func(x)
 
-model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_1', border_mode='same'))
-model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_2', border_mode='same'))
-model.add(pooling_func())
-
-model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_1', border_mode='same'))
-model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_2', border_mode='same'))
-model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_3', border_mode='same'))
+x = Convolution2D(256, 3, 3, activation='relu', name='conv3_1', border_mode='same')(x)
+x = Convolution2D(256, 3, 3, activation='relu', name='conv3_2', border_mode='same')(x)
+x = Convolution2D(256, 3, 3, activation='relu', name='conv3_3', border_mode='same')(x)
 if args.model == "vgg19":
-    model.add(Convolution2D(256, 3, 3, activation='relu', name='conv3_4', border_mode='same'))
-model.add(pooling_func())
+    x = Convolution2D(256, 3, 3, activation='relu', name='conv3_4', border_mode='same')(x)
+x = pooling_func(x)
 
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_1', border_mode='same'))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_2', border_mode='same'))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_3', border_mode='same'))
+x = Convolution2D(512, 3, 3, activation='relu', name='conv4_1', border_mode='same')(x)
+x = Convolution2D(512, 3, 3, activation='relu', name='conv4_2', border_mode='same')(x)
+x = Convolution2D(512, 3, 3, activation='relu', name='conv4_3', border_mode='same')(x)
 if args.model == "vgg19":
-    model.add(Convolution2D(512, 3, 3, activation='relu', name='conv4_4', border_mode='same'))
-model.add(pooling_func())
+    x = Convolution2D(512, 3, 3, activation='relu', name='conv4_4', border_mode='same')(x)
+x = pooling_func(x)
 
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_1', border_mode='same'))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_2', border_mode='same'))
-model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_3', border_mode='same'))
+x = Convolution2D(512, 3, 3, activation='relu', name='conv5_1', border_mode='same')(x)
+x = Convolution2D(512, 3, 3, activation='relu', name='conv5_2', border_mode='same')(x)
+x = Convolution2D(512, 3, 3, activation='relu', name='conv5_3', border_mode='same')(x)
 if args.model == "vgg19":
-    model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_4', border_mode='same'))
-model.add(pooling_func())
+    x = Convolution2D(512, 3, 3, activation='relu', name='conv5_4', border_mode='same')(x)
+x = pooling_func(x)
+
+model = Model(ip, x)
 
 if K.image_dim_ordering() == "th":
     if args.model == "vgg19":
@@ -562,7 +563,7 @@ prev_min_val = -1
 improvement_threshold = float(args.min_improvement)
 
 for i in range(num_iter):
-    print("Start of iteration", (i + 1))
+    print("Starting iteration %d of %d" % ((i + 1), num_iter))
     start_time = time.time()
 
     x, min_val, info = fmin_l_bfgs_b(evaluator.loss, x.flatten(), fprime=evaluator.grads, maxfun=20)
