@@ -126,7 +126,7 @@ else:
         style_weights.append(style_weight * args.style_scale)
 
 # dimensions of the generated picture.
-img_width = img_height = args.img_size
+img_width = img_height = 0
 
 img_WIDTH = img_HEIGHT = 0
 aspect_ratio = 0
@@ -136,7 +136,7 @@ assert args.content_loss_type in [0, 1, 2], "Content Loss Type must be one of 0,
 
 # util function to open, resize and format pictures into appropriate tensors
 def preprocess_image(image_path, load_dims=False, read_mode="color"):
-    global img_WIDTH, img_HEIGHT, aspect_ratio
+    global img_width, img_height, img_WIDTH, img_HEIGHT, aspect_ratio
 
     mode = "RGB" if read_mode == "color" else "L"
     img = imread(image_path, mode=mode)  # Prevents crashes due to PNG images (ARGB)
@@ -154,6 +154,9 @@ def preprocess_image(image_path, load_dims=False, read_mode="color"):
         img_WIDTH = img.shape[0]
         img_HEIGHT = img.shape[1]
         aspect_ratio = img_HEIGHT / img_WIDTH
+
+        img_width = args.img_size
+        img_height = int(img_width * aspect_ratio)
 
     img = imresize(img, (img_width, img_height)).astype('float32')
 
