@@ -157,7 +157,10 @@ def preprocess_image(image_path, load_dims=False, read_mode="color"):
         aspect_ratio = img_HEIGHT / img_WIDTH
 
         img_width = args.img_size
-        img_height = int(img_width * aspect_ratio)
+        if args.maintain_aspect_ratio:
+            img_height = int(img_width * aspect_ratio)
+        else:
+            img_height = args.img_size
 
     img = imresize(img, (img_width, img_height)).astype('float32')
 
@@ -581,7 +584,7 @@ for i in range(num_iter):
     if preserve_color and content is not None:
         img = original_color_transform(content, img, mask=color_mask)
 
-    if maintain_aspect_ratio & (not rescale_image):
+    if not rescale_image:
         img_ht = int(img_width * aspect_ratio)
         print("Rescaling Image to (%d, %d)" % (img_width, img_ht))
         img = imresize(img, (img_width, img_ht), interp=args.rescale_method)
