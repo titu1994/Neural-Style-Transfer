@@ -13,7 +13,7 @@ from keras.utils.data_utils import get_file
 from keras.utils.layer_utils import convert_all_kernels_in_model
 
 """
-Neural Style Transfer with Keras 1.1.1
+Neural Style Transfer with Keras 1.1.2
 
 Based on:
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
