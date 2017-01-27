@@ -189,7 +189,7 @@ def preprocess_image(image_path, load_dims=False, read_mode="color"):
         aspect_ratio = float(img_HEIGHT) / img_WIDTH
 
         img_width = args.img_size
-        if args.maintain_aspect_ratio:
+        if maintain_aspect_ratio:
             img_height = int(img_width * aspect_ratio)
         else:
             img_height = args.img_size
