@@ -161,7 +161,6 @@ img_width = img_height = 0
 img_WIDTH = img_HEIGHT = 0
 aspect_ratio = 0
 
-assert args.init_image in ["content", "noise", "gray"], "init_image must be one of ['content', 'noise', 'gray']"
 assert args.content_loss_type in [0, 1, 2], "Content Loss Type must be one of 0, 1 or 2"
 
 
@@ -537,11 +536,14 @@ evaluator = Evaluator()
 
 if "content" in args.init_image or "gray" in args.init_image:
     x = preprocess_image(base_image_path, True, read_mode=read_mode)
-else:
+elif "noise" in args.init_image:
     x = np.random.uniform(0, 255, (1, img_width, img_height, 3)) - 128.
 
     if K.image_dim_ordering() == "th":
         x = x.transpose((0, 3, 1, 2))
+else:
+    print("Using initial image : ", args.init_image)
+    x = preprocess_image(args.init_image, read_mode=read_mode)
 
 # We require original image if we are to preserve color in YCbCr mode
 if preserve_color:
