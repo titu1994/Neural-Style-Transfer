@@ -399,10 +399,10 @@ def style_loss(style, combination, mask_path=None, nb_channels=None):
     assert K.ndim(combination) == 3
 
     if mask_path is not None:
-        style_mask = load_mask(mask_path, nb_channels)
+        style_mask = K.variable(load_mask(mask_path, nb_channels))
 
-        style = style * style_mask
-        combination = combination * style_mask
+        style = style * K.stop_gradient(style_mask)
+        combination = combination * K.stop_gradient(style_mask)
 
         del style_mask
 
