@@ -378,13 +378,13 @@ For a 400x400 gram matrix, each epoch takes approximately 8-10 seconds. <br>
 For a 512x512 gram matrix, each epoch takes approximately 15-18 seconds. <br>
 For a 600x600 gram matrix, each epoch takes approximately 24-28 seconds. <br>
 
-For Masked Style Transfer, it is advisable to use Network.py instead of INetwork.py, since the mask must be applied to every single layer of the VGG 16 or VGG 19 network with the INetwork, thereby drastically increasing the execution time.
+For Masked Style Transfer, the speed is now same as if using no mask. This was acheived by preventing gradient computation of the mask multiplied with the style and content features.
 
 For Multiple Style Transfer, INetwork.py requires slightly more time (~2x single style transfer as shown above for 2 styles, ~3x for 3 styles and so on). Results are better with INetwork.py in multiple style transfer.
 
-For Multi Style Multi Mask Style Transfer, it is advisable to use Network.py only. This is because applying the mask to every single layer of the VGG network each time for each style drastically increases the execution time of the INetwork.
+For Multi Style Multi Mask Style Transfer, the speed is now same as if using multiple styles only. It was acheived by preventing gradient computation of the mask multiplied with the style and content features.
 
-- For multi style multi mask network, Network.py requires roughly 72 seconds per iteration, whereas INetwork.py requires 248 seconds per iteration
+- For multi style multi mask network, Network.py requires roughly 24 (previously 72) seconds per iteration, whereas INetwork.py requires 87 (previously 248) seconds per iteration
   
 # Issues
 - Due to usage of content image as initial image, output depends heavily on parameter tuning. <br> Test to see if the image is appropriate in the first 10 epochs, and if it is correct, increase the number of iterations to smoothen and improve the quality of the output.
