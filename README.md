@@ -100,12 +100,14 @@ Note that with the `mask_transfer.py` script, a single content image can be mask
 
 <br>
 Another example of masked style transfer is provided below. "Winter Wolf" is used as the content image and "Bamboo Forest" is used as the style image. The mask attempts to preserve the darkened cloudy sky, and apply the style only to the mountains and the wolf itself.
-<br> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/winter-wolf.jpg?raw=true" height=300 width=49% alt="winter wolf"> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/bamboo_forest.jpg?raw=true" height=300 width=49%>
+
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/winter-wolf.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/bamboo_forest.jpg?raw=true" height=300 width=49%>
 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/winter-wolf-mask.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/WinterWolf-Masked.jpg?raw=true" height=300 width=49% alt="winter wolf style transfer">
 
 <br>
 These last few images use "Cherry Blossoms" as the content image, and uses two styles : "Candy Style" and Monet's "Water Lillies" using their respective masks to create an image with unique results. <br>
+
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/candy-style.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/water-lilies-1919-2.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Japanese-cherry-widescreen-wallpaper-Picture-1366x768.jpg?raw=true" height=300 width=33%> 
 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/cherry-blossom-1.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/cherry-blossom-2.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Cherry-Blossoms.jpg?raw=true" height=300 width=33%>
