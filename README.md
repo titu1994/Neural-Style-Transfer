@@ -99,7 +99,8 @@ Note that with the `mask_transfer.py` script, a single content image can be mask
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/Dawn-Sky-Mask.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Dawn_Sky_masked.jpg?raw=true" height=300 width=49% alt="dawn sky style transfer anime">
 
 <br>
-Another example of masked style transfer is provided below. "Winter Wolf" is used as the content image and "Bamboo Forest" is used as the style image. The mask attempts to preserve the darkened cloudy sky, and apply the style only to the mountains and the wolf itself. <br> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/winter-wolf.jpg?raw=true" height=300 width=50% alt="winter wolf"> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/bamboo_forest.jpg?raw=true" height=300 width=49%>
+Another example of masked style transfer is provided below. "Winter Wolf" is used as the content image and "Bamboo Forest" is used as the style image. The mask attempts to preserve the darkened cloudy sky, and apply the style only to the mountains and the wolf itself.
+<br> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/winter-wolf.jpg?raw=true" height=300 width=49% alt="winter wolf"> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/bamboo_forest.jpg?raw=true" height=300 width=49%>
 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/winter-wolf-mask.jpg?raw=true" height=300 width=50%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/WinterWolf-Masked.jpg?raw=true" height=300 width=49% alt="winter wolf style transfer">
 
@@ -117,6 +118,16 @@ The below is an example of the content image "Aurea Luna", with the texture imag
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Aurea-Luna.jpg?raw=true" width=33% alt="aurea luna golden moon clow reed"> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/metals/silver_plate.jpg?raw=true" width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/metals/burnt_gold.jpg?raw=true" width=33%>
 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/molten-silver.jpg?raw=true" width=50% alt="molten silver moon"> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/burnt-gold.jpg?raw=true" width=49% alt="burnt gold moon">
+
+## All Transfer Techniques
+Each of these techniques can be used together, or in stages to generate stunning images. 
+
+In the folowing image, I have used Masked style transfer in a multi scale style transfer technique - with scales of 192x192, 384x384, 768x768, applied a super resolution algorithm (4x and then downscaled to 1920x1080), applied color transfer and mask transfer again to sharpen the edges, used a simple sharpening algorithm and then finally denoise algorithm.
+
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/ancient_city.jpg?raw=true" width=33% alt="ancient city japanese" height=250> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/blue_swirls.jpg?raw=true" width=33% height=250> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/ancient-city.jpg?raw=true" width=33% height=250> 
+
+Result : <br>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/ancient_city_multiscale.jpg?raw=true" width=99% alt="ancient city japanese">
 
 ## Various results with / without Color Preservation
 Example of various styles (with and without color preservation). Images of the "Lost Grounds" from .Hack G.U.<br>
