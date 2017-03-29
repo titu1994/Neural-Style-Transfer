@@ -15,17 +15,6 @@ It also explains how to setup Theano (with GPU support) on both Windows and Linu
 
 The **Script Helper** program can be downloaded from the Releases tab of this repository, [Script Helper Releases](https://github.com/titu1994/Neural-Style-Transfer/releases). Extract it into any folder and run the `Neural Style Transfer.exe` program. On Linux, you will need to install Mono C# to run the script helper program.
 
-<b>Note: </b> As of Keras 1.1.0, Tensorflow is the default backend for Keras. However, if you are on Windows, Tensorflow is not available. Therefore, Windows users should go to their C:/Users/{UserName}/.keras directory and configure their keras.json file as below:
-
-```
-{
-    "image_dim_ordering": "th",
-    "floatx": "float32",
-    "backend": "theano",
-    "epsilon": 1e-07
-}
-```
-
 # Examples
 ## Single Style Transfer
 <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/content/blue-moon-lake.jpg" width=49% height=300 alt="blue moon lake"> <img src="https://raw.githubusercontent.com/titu1994/Neural_Style_Transfer/master/images/inputs/style/starry_night.jpg" width=49% height=300 alt="starry night">
@@ -376,7 +365,7 @@ python mask_transfer.py "path/to/content/image" "path/to/generated/image" "path/
 ![Alt Text](https://raw.githubusercontent.com/titu1994/Neural-Style-Transfer/master/images/Blue%20Moon%20Lake.gif)
 
 # Requirements 
-- Theano / Tensorflow (Tensorflow not tested)
+- Theano / Tensorflow
 - Keras 
 - CUDA (GPU) -- Recommended
 - CUDNN (GPU) -- Recommended 
