@@ -313,7 +313,7 @@ if K.image_dim_ordering() == "th":
 else:
     shape = (nb_tensors, img_width, img_height, 3)
 
-ip = Input(tensor=input_tensor, shape=shape)
+ip = Input(tensor=input_tensor, batch_shape=shape)
 
 # build the VGG16 network with our 3 images as input
 x = Convolution2D(64, (3, 3), activation='relu', name='conv1_1', padding='same')(ip)

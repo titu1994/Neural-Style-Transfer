@@ -1,4 +1,3 @@
-
 from scipy.misc import imread, imresize, imsave, fromimage, toimage
 from scipy.optimize import fmin_l_bfgs_b
 import numpy as np
@@ -14,7 +13,7 @@ from keras.utils.data_utils import get_file
 from keras.utils.layer_utils import convert_all_kernels_in_model
 
 """
-Neural Style Transfer with Keras 1.1.2
+Neural Style Transfer with Keras 1.2.2
 
 Based on:
 https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
@@ -311,36 +310,36 @@ if K.image_dim_ordering() == "th":
 else:
     shape = (nb_tensors, img_width, img_height, 3)
 
-ip = Input(tensor=input_tensor, shape=shape)
+ip = Input(tensor=input_tensor, batch_shape=shape)
 
 # build the VGG16 network with our 3 images as input
-x = Convolution2D(64, 3, 3, activation='relu', name='conv1_1', border_mode='same')(ip)
-x = Convolution2D(64, 3, 3, activation='relu', name='conv1_2', border_mode='same')(x)
+x = Convolution2D(64, (3, 3), activation='relu', name='conv1_1', padding='same')(ip)
+x = Convolution2D(64, (3, 3), activation='relu', name='conv1_2', padding='same')(x)
 x = pooling_func(x)
 
-x = Convolution2D(128, 3, 3, activation='relu', name='conv2_1', border_mode='same')(x)
-x = Convolution2D(128, 3, 3, activation='relu', name='conv2_2', border_mode='same')(x)
+x = Convolution2D(128, (3, 3), activation='relu', name='conv2_1', padding='same')(x)
+x = Convolution2D(128, (3, 3), activation='relu', name='conv2_2', padding='same')(x)
 x = pooling_func(x)
 
-x = Convolution2D(256, 3, 3, activation='relu', name='conv3_1', border_mode='same')(x)
-x = Convolution2D(256, 3, 3, activation='relu', name='conv3_2', border_mode='same')(x)
-x = Convolution2D(256, 3, 3, activation='relu', name='conv3_3', border_mode='same')(x)
+x = Convolution2D(256, (3, 3), activation='relu', name='conv3_1', padding='same')(x)
+x = Convolution2D(256, (3, 3), activation='relu', name='conv3_2', padding='same')(x)
+x = Convolution2D(256, (3, 3), activation='relu', name='conv3_3', padding='same')(x)
 if args.model == "vgg19":
-    x = Convolution2D(256, 3, 3, activation='relu', name='conv3_4', border_mode='same')(x)
+    x = Convolution2D(256, (3, 3), activation='relu', name='conv3_4', padding='same')(x)
 x = pooling_func(x)
 
-x = Convolution2D(512, 3, 3, activation='relu', name='conv4_1', border_mode='same')(x)
-x = Convolution2D(512, 3, 3, activation='relu', name='conv4_2', border_mode='same')(x)
-x = Convolution2D(512, 3, 3, activation='relu', name='conv4_3', border_mode='same')(x)
+x = Convolution2D(512, (3, 3), activation='relu', name='conv4_1', padding='same')(x)
+x = Convolution2D(512, (3, 3), activation='relu', name='conv4_2', padding='same')(x)
+x = Convolution2D(512, (3, 3), activation='relu', name='conv4_3', padding='same')(x)
 if args.model == "vgg19":
-    x = Convolution2D(512, 3, 3, activation='relu', name='conv4_4', border_mode='same')(x)
+    x = Convolution2D(512, (3, 3), activation='relu', name='conv4_4', padding='same')(x)
 x = pooling_func(x)
 
-x = Convolution2D(512, 3, 3, activation='relu', name='conv5_1', border_mode='same')(x)
-x = Convolution2D(512, 3, 3, activation='relu', name='conv5_2', border_mode='same')(x)
-x = Convolution2D(512, 3, 3, activation='relu', name='conv5_3', border_mode='same')(x)
+x = Convolution2D(512, (3, 3), activation='relu', name='conv5_1', padding='same')(x)
+x = Convolution2D(512, (3, 3), activation='relu', name='conv5_2', padding='same')(x)
+x = Convolution2D(512, (3, 3), activation='relu', name='conv5_3', padding='same')(x)
 if args.model == "vgg19":
-    x = Convolution2D(512, 3, 3, activation='relu', name='conv5_4', border_mode='same')(x)
+    x = Convolution2D(512, (3, 3), activation='relu', name='conv5_4', padding='same')(x)
 x = pooling_func(x)
 
 model = Model(ip, x)
