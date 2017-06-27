@@ -45,6 +45,9 @@ parser.add_argument('result_prefix', metavar='res_prefix', type=str,
 parser.add_argument("--style_masks", type=str, default=None, nargs='+',
                     help='Masks for style images')
 
+parser.add_argument("--content_mask", type=str, default=None,
+                    help='Masks for the content image')
+
 parser.add_argument("--color_mask", type=str, default=None,
                     help='Mask for color preservation')
 
@@ -123,6 +126,10 @@ if style_masks_present:
                                                       "Number of style images = %d, \n" \
                                                       "Number of style mask paths = %d." % \
                                                       (len(style_image_paths), len(style_masks_present))
+
+content_mask_present = args.content_mask is not None
+content_mask_path = args.content_mask
+
 
 color_mask_present = args.color_mask is not None
 
@@ -401,12 +408,16 @@ def style_loss(style, combination, mask_path=None, nb_channels=None):
     assert K.ndim(style) == 3
     assert K.ndim(combination) == 3
 
+    if content_mask_path is not None:
+        content_mask = K.variable(load_mask(content_mask_path, nb_channels))
+        combination = combination * K.stop_gradient(content_mask)
+        del content_mask
+
     if mask_path is not None:
         style_mask = K.variable(load_mask(mask_path, nb_channels))
-
         style = style * K.stop_gradient(style_mask)
-        combination = combination * K.stop_gradient(style_mask)
-
+        if content_mask_path is None:
+            combination = combination * K.stop_gradient(style_mask)
         del style_mask
 
     S = gram_matrix(style)
