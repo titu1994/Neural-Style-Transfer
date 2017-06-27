@@ -422,13 +422,13 @@ def style_loss(style, combination, mask_path=None, nb_channels=None):
 def content_loss(base, combination):
     channel_dim = 0 if K.image_dim_ordering() == "th" else -1
 
-    channels = K.shape(base)[channel_dim]
+    channels = K.int_shape(base)[channel_dim]
     size = img_width * img_height
 
     if args.content_loss_type == 1:
-        multiplier = 1 / (2. * channels ** 0.5 * size ** 0.5)
+        multiplier = 1. / (2. * channels ** 0.5 * size ** 0.5)
     elif args.content_loss_type == 2:
-        multiplier = 1 / (channels * size)
+        multiplier = 1. / (channels * size)
     else:
         multiplier = 1.
 
