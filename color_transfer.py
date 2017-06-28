@@ -10,13 +10,47 @@ from scipy.misc import imread, imresize, imsave, fromimage, toimage
 
 
 # Util function to match histograms
-def match_histograms(A, B, rng=(0.0, 255.0), bins=64):
-    (Ha, Xa), (Hb, Xb) = [np.histogram(i, bins=bins, range=rng, density=True) for i in [A, B]]
-    X = np.linspace(rng[0], rng[1], bins, endpoint=True)
-    Hpa, Hpb = [np.cumsum(i) * (rng[1] - rng[0]) ** 2 / float(bins) for i in [Ha, Hb]]
-    inv_Ha = interp1d(X, Hpa, bounds_error=False, fill_value='extrapolate')
-    map_Hb = interp1d(Hpb, X, bounds_error=False, fill_value='extrapolate')
-    return map_Hb(inv_Ha(A).clip(0.0, 255.0))
+def match_histograms(source, template):
+    """
+    Adjust the pixel values of a grayscale image such that its histogram
+    matches that of a target image
+
+    Arguments:
+    -----------
+        source: np.ndarray
+            Image to transform; the histogram is computed over the flattened
+            array
+        template: np.ndarray
+            Template image; can have different dimensions to source
+    Returns:
+    -----------
+        matched: np.ndarray
+            The transformed output image
+    """
+
+    oldshape = source.shape
+    source = source.ravel()
+    template = template.ravel()
+
+    # get the set of unique pixel values and their corresponding indices and
+    # counts
+    s_values, bin_idx, s_counts = np.unique(source, return_inverse=True,
+                                            return_counts=True)
+    t_values, t_counts = np.unique(template, return_counts=True)
+
+    # take the cumsum of the counts and normalize by the number of pixels to
+    # get the empirical cumulative distribution functions for the source and
+    # template images (maps pixel value --> quantile)
+    s_quantiles = np.cumsum(s_counts).astype(np.float64)
+    s_quantiles /= s_quantiles[-1]
+    t_quantiles = np.cumsum(t_counts).astype(np.float64)
+    t_quantiles /= t_quantiles[-1]
+
+    # interpolate linearly to find the pixel values in the template image
+    # that correspond most closely to the quantiles in the source image
+    interp_t_values = np.interp(s_quantiles, t_quantiles, t_values)
+
+    return interp_t_values[bin_idx].reshape(oldshape)
 
 
 # util function to preserve image color
@@ -55,8 +89,8 @@ def load_mask(mask_path, shape):
     mask[mask <= 127] = 0
     mask[mask > 128] = 255
 
-    max = np.amax(mask)
-    mask /= max
+    mask /= 255
+    mask = mask.astype(np.int32)
 
     return mask
 
