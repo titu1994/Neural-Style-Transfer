@@ -433,7 +433,10 @@ def style_loss(style, combination, mask_path=None, nb_channels=None):
 def content_loss(base, combination):
     channel_dim = 0 if K.image_dim_ordering() == "th" else -1
 
-    channels = K.int_shape(base)[channel_dim]
+    try:
+        channels = K.int_shape(base)[channel_dim]
+    except TypeError:
+        channels = K.shape(base)[channel_dim]
     size = img_width * img_height
 
     if args.content_loss_type == 1:
