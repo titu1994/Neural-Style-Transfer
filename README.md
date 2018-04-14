@@ -147,7 +147,7 @@ This method tends to create better output images, however parameters have to be 
 Therefore their is a argument 'init_image' which can take the options 'content' or 'noise'
 
 - Can use AveragePooling2D inplace of MaxPooling2D layers
-The original paper uses AveragePooling for better results, but this can be changed to use MaxPooling2D layers via the argument `--pool_type="max"`. By default MaxPoooling is used, since if offers sharper images, but AveragePooling applies the style better in some cases (especially when style image is the "Starry Night" by Van Gogh).
+The original paper uses AveragePooling for better results, but this can be changed to use MaxPooling2D layers via the argument `--pool_type="max"`. By default MaxPooling is used, since if offers sharper images, but AveragePooling applies the style better in some cases (especially when style image is the "Starry Night" by Van Gogh).
 
 - Style weight scaling
 - Rescaling of image to original dimensions, using lossy upscaling present
