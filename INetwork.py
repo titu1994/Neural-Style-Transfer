@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import absolute_import
 
 from scipy.misc import imread, imresize, imsave, fromimage, toimage
+
 from scipy.optimize import fmin_l_bfgs_b
 import numpy as np
 import time
@@ -477,7 +478,7 @@ loss = K.variable(0.)
 layer_features = outputs_dict[args.content_layer]
 base_image_features = layer_features[0, :, :, :]
 combination_features = layer_features[nb_tensors - 1, :, :, :]
-loss += content_weight * content_loss(base_image_features,
+loss = loss + content_weight * content_loss(base_image_features,
                                       combination_features)
 # Improvement 2
 # Use all layers for style feature extraction and reconstruction
@@ -514,9 +515,9 @@ for i in range(len(feature_layers) - 1):
 
         # Improvement 4
         # Geometric weighted scaling of style loss
-        loss += (style_weights[j] / (2 ** (nb_layers - (i + 1)))) * sl
+        loss = loss + (style_weights[j] / (2 ** (nb_layers - (i + 1)))) * sl
 
-loss += total_variation_weight * total_variation_loss(combination_image)
+loss = loss + total_variation_weight * total_variation_loss(combination_image)
 
 # get the gradients of the generated image wrt the loss
 grads = K.gradients(loss, combination_image)
