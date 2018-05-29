@@ -35,7 +35,7 @@ An example of color preservation with Kinkaku-ji, a Buddhist temple, as the cont
 Color preservation can also be done using a mask. Using the `color_transfer.py` script and supplying a mask image, in which white regions will allow the content's colors to be transfered and black regions will keep the style-generated colors.
 
 Below, the content image is "Sunlit Mountain", with the style image as "Seated Nude" by Picasso. Notice that the color preservation mask ensures that color transfer occurs only for the sky region, while the mountains are untouched.
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Sunlit%20Mountains.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/Sunlit%20Mountains%20Color%20Mask.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/seated-nude.jpg?raw=true" height=300 width=33%>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Sunlit%20Mountains.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/Sunlit%20Mountains%20Color%20Mask.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/seated-nude.jpg?raw=true" height=300 width=32%>
 
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Sunlit-Mountain.jpg?raw=true" height=300 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Sunlit-Mountain_color_preservation.jpg?raw=true" height=300 width=50%>
 
@@ -97,9 +97,44 @@ Another example of masked style transfer is provided below. "Winter Wolf" is use
 <br>
 These last few images use "Cherry Blossoms" as the content image, and uses two styles : "Candy Style" and Monet's "Water Lillies" using their respective masks to create an image with unique results. <br>
 
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/candy-style.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/water-lilies-1919-2.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Japanese-cherry-widescreen-wallpaper-Picture-1366x768.jpg?raw=true" height=300 width=33%> 
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/candy-style.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/water-lilies-1919-2.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Japanese-cherry-widescreen-wallpaper-Picture-1366x768.jpg?raw=true" height=300 width=32%> 
 
-<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/cherry-blossom-1.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/cherry-blossom-2.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Cherry-Blossoms.jpg?raw=true" height=300 width=33%>
+<img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/cherry-blossom-1.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/cherry-blossom-2.jpg?raw=true" height=300 width=33%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Cherry-Blossoms.jpg?raw=true" height=300 width=32%>
+
+### Silhouette Transfer
+Using Masked Transfer, one can post process image silhouettes to generate from scratch artwork that is sharp, clear and manipulates the style to conform to the shape of the silhouette itself.
+
+First we discuss the use of a silhouette of the content vs the content image itself. A silhouette offers a chance to generate new artwork in the artistic vein of the style, while conforming only to the shape of the content, and disregarding the content itself. Combined with post process masking, it is easy to generate artwork similar to the style image itself.
+
+For this image, Starry Night was used as the Style Image.
+
+<table align='center'>
+<td>Content</td>
+<td>Mask</td>
+<td>Generated</td>
+</tr>
+<tr>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/Fai%20D%20Flowrite%20-%20Ring.jpg?raw=true" height=300></td>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/Fai%20D%20Flowrite%20-%20Ring%20-%20Inv.jpg?raw=true" height=300></td>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Fai-Silhuete.jpg?raw=true" height=300></td>
+</tr>
+</table>
+
+For this example, we use "Blue Strokes" as the style image
+
+<table align='center'>
+<td>Content</td>
+<td>Style</td>
+</tr>
+<tr>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/mask/Sakura%20no%20Tsubasa.png?raw=true" height=300></td>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/Blue%20Strokes.jpg?raw=true" height=300></td>
+</tr>
+<tr>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Wings-Silhuete.jpg?raw=true" height=300></td>
+<td><img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/output/Wings-Silhuete%202.jpg?raw=true" height=300></td>
+</tr>
+</table>
 
 ## Texture Transfer
 Utilizing a style image with a very distinctive texture, we can apply this texture to the content without any alterating in the algorithm. It is to be noted that the style image must possess a very strong texture to transfer correctly.
