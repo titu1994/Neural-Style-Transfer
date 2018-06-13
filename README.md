@@ -9,7 +9,7 @@ Masked Style Transfer is based on the paper [Show, Divide and Neural: Weighted S
 
 ## Colaboratory Support
 
-This codebase can now be run directly from colaboratory using the [following link](https://colab.research.google.com/github/titu1994/Neural-Style-Transfer/blob/master/NeuralStyleTransfer.ipynb), or by opening `NeuralStyleTransfer.ipynb` and visiting the Colab link.
+[This codebase can now be run directly from colaboratory using the following link](https://colab.research.google.com/github/titu1994/Neural-Style-Transfer/blob/master/NeuralStyleTransfer.ipynb), or by opening `NeuralStyleTransfer.ipynb` and visiting the Colab link.
 
 Colab link supports almost all of the additional arguments, except of the masking ones. They will probably be added at a later date.
 
