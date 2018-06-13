@@ -7,6 +7,14 @@ Color Preservation is based on the paper [Preserving Color in Neural Artistic St
 
 Masked Style Transfer is based on the paper [Show, Divide and Neural: Weighted Style Transfer](http://cs231n.stanford.edu/reports2016/208_Report.pdf)
 
+## Colaboratory Support
+
+This codebase can now be run directly from colaboratory using the [following link](https://colab.research.google.com/github/titu1994/Neural-Style-Transfer/blob/master/NeuralStyleTransfer.ipynb), or by opening `NeuralStyleTransfer.ipynb` and visiting the Colab link.
+
+Colab link supports almost all of the additional arguments, except of the masking ones. They will probably be added at a later date.
+
+**NOTE :** Make sure you use a GPU in Colab or else the notebook will fail. To change Runtimes : `Runtime -> Change Runtime type ->`. Here select Python 3 and GPU as the hardware accelerator. 
+
 ## Guide
 
 See the <a href="https://github.com/titu1994/Neural-Style-Transfer/blob/master/Guide.md">guide</a> for details regarding how to use the script to acheive the best results
