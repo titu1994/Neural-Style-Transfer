@@ -5,7 +5,7 @@ INetwork implements and focuses on certain improvements suggested in <a href="ht
 
 Color Preservation is based on the paper [Preserving Color in Neural Artistic Style Transfer](https://arxiv.org/abs/1606.05897).
 
-Masked Style Transfer is based on the paper [Show, Divide and Neural: Weighted Style Transfer](http://cs231n.stanford.edu/reports2016/208_Report.pdf)
+Masked Style Transfer is based on the paper [Show, Divide and Neural: Weighted Style Transfer](http://cs231n.stanford.edu/reports/2016/pdfs/208_Report.pdf)
 
 ## Colaboratory Support
 
