@@ -99,6 +99,17 @@ Both scripts utilize the VGG-16 network, which consists of stacks of Convolution
 
 This is because cuDNN 4+ has special support for VGG networks, without which the INetwork script will require several hundred seconds even on GPU. INetwork utilizes all VGG layers in orfer to compute style loss, and even uses Chained Inference between adjacent layers thus requiring a vast amount of time without cuDNN.
 
+## Easy Setup on Linux with Conda and Tensorflow
+
+Setting up CUDA and cuDNN can be frustrating for Linux users. Luckily, it is very easy to make a Conda environment which installs tensorflow-gpu and all of its dependencies, including CUDA and cuDNN. The following steps should get you up and running as quickly as possible on Linux:
+- Update to the latest NVIDIA driver for your GPU. You can find your driver at <a href="https://www.nvidia.com/Download/index.aspx">Download Drivers | NVIDIA</a>.
+- If you don't already have a version of Conda installed, do so now. You can download the Python 3 or Python 2 version. <a href="https://www.anaconda.com/distribution/">Anaconda Download</a>. If you need a refresher on how to use conda, refer to the <a href="https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf">conda cheatsheet</a>.
+- Set up an environment to use for Neural-Style-Transfer. The following command creates an environment called "nst" with all of the required dependencies:
+`conda create --name nst numpy scipy pil h5py keras tensorflow-gpu`
+- Activate the environment 
+`conda activate nst`
+- Now, you're ready to use the Neural-Style-Transfer python scripts, using Keras with a Tensorflow backend. There is no need to install Theano.
+
 # Setting Up Theano for GPU (on Windows)
 
 Setting up Theano for GPU compute on Windows is a huge undertaking, with large number of extra files that need to be installed. Be prepared cause some files may take hours to download, so have some coffee prepared. 
