@@ -9,8 +9,15 @@ def imread(path, mode="RGB"):
     return img
     
 
-def imresize(img, size):
-    img = np.array(Image.fromarray(img).resize(size))
+def imresize(img, size, interp='bilinear'):
+    if interp == 'bilinear':
+        interpolation = Image.BILINEAR
+    elif interp == 'bicubic':
+        interpolation = Image.BICUBIC
+    else:
+        interpolation = Image.NEAREST
+        
+    img = np.array(Image.fromarray(img, interpolation).resize(size))
     return img
     
     
