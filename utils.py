@@ -23,5 +23,5 @@ def fromimage(arr):
     return np.array(arr)
 
 
-def toarray(arr):
+def toimage(arr):
     return Image.fromarray(arr)
