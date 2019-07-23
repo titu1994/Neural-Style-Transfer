@@ -17,7 +17,7 @@ def imresize(img, size, interp='bilinear'):
     else:
         interpolation = Image.NEAREST
         
-    img = np.array(Image.fromarray(img, interpolation).resize(size))
+    img = np.array(Image.fromarray(img).resize(size, interpolation))
     return img
     
     
