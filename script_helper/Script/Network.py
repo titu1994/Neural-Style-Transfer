@@ -2,7 +2,9 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
-from scipy.misc import imread, imresize, imsave, fromimage, toimage
+# from scipy.misc import imread, imresize, imsave, fromimage, toimage
+from utils import imread, imresize, imsave, fromimage, toimage
+
 from scipy.optimize import fmin_l_bfgs_b
 import numpy as np
 import time
@@ -467,7 +469,7 @@ loss = K.variable(0.)
 layer_features = outputs_dict[args.content_layer]  # 'conv5_2' or 'conv4_2'
 base_image_features = layer_features[0, :, :, :]
 combination_features = layer_features[nb_tensors - 1, :, :, :]
-loss += content_weight * content_loss(base_image_features,
+loss = loss + content_weight * content_loss(base_image_features,
                                       combination_features)
 style_masks = []
 if style_masks_present:
@@ -489,9 +491,9 @@ for layer_name in feature_layers:
         sl.append(style_loss(style_reference_features[j], combination_features, style_masks[j], shape))
 
     for j in range(nb_style_images):
-        loss += (style_weights[j] / len(feature_layers)) * sl[j]
+        loss = loss + (style_weights[j] / len(feature_layers)) * sl[j]
 
-loss += total_variation_weight * total_variation_loss(combination_image)
+loss = loss + total_variation_weight * total_variation_loss(combination_image)
 
 # get the gradients of the generated image wrt the loss
 grads = K.gradients(loss, combination_image)
