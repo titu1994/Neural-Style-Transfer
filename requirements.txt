@@ -1,0 +1,4 @@
+keras>=2.2.4
+scipy>=1.1.0
+scikit-image>=0.15.0
+h5py>=2.7.1

@@ -411,10 +411,10 @@ python mask_transfer.py "path/to/content/image" "path/to/generated/image" "path/
 - Theano / Tensorflow
 - Keras 
 - CUDA (GPU) -- Recommended
-- CUDNN (GPU) -- Recommended 
-- Scipy + PIL
+- CUDNN (GPU) -- Recommended
 - Numpy
 - h5py
+- Scipy + PIL + Scikit-image
 
 # Speed
 On a 980M GPU, the time required for each epoch depends on mainly image size (gram matrix size) :
