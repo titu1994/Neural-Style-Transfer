@@ -215,7 +215,7 @@ def preprocess_image(image_path, load_dims=False, read_mode="color"):
     img[:, :, 1] -= 116.779
     img[:, :, 2] -= 123.68
 
-    if K.image_dim_ordering() == "th":
+    if K.image_data_format() == "channels_first":
         img = img.transpose((2, 0, 1)).astype('float32')
 
     img = np.expand_dims(img, axis=0)
@@ -224,7 +224,7 @@ def preprocess_image(image_path, load_dims=False, read_mode="color"):
 
 # util function to convert a tensor into a valid image
 def deprocess_image(x):
-    if K.image_dim_ordering() == "th":
+    if K.image_data_format() == "channels_first":
         x = x.reshape((3, img_width, img_height))
         x = x.transpose((1, 2, 0))
     else:
@@ -260,7 +260,7 @@ def original_color_transform(content, generated, mask=None):
 
 
 def load_mask(mask_path, shape, return_mask_img=False):
-    if K.image_dim_ordering() == "th":
+    if K.image_data_format() == "channels_first":
         _, channels, width, height = shape
     else:
         _, width, height, channels = shape
@@ -282,7 +282,7 @@ def load_mask(mask_path, shape, return_mask_img=False):
     mask_tensor = np.empty(mask_shape)
 
     for i in range(channels):
-        if K.image_dim_ordering() == "th":
+        if K.image_data_format() == "channels_first":
             mask_tensor[i, :, :] = mask
         else:
             mask_tensor[:, :, i] = mask
@@ -305,7 +305,7 @@ for style_path in style_image_paths:
     style_reference_images.append(K.variable(preprocess_image(style_path)))
 
 # this will contain our generated image
-if K.image_dim_ordering() == 'th':
+if K.image_data_format() == "channels_first":
     combination_image = K.placeholder((1, 3, img_width, img_height))
 else:
     combination_image = K.placeholder((1, img_width, img_height, 3))
@@ -321,7 +321,7 @@ nb_style_images = nb_tensors - 2 # Content and Output image not considered
 # combine the various images into a single Keras tensor
 input_tensor = K.concatenate(image_tensors, axis=0)
 
-if K.image_dim_ordering() == "th":
+if K.image_data_format() == "channels_first":
     shape = (nb_tensors, 3, img_width, img_height)
 else:
     shape = (nb_tensors, img_width, img_height, 3)
@@ -360,7 +360,7 @@ x = pooling_func(x)
 
 model = Model(ip, x)
 
-if K.image_dim_ordering() == "th":
+if K.image_data_format() == "channels_first":
     if args.model == "vgg19":
         weights = get_file('vgg19_weights_th_dim_ordering_th_kernels_notop.h5', TH_19_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
     else:
@@ -373,7 +373,7 @@ else:
 
 model.load_weights(weights)
 
-if K.backend() == 'tensorflow' and K.image_dim_ordering() == "th":
+if K.backend() == 'tensorflow' and K.image_data_format() == "channels_first":
     warnings.warn('You are using the TensorFlow backend, yet you '
                   'are using the Theano '
                   'image dimension ordering convention '
@@ -397,7 +397,7 @@ shape_dict = dict([(layer.name, layer.output_shape) for layer in model.layers])
 # the gram matrix of an image tensor (feature-wise outer product) using shifted activations
 def gram_matrix(x):
     assert K.ndim(x) == 3
-    if K.image_dim_ordering() == "th":
+    if K.image_data_format() == "channels_first":
         features = K.batch_flatten(x)
     else:
         features = K.batch_flatten(K.permute_dimensions(x, (2, 0, 1)))
@@ -437,7 +437,7 @@ def style_loss(style, combination, mask_path=None, nb_channels=None):
 # designed to maintain the "content" of the
 # base image in the generated image
 def content_loss(base, combination):
-    channel_dim = 0 if K.image_dim_ordering() == "th" else -1
+    channel_dim = 0 if K.image_data_format() == "channels_first" else -1
 
     try:
         channels = K.int_shape(base)[channel_dim]
@@ -491,7 +491,7 @@ if style_masks_present:
 else:
     style_masks = [None for _ in range(nb_style_images)] # If masks not present, pass None to the style loss
 
-channel_index = 1 if K.image_dim_ordering() == "th" else -1
+channel_index = 1 if K.image_data_format() == "channels_first" else -1
 
 # Improvement 3 : Chained Inference without blurring
 for i in range(len(feature_layers) - 1):
@@ -583,7 +583,7 @@ if "content" in args.init_image or "gray" in args.init_image:
 elif "noise" in args.init_image:
     x = np.random.uniform(0, 255, (1, img_width, img_height, 3)) - 128.
 
-    if K.image_dim_ordering() == "th":
+    if K.image_data_format() == "channels_first":
         x = x.transpose((0, 3, 1, 2))
 else:
     print("Using initial image : ", args.init_image)
@@ -595,7 +595,7 @@ if preserve_color:
     content = imresize(content, (img_width, img_height))
 
     if color_mask_present:
-        if K.image_dim_ordering() == "th":
+        if K.image_data_format() == "channels_first":
             color_mask_shape = (None, None, img_width, img_height)
         else:
             color_mask_shape = (None, img_width, img_height, None)
