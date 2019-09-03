@@ -459,7 +459,7 @@ def content_loss(base, combination):
 # designed to keep the generated image locally coherent
 def total_variation_loss(x):
     assert K.ndim(x) == 4
-    if K.image_dim_ordering() == 'th':
+    if K.image_data_format() == "channels_first":
         a = K.square(x[:, :, :img_width - 1, :img_height - 1] - x[:, :, 1:, :img_height - 1])
         b = K.square(x[:, :, :img_width - 1, :img_height - 1] - x[:, :, :img_width - 1, 1:])
     else:
@@ -533,7 +533,7 @@ f_outputs = K.function([combination_image], outputs)
 
 
 def eval_loss_and_grads(x):
-    if K.image_dim_ordering() == 'th':
+    if K.image_data_format() == "channels_first":
         x = x.reshape((1, 3, img_width, img_height))
     else:
         x = x.reshape((1, img_width, img_height, 3))
