@@ -395,7 +395,7 @@ def clip_image(image):
 # Improvement 1
 # the gram matrix of an image tensor (feature-wise outer product) using shifted activations
 def gram_matrix(x):
-    gram = tf.linalg.einsum('bijc,bijd->bcd', x, x)
+    gram = tf.linalg.einsum('bijc,bijd->bcd', x - 1, x - 1)
     return gram
 
 
