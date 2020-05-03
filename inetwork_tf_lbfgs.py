@@ -259,7 +259,7 @@ def deprocess_image(x):
 
 # util function to preserve image color
 def original_color_transform(content, generated, mask=None):
-    generated = fromimage(toimage(generated, mode='RGB'), mode='YCbCr')  # Convert to YCbCr color space
+    generated = fromimage(generated, mode='YCbCr')  # Convert to YCbCr color space
 
     if mask is None:
         generated[:, :, 1:] = content[:, :, 1:]  # Generated CbCr = Content CbCr
@@ -271,7 +271,7 @@ def original_color_transform(content, generated, mask=None):
                 if mask[i, j] == 1:
                     generated[i, j, 1:] = content[i, j, 1:]
 
-    generated = fromimage(toimage(generated, mode='YCbCr'), mode='RGB')  # Convert to RGB color space
+    generated = fromimage(generated, mode='RGB')  # Convert to RGB color space
     return generated
 
 
@@ -319,23 +319,6 @@ base_image = K.variable(preprocess_image(base_image_path, True, read_mode=read_m
 style_reference_images = []
 for style_path in style_image_paths:
     style_reference_images.append(K.variable(preprocess_image(style_path)))
-
-# this will contain our generated image
-# if K.image_data_format() == "channels_first":
-#     combination_image = K.placeholder((1, 3, img_width, img_height))
-# else:
-#     combination_image = K.placeholder((1, img_width, img_height, 3))
-#
-# image_tensors = [base_image]
-# for style_image_tensor in style_reference_images:
-#     image_tensors.append(style_image_tensor)
-# image_tensors.append(combination_image)
-
-# nb_tensors = len(image_tensors)
-# nb_style_images = nb_tensors - 2 # Content and Output image not considered
-
-# combine the various images into a single Keras tensor
-# input_tensor = K.concatenate(image_tensors, axis=0)
 
 nb_tensors = 1
 if K.image_data_format() == "channels_first":
@@ -412,11 +395,7 @@ def clip_image(image):
 # Improvement 1
 # the gram matrix of an image tensor (feature-wise outer product) using shifted activations
 def gram_matrix(x):
-    result = tf.linalg.einsum('bijc,bijd->bcd', x, x)
-    # input_shape = tf.shape(x)
-    # num_locations = tf.cast(input_shape[1] * input_shape[2], tf.float32)
-    # gram = result / (num_locations)
-    gram = result
+    gram = tf.linalg.einsum('bijc,bijd->bcd', x, x)
     return gram
 
 
@@ -558,7 +537,7 @@ def compute_loss(input, outputs, shape_dict):
     else:
         style_masks = [None for _ in range(num_style_references)]  # If masks not present, pass None to the style loss
 
-    # Style losses
+    # Style losses (Cross layer loss)
     style_losses = []
     for style_img_id in range(num_style_references):
         style_features = style_targets_list[style_img_id]
@@ -578,6 +557,7 @@ def compute_loss(input, outputs, shape_dict):
 
             sl2 = style_loss(target_feature_layer, style_output, style_mask, shape)
 
+            # Geometric loss scaling
             sl_i = sl_i + (sl1 - sl2) * (style_weights[style_img_id] / (2 ** (nb_layers - (feature_layer_id + 1))))
 
         style_losses.append(sl_i)
@@ -588,111 +568,6 @@ def compute_loss(input, outputs, shape_dict):
     tv_losses = total_variation_weight * total_variation_loss(input)
 
     return content_losses, style_losses, tv_losses
-
-
-# # combine these loss functions into a single scalar
-# loss = K.variable(0.)
-# layer_features = outputs_dict[args.content_layer]
-# base_image_features = layer_features[0, :, :, :]
-# combination_features = layer_features[nb_tensors - 1, :, :, :]
-# loss = loss + content_weight * content_loss(base_image_features,
-#                                       combination_features)
-# # Improvement 2
-# # Use all layers for style feature extraction and reconstruction
-# nb_layers = len(feature_layers) - 1
-#
-# style_masks = []
-# if style_masks_present:
-#     style_masks = mask_paths # If mask present, pass dictionary of masks to style loss
-# else:
-#     style_masks = [None for _ in range(nb_style_images)] # If masks not present, pass None to the style loss
-#
-# channel_index = 1 if K.image_data_format() == "channels_first" else -1
-#
-# # Improvement 3 : Chained Inference without blurring
-# for i in range(len(feature_layers) - 1):
-#     layer_features = outputs_dict[feature_layers[i]]
-#     shape = shape_dict[feature_layers[i]]
-#     combination_features = layer_features[nb_tensors - 1, :, :, :]
-#     style_reference_features = layer_features[1:nb_tensors - 1, :, :, :]
-#     sl1 = []
-#     for j in range(nb_style_images):
-#         sl1.append(style_loss(style_reference_features[j], combination_features, style_masks[j], shape))
-#
-#     layer_features = outputs_dict[feature_layers[i + 1]]
-#     shape = shape_dict[feature_layers[i + 1]]
-#     combination_features = layer_features[nb_tensors - 1, :, :, :]
-#     style_reference_features = layer_features[1:nb_tensors - 1, :, :, :]
-#     sl2 = []
-#     for j in range(nb_style_images):
-#         sl2.append(style_loss(style_reference_features[j], combination_features, style_masks[j], shape))
-#
-#     for j in range(nb_style_images):
-#         sl = sl1[j] - sl2[j]
-#
-#         # Improvement 4
-#         # Geometric weighted scaling of style loss
-#         loss = loss + (style_weights[j] / (2 ** (nb_layers - (i + 1)))) * sl
-#
-# loss = loss + total_variation_weight * total_variation_loss(combination_image)
-#
-# # get the gradients of the generated image wrt the loss
-# grads = K.gradients(loss, combination_image)
-#
-# outputs = [loss]
-# if type(grads) in {list, tuple}:
-#     outputs += grads
-# else:
-#     outputs.append(grads)
-#
-# f_outputs = K.function([combination_image], outputs)
-
-
-# def eval_loss_and_grads(x):
-#     if K.image_data_format() == "channels_first":
-#         x = x.reshape((1, 3, img_width, img_height))
-#     else:
-#         x = x.reshape((1, img_width, img_height, 3))
-#     outs = f_outputs([x])
-#     loss_value = outs[0]
-#     if len(outs[1:]) == 1:
-#         grad_values = outs[1].flatten().astype('float64')
-#     else:
-#         grad_values = np.array(outs[1:]).flatten().astype('float64')
-#     return loss_value, grad_values
-
-
-# this Evaluator class makes it possible
-# to compute loss and gradients in one pass
-# while retrieving them via two separate functions,
-# "loss" and "grads". This is done because scipy.optimize
-# requires separate functions for loss and gradients,
-# but computing them separately would be inefficient.
-# class Evaluator(object):
-#     def __init__(self):
-#         self.loss_value = None
-#         self.grads_values = None
-#
-#     def loss(self, x):
-#         assert self.loss_value is None
-#         loss_value, grad_values = eval_loss_and_grads(x)
-#         self.loss_value = loss_value
-#         self.grad_values = grad_values
-#         return self.loss_value
-#
-#     def grads(self, x):
-#         assert self.loss_value is not None
-#         grad_values = np.copy(self.grad_values)
-#         self.loss_value = None
-#         self.grad_values = None
-#         return grad_values
-#
-#
-# evaluator = Evaluator()
-
-# run scipy-based optimization (L-BFGS) over the pixels of the generated image
-# so as to minimize the neural style loss
-
 
 if "content" in args.init_image or "gray" in args.init_image:
     x = preprocess_image(base_image_path, True, read_mode=read_mode)
@@ -761,7 +636,7 @@ def clip_image_callback(model, info_dict=None):
 
 
 def save_image_callback(model, info_dict=None):
-    global prev_min_val, start_time
+    global prev_min_val, start_time, content
 
     info_dict = info_dict or {}
     loss_value = info_dict.get('loss', None)
@@ -803,14 +678,8 @@ def save_image_callback(model, info_dict=None):
         print("Image saved as", fname)
         print("Iteration %d completed in %ds" % (i + 1, end_time - start_time))
 
-        # if improvement_threshold is not 0.0:
-        #     if improvement < improvement_threshold and improvement is not 0.0:
-        #         print("Improvement (%f) is less than improvement threshold (%f). Early stopping script." %
-        #               (improvement, improvement_threshold))
-        #         exit()
 
-
-optimizer = LBFGSOptimizer(max_iterations=1000, tolerance=1e-5, trace_function=False)
+optimizer = LBFGSOptimizer(max_iterations=args.num_iter, tolerance=1e-5)
 
 # Add an input clip callback
 # optimizer.register_callback(clip_image_callback)
@@ -819,10 +688,3 @@ optimizer = LBFGSOptimizer(max_iterations=1000, tolerance=1e-5, trace_function=F
 optimizer.register_callback(save_image_callback)
 
 optimizer.minimize(loss_wrapper, x_wrapper)
-
-"""
-python inetwork_tf.py "C:\\Users\\somsh\\OneDrive\\Pictures\\Album Art\\Ryogi-Shiki-small2.jpg" "C:\\Users\\somsh\\OneDrive\\Pictures\\
-Art\\Blue Butterfly.jpg" "C:\\Users\\somsh\\Desktop\\Neural Art\\Ryogi" --image_size 400 --content_weight 0.025 --style_weight 1.0 --total_variation_weight 8.5E-05 --style_scale 1 --num_iter
- 10 --rescale_image "False" --rescale_method "bicubic" --maintain_aspect_ratio "True" --content_layer "conv5_2" --init_image "content" --pool_type "max" --preserve_color "False" --min_
-improvement 0 --model "vgg16" --content_loss_type 0
-"""
