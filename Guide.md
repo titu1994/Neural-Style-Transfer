@@ -16,7 +16,7 @@ There are various parameters in both Network.py and INetwork.py scripts that can
 # Acknowledgements
 
 Uses the VGG-16 model as described in the Keras example below :
-https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
+https://github.com/keras-team/keras-io/blob/master/examples/generative/neural_style_transfer.py
 
 Uses weights from Keras Deep Learning Models : https://github.com/fchollet/deep-learning-models
 

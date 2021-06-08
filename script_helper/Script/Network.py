@@ -22,7 +22,7 @@ from keras.utils.layer_utils import convert_all_kernels_in_model
 Neural Style Transfer with Keras 2.0.5
 
 Based on:
-https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
+https://github.com/keras-team/keras-io/blob/master/examples/generative/neural_style_transfer.py
 
 -----------------------------------------------------------------------------------------------------------------------
 """

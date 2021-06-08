@@ -18,7 +18,7 @@ from keras import backend as K
 Neural Style Transfer with Keras 1.0.6
 
 Uses the VGG-16 model as described in the Keras example below :
-https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
+https://github.com/keras-team/keras-io/blob/master/examples/generative/neural_style_transfer.py
 
 Note:
 
