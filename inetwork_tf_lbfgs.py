@@ -25,7 +25,7 @@ from tf_bfgs import LBFGSOptimizer
 Neural Style Transfer with Keras 2.0.5
 
 Based on:
-https://github.com/fchollet/keras/blob/master/examples/neural_style_transfer.py
+https://github.com/keras-team/keras-io/blob/master/examples/generative/neural_style_transfer.py
 
 Contains few improvements suggested in the paper Improving the Neural Algorithm of Artistic Style
 (http://arxiv.org/abs/1605.04603).
