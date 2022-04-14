@@ -17,7 +17,7 @@ from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import Convolution2D, AveragePooling2D, MaxPooling2D
 from tensorflow.keras import backend as K
 from tensorflow.keras.utils import get_file
-from tensorflow.keras.utils import convert_all_kernels_in_model
+# from tensorflow.keras.utils import convert_all_kernels_in_model
 
 from tf_bfgs import LBFGSOptimizer
 
@@ -31,6 +31,7 @@ Contains few improvements suggested in the paper Improving the Neural Algorithm 
 (http://arxiv.org/abs/1605.04603).
 
 -----------------------------------------------------------------------------------------------------------------------
+  
 """
 
 THEANO_WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_th_dim_ordering_th_kernels_notop.h5'
@@ -382,7 +383,7 @@ if K.backend() == 'tensorflow' and K.image_data_format() == "channels_first":
                   '`image_dim_ordering="tf"` in '
                   'your Keras config '
                   'at ~/.keras/keras.json.')
-    convert_all_kernels_in_model(model)
+    # convert_all_kernels_in_model(model)
 
 print('Model loaded.')
 
@@ -642,8 +643,6 @@ def save_image_callback(model, info_dict=None):
     loss_value = info_dict.get('loss', None)
     i = info_dict.get('iter', -1)
 
-    print("Model params", len(model.trainable_variables))
-
     if loss_value is not None:
         loss_val = loss_value.numpy()
 
@@ -655,7 +654,8 @@ def save_image_callback(model, info_dict=None):
         print("Current loss value:", loss_val, " Improvement : %0.3f" % improvement, "%")
         prev_min_val = loss_val
 
-    if (i + 1) % 100 == 0:
+    last_save = info_dict.get('last_save', False)
+    if (i + 1) % 100 == 0 or last_save:
         img = model.x.numpy()
         # save current generated image
         img = deprocess_image(img)
@@ -672,7 +672,11 @@ def save_image_callback(model, info_dict=None):
             print("Rescaling Image to (%d, %d)" % (img_WIDTH, img_HEIGHT))
             img = imresize(img, (img_WIDTH, img_HEIGHT), interp=args.rescale_method)
 
-        fname = result_prefix + "_at_iteration_%d.png" % (i + 1)
+        if not last_save:
+            fname = result_prefix + "_at_iteration_%d.png" % (i + 1)
+        else:
+            fname = result_prefix + "_final.png"
+
         imsave(fname, img)
         end_time = time.time()
         print("Image saved as", fname)
@@ -688,3 +692,5 @@ optimizer = LBFGSOptimizer(max_iterations=args.num_iter, tolerance=1e-5)
 optimizer.register_callback(save_image_callback)
 
 optimizer.minimize(loss_wrapper, x_wrapper)
+
+save_image_callback(x_wrapper, info_dict={'last_save': True})

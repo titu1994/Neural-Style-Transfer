@@ -1,0 +1,4 @@
+scipy>=1.1.0
+scikit-image>=0.15.0
+tensorflow>=2.5.0
+tensorflow_probability>=1.0

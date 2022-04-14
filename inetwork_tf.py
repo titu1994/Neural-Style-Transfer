@@ -17,7 +17,7 @@ from tensorflow.keras.layers import Input
 from tensorflow.keras.layers import Convolution2D, AveragePooling2D, MaxPooling2D
 from tensorflow.keras import backend as K
 from tensorflow.keras.utils import get_file
-from tensorflow.keras.utils import convert_all_kernels_in_model
+# from tensorflow.keras.utils import convert_all_kernels_in_model
 
 from tf_bfgs import LBFGSOptimizer
 
@@ -107,6 +107,8 @@ parser.add_argument('--preserve_color', dest='color', default="False", type=str,
 parser.add_argument('--min_improvement', default=0.0, type=float,
                     help='Defines minimum improvement required to continue script')
 
+parser.add_argument('--steps_per_epoch', dest='steps_per_epoch', type=int, default=100,
+                    help='Number of adam updates per global step')
 
 def str_to_bool(v):
     return v.lower() in ("true", "yes", "t", "1")
@@ -399,7 +401,7 @@ if K.backend() == 'tensorflow' and K.image_data_format() == "channels_first":
                   '`image_dim_ordering="tf"` in '
                   'your Keras config '
                   'at ~/.keras/keras.json.')
-    convert_all_kernels_in_model(model)
+    # convert_all_kernels_in_model(model)
 
 print('Model loaded.')
 
@@ -538,8 +540,10 @@ for reference_style in style_reference_images:
     style_targets = extractor(reference_style)['style']
     style_targets_list.append(style_targets)
 
-
-optimizer = tf.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
+learning_rate = tf.keras.optimizers.schedules.ExponentialDecay(initial_learning_rate=1.0,
+                                                               decay_steps=100,
+                                                               decay_rate=0.96)
+optimizer = tf.optimizers.Adam(learning_rate=learning_rate, beta_1=0.99, epsilon=1e-1)
 nb_layers = len(feature_layers) - 1
 
 
@@ -637,7 +641,7 @@ else:
     color_mask = None
 
 num_iter = args.num_iter
-steps_per_epoch = 100
+steps_per_epoch = args.steps_per_epoch
 prev_min_val = -1
 
 improvement_threshold = float(args.min_improvement)
@@ -688,8 +692,8 @@ for i in range(num_iter):
     print("Image saved as", fname)
     print("Iteration %d completed in %ds" % (i + 1, end_time - start_time))
 
-    if improvement_threshold is not 0.0:
-        if improvement < improvement_threshold and improvement is not 0.0:
+    if improvement_threshold != 0.0:
+        if improvement < improvement_threshold and improvement != 0.0:
             print("Improvement (%f) is less than improvement threshold (%f). Early stopping script." %
                   (improvement, improvement_threshold))
             exit()
