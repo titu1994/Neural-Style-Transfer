@@ -50,7 +50,7 @@ Below, the content image is "Sunlit Mountain", with the style image as "Seated N
 ## Style Interpolation
 Style weight and Content weight can be manipulated to get drastically different results.
 
-Leonid Afremov's "Misty Mood" is the style image and "Dipping Sun" is the content image : <br>
+Leonid Afremov's "Misty Mood" (Original Source: https://afremov.com/) is the style image and "Dipping Sun" is the content image : <br>
 <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/content/Dipping-Sun.jpg?raw=true" height=300 width=49%> <img src="https://github.com/titu1994/Neural-Style-Transfer/blob/master/images/inputs/style/misty-mood-leonid-afremov.jpg?raw=true" height=300 width=50%> 
 
 <table>
